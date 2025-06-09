@@ -1,0 +1,19 @@
+{   
+    "properties": [
+        {
+            "name": "system.user.default-password",
+            "type": "java.lang.String",
+            "description": "Default password for new registered user."
+        },
+        {
+            "name": "security.jwt.expiration-time",
+            "type": "java.lang.String",
+            "description": "JWT expiration time."
+        },
+        {
+            "name": "security.jwt.secret-key",
+            "type": "java.lang.String",
+            "description": "Secret for JWT generation."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+server.port=8080
+
+spring.data.mongodb.uri=mongodb://localhost:27017/smt_database
+
+security.jwt.secret-key=your_jwt_secret_key_here
+security.jwt.expiration-time=86400000
+
+system.user.default-password=default_password_here
+
+logging.level.root=INFO
+logging.level.org.mongodb.driver=WARN
+
+logging.level.org.springframework.security=WARN
+logging.level.org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer=ERROR
+
+logging.level.org.springframework.data.convert.CustomConversions=ERROR
