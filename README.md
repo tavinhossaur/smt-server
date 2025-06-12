@@ -48,6 +48,7 @@ src/main/java/com/ifsp/tavinho/smt_backend/
 ├── domain/
 │   ├── dtos/ # Data Transfer Objects
 │   ├── entities/ # Domain Entities
+│   ├── enums/ # Useful Enums 
 │   ├── repositories/ # MongoDB Repositories
 │   └── usecases/ # Business Logic
 ├── infra/
@@ -70,7 +71,6 @@ src/main/java/com/ifsp/tavinho/smt_backend/
 - `/api/v1/profile/*` - User profile management
 - `/api/v1/dashboard/*` - Public dashboard data
 - `/api/v1/login` - Authentication endpoint
-- `/api/v1/register` - User registration (will not be on final release)
 
 ## Setup
 
