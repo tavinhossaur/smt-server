@@ -39,7 +39,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .cors(cors -> cors.configurationSource(this.corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers(BASE_API_ROUTE + "/**").permitAll()
@@ -48,10 +48,10 @@ public class SecurityConfig {
                 .requestMatchers(ADMIN_ROUTE + "/**").authenticated())
             .sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(authenticationMiddleware, UsernamePasswordAuthenticationFilter.class)
-            .addFilterAfter(adminMiddleware, AuthenticationMiddleware.class)
-            .addFilterAfter(profileMiddleware, AuthenticationMiddleware.class);
+            .authenticationProvider(this.authenticationProvider)
+            .addFilterBefore(this.authenticationMiddleware, UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(this.adminMiddleware, AuthenticationMiddleware.class)
+            .addFilterAfter(this.profileMiddleware, AuthenticationMiddleware.class);
         
         return http.build();
     }

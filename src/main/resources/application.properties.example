@@ -1,12 +1,22 @@
+# Server
 server.port=8080
+server.tomcat.max-http-form-post-size=2097152 # 2mb
+spring.application.name=smt_backend
+spring.jackson.time-zone=America/Sao_Paulo
 
-spring.data.mongodb.uri=mongodb://localhost:27017/smt_database
+# MongoDB
+spring.data.mongodb.uri=mongodb://localhost:27017/
+spring.data.mongodb.database=smt-db
+spring.data.mongodb.auto-index-creation=true
 
-security.jwt.secret-key=your_jwt_secret_key_here
-security.jwt.expiration-time=86400000
+# JWT
+security.jwt.expiration-time=<jwt_expiration_time_here>
+security.jwt.secret-key=<jwt_secret_key_here>
 
-system.user.default-password=default_password_here
+# System user
+system.user.default-password=<your_default_user_password>
 
+# Logging
 logging.level.root=INFO
 logging.level.org.mongodb.driver=WARN
 

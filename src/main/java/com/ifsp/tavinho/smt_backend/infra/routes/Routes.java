@@ -36,8 +36,4 @@ public interface Routes {
     String ADMIN_PROFESSORS     = ADMIN_ROUTE + PROFESSORS;
     String ADMIN_USERS          = ADMIN_ROUTE + USERS;
 
-    String PROFILE_FAVORITES    = BY_ID + FAVORITES;
-    String PROFILE_PASSWORD     = BY_ID + PASSWORD;
-    String PROFILE_PHOTO        = BY_ID + PHOTO;
-
 }

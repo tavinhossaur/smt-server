@@ -1,3 +1,8 @@
 package com.ifsp.tavinho.smt_backend.domain.dtos.input;
 
-public record UpdatePasswordDTO(String currentPassword, String newPassword) { }
+import jakarta.validation.constraints.NotBlank;
+
+public record UpdatePasswordDTO(
+    @NotBlank(message = "Current password is required") String currentPassword, 
+    @NotBlank(message = "New password is required") String newPassword
+) { }

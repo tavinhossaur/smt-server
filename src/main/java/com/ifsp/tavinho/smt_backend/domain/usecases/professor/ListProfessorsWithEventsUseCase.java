@@ -27,11 +27,11 @@ public class ListProfessorsWithEventsUseCase implements UseCase<String, List<Pro
 
     @Override
     public ResponseEntity<List<ProfessorWithEventsDTO>> execute(String weekday, String courseId) {
-        List<ProfessorWithEventsDTO> professorsWithEventsList = new ArrayList<>();
-
         if (weekday.isBlank() || weekday == null || courseId.isBlank() || courseId == null) {
-            throw new AppError("Weekday and the course must be provided.", HttpStatus.BAD_REQUEST);
+            throw new AppError("Weekday and course values must be provided.", HttpStatus.BAD_REQUEST);
         }
+
+        List<ProfessorWithEventsDTO> professorsWithEventsList = new ArrayList<>();
 
         List<Event> eventsList = this.eventRepository.findByWeekdayAndCourseId(weekday, courseId);
 

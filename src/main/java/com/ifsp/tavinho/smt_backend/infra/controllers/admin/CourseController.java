@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import lombok.AllArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_COURSES;
@@ -25,35 +27,35 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_COURSES;
 @RequestMapping(ADMIN_COURSES)
 public class CourseController implements CrudOperations<CourseDTO, Course> {
 
-    private CreateCourseUseCase createCourse;
-    private UpdateCourseUseCase updateCourse;
-    private DeleteCourseUseCase deleteCourse;
-    private FindCourseUseCase findCourse;
-    private ListCoursesUseCase listCourses;
+    private final CreateCourseUseCase createCourse;
+    private final UpdateCourseUseCase updateCourse;
+    private final DeleteCourseUseCase deleteCourse;
+    private final FindCourseUseCase findCourse;
+    private final ListCoursesUseCase listCourses;
 
     @Override
-    public ResponseEntity<Course> create(CourseDTO input) {
-        return createCourse.execute(input);
+    public ResponseEntity<Course> create(@Valid CourseDTO input) {
+        return this.createCourse.execute(input);
     }
 
     @Override
     public ResponseEntity<Course> update(CourseDTO input, String id) {
-        return updateCourse.execute(input, id);
+        return this.updateCourse.execute(input, id);
     }
 
     @Override
     public ResponseEntity<ApiResponse<Void>> delete(String id) {
-        return deleteCourse.execute(id);
+        return this.deleteCourse.execute(id);
     }
 
     @Override
     public ResponseEntity<Course> find(String id) {
-        return findCourse.execute(id);
+        return this.findCourse.execute(id);
     }
 
     @Override
     public ResponseEntity<List<Course>> list() {
-        return listCourses.execute(null);
+        return this.listCourses.execute(null);
     }
     
 }

@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import lombok.AllArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_CLASSROOMS;
@@ -25,35 +27,35 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_CLASSROOMS;
 @RequestMapping(ADMIN_CLASSROOMS)
 public class ClassroomController implements CrudOperations<ClassroomDTO, Classroom> {
     
-    private CreateClassroomUseCase createClassroom;
-    private UpdateClassroomUseCase updateClassroom;
-    private DeleteClassroomUseCase deleteClassroom;
-    private FindClassroomUseCase findClassroom;
-    private ListClassroomsUseCase listClassrooms;
+    private final CreateClassroomUseCase createClassroom;
+    private final UpdateClassroomUseCase updateClassroom;
+    private final DeleteClassroomUseCase deleteClassroom;
+    private final FindClassroomUseCase findClassroom;
+    private final ListClassroomsUseCase listClassrooms;
 
     @Override
-    public ResponseEntity<Classroom> create(ClassroomDTO input) {
-        return createClassroom.execute(input);
+    public ResponseEntity<Classroom> create(@Valid ClassroomDTO input) {
+        return this.createClassroom.execute(input);
     }
 
     @Override
     public ResponseEntity<Classroom> update(ClassroomDTO input, String id) {
-        return updateClassroom.execute(input, id);
+        return this.updateClassroom.execute(input, id);
     }
 
     @Override
     public ResponseEntity<ApiResponse<Void>> delete(String id) {
-        return deleteClassroom.execute(id);
+        return this.deleteClassroom.execute(id);
     }
 
     @Override
     public ResponseEntity<Classroom> find(String id) {
-        return findClassroom.execute(id);
+        return this.findClassroom.execute(id);
     }
 
     @Override
     public ResponseEntity<List<Classroom>> list() {
-        return listClassrooms.execute(null);
+        return this.listClassrooms.execute(null);
     }
 
 }

@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import lombok.AllArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_EVENTS;
@@ -25,35 +27,35 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_EVENTS;
 @RequestMapping(ADMIN_EVENTS)
 public class EventController implements CrudOperations<EventDTO, Event> {
     
-    private CreateEventUseCase createEvent;
-    private UpdateEventUseCase updateEvent;
-    private DeleteEventUseCase deleteEvent;
-    private FindEventUseCase findEvent;
-    private ListEventsUseCase listEvents;
+    private final CreateEventUseCase createEvent;
+    private final UpdateEventUseCase updateEvent;
+    private final DeleteEventUseCase deleteEvent;
+    private final FindEventUseCase findEvent;
+    private final ListEventsUseCase listEvents;
 
     @Override
-    public ResponseEntity<Event> create(EventDTO input) {
-        return createEvent.execute(input);
+    public ResponseEntity<Event> create(@Valid EventDTO input) {
+        return this.createEvent.execute(input);
     }
 
     @Override
     public ResponseEntity<Event> update(EventDTO input, String id) {
-        return updateEvent.execute(input, id);
+        return this.updateEvent.execute(input, id);
     }
 
     @Override
     public ResponseEntity<ApiResponse<Void>> delete(String id) {
-        return deleteEvent.execute(id);
+        return this.deleteEvent.execute(id);
     }
 
     @Override
     public ResponseEntity<Event> find(String id) {
-        return findEvent.execute(id);
+        return this.findEvent.execute(id);
     }
 
     @Override
     public ResponseEntity<List<Event>> list() {
-        return listEvents.execute(null);
+        return this.listEvents.execute(null);
     }
 
 }

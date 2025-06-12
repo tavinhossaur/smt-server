@@ -1,12 +1,16 @@
 package com.ifsp.tavinho.smt_backend.domain.entities;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,11 +29,13 @@ public class Favorite {
 
     @CreatedDate
     @Field(name = "created_at")
-    private Date createdAt;
+    @JsonFormat(pattern = ApplicationProperties.TIMESTAMP_PATTERN, timezone = ApplicationProperties.TIMEZONE)
+    private Instant createdAt;
 
     @LastModifiedDate
     @Field(name = "updated_at")
-    private Date updatedAt;
+    @JsonFormat(pattern = ApplicationProperties.TIMESTAMP_PATTERN, timezone = ApplicationProperties.TIMEZONE)
+    private Instant updatedAt;
 
     public Favorite(String userId, String professorId) {
         this.userId = userId;

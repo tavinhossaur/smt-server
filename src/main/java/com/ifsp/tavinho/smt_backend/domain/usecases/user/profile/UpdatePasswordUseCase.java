@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdatePasswordDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
@@ -43,7 +44,7 @@ public class UpdatePasswordUseCase implements UseCase<UpdatePasswordDTO, ApiResp
 
         return ResponseEntity.ok(
             ApiResponse.<Void>builder()
-                .status("success")
+                .status(Status.SUCCESS)
                 .message("User password updated successfully.")
             .build()
         );

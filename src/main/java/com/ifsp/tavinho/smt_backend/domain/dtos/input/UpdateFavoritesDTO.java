@@ -1,3 +1,7 @@
 package com.ifsp.tavinho.smt_backend.domain.dtos.input;
 
-public record UpdateFavoritesDTO(String professorId) { }
+import jakarta.validation.constraints.NotBlank;
+
+public record UpdateFavoritesDTO(
+    @NotBlank(message = "Professor ID is required") String professorId
+) { }

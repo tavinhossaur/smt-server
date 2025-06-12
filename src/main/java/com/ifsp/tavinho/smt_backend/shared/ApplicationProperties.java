@@ -18,4 +18,7 @@ public class ApplicationProperties {
     @Value("${security.jwt.secret-key}")
     private String jwtSecretKey;
 
+    public final static String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX";
+    public final static String TIMEZONE = "America/Sao_Paulo";
+
 }

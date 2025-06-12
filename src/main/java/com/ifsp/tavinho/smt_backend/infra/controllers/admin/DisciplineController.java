@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import lombok.AllArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_DISCIPLINES;
@@ -25,35 +27,35 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_DISCIPLINES
 @RequestMapping(ADMIN_DISCIPLINES)
 public class DisciplineController implements CrudOperations<DisciplineDTO, Discipline> {
     
-    private CreateDisciplineUseCase createDiscipline;
-    private UpdateDisciplineUseCase updateDiscipline;
-    private DeleteDisciplineUseCase deleteDiscipline;
-    private FindDisciplineUseCase findDiscipline;
-    private ListDisciplinesUseCase listDisciplines;
+    private final CreateDisciplineUseCase createDiscipline;
+    private final UpdateDisciplineUseCase updateDiscipline;
+    private final DeleteDisciplineUseCase deleteDiscipline;
+    private final FindDisciplineUseCase findDiscipline;
+    private final ListDisciplinesUseCase listDisciplines;
 
     @Override
-    public ResponseEntity<Discipline> create(DisciplineDTO input) {
-        return createDiscipline.execute(input);
+    public ResponseEntity<Discipline> create(@Valid DisciplineDTO input) {
+        return this.createDiscipline.execute(input);
     }
 
     @Override
     public ResponseEntity<Discipline> update(DisciplineDTO input, String id) {
-        return updateDiscipline.execute(input, id);
+        return this.updateDiscipline.execute(input, id);
     }
 
     @Override
     public ResponseEntity<ApiResponse<Void>> delete(String id) {
-        return deleteDiscipline.execute(id);
+        return this.deleteDiscipline.execute(id);
     }
 
     @Override
     public ResponseEntity<Discipline> find(String id) {
-        return findDiscipline.execute(id);
+        return this.findDiscipline.execute(id);
     }
 
     @Override
     public ResponseEntity<List<Discipline>> list() {
-        return listDisciplines.execute(null);
+        return this.listDisciplines.execute(null);
     }
 
 }

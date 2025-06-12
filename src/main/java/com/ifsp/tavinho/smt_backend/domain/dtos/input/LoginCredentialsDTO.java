@@ -1,3 +1,8 @@
 package com.ifsp.tavinho.smt_backend.domain.dtos.input;
 
-public record LoginCredentialsDTO(String email, String password) { }
+import jakarta.validation.constraints.NotBlank;
+
+public record LoginCredentialsDTO(
+    @NotBlank(message = "Email is required") String email, 
+    @NotBlank(message = "Password is required") String password
+) { }

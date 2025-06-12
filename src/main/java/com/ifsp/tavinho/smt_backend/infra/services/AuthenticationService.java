@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.LoginCredentialsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.UserDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.enums.Authorities;
 import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
@@ -25,38 +26,35 @@ public class AuthenticationService {
     private final ApplicationProperties applicationProperties;
 
     public User register(UserDTO input) {
-        String username = input.username();
+        String fullName = input.fullName();
         String email = input.email();
         String password = applicationProperties.getDefaultPassword();
+        Boolean isAdmin = input.isAdmin();
 
-        if (username.isBlank() || email.isBlank()) {
-            throw new AppError("The user must have a username and an email.", HttpStatus.BAD_REQUEST);
-        }
-        
-        if (userRepository.findByEmail(email).isPresent()) {
+        if (this.userRepository.findByEmail(email).isPresent()) {
             throw new AppError("This email has already been taken.", HttpStatus.BAD_REQUEST);
         } 
 
-        User user = new User(username, email, passwordEncoder.encode(password));
+        User user = new User(fullName, email, this.passwordEncoder.encode(password));
 
-        return userRepository.save(user);
+        user.getAuthoritiesList().add(Authorities.ROLE_DEFAULT_USER);
+
+        if (isAdmin != null && isAdmin) user.getAuthoritiesList().add(Authorities.ROLE_ADMIN_USER);
+
+        return this.userRepository.save(user);
     }
 
     public User login(LoginCredentialsDTO input) {
         String email = input.email();
         String password = input.password();
-
-        if (email.isBlank() || password.isBlank()) {
-            throw new AppError("The login must provide an email and password.", HttpStatus.BAD_REQUEST);
-        }
         
-        if (!userRepository.findByEmail(email).isPresent()) {
+        if (!this.userRepository.findByEmail(email).isPresent()) {
             throw new AppError("The email informed was not found.", HttpStatus.BAD_REQUEST);
         }
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-        return userRepository.findByEmail(email).orElseThrow();
+        return this.userRepository.findByEmail(email).orElseThrow();
     }
 
 }

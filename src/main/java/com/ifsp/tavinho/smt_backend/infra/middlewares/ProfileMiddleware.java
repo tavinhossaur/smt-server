@@ -7,7 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
+import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,27 +30,51 @@ public class ProfileMiddleware extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (authentication == null || !authentication.isAuthenticated()) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+
+            ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                .status(Status.ERROR)
+                .message("Token is missing or invalid.")
+                .build();
+
+            response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));
+            response.getWriter().flush();
             return;
         }
 
+        response.setContentType("application/json");
+
         if (authentication.getPrincipal() instanceof User user) {
-            String id = request.getParameter("id");
+            String id = user.getId();
 
             if (id.isBlank() || id == null) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("User id is required.");
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+                ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                    .status(Status.ERROR)
+                    .message("Profile not found.")
+                    .build();
+
+                response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));
+                response.getWriter().flush();
                 return;
             }
 
-            if (user.getId().equals(request.getParameter("id"))) {
-                filterChain.doFilter(request, response);
-                return;
-            }
+            filterChain.doFilter(request, response);
+            return;
         }
 
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getWriter().write("You are not allowed to modify this user.");
+
+        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+            .status(Status.ERROR)
+            .message("You are not allowed to modify this user.")
+            .build();
+
+        response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));
+        response.getWriter().flush();
     }
 }

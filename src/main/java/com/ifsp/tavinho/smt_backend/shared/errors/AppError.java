@@ -1,17 +1,17 @@
 package com.ifsp.tavinho.smt_backend.shared.errors;
 
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 
 import lombok.Getter;
 
 @Getter
 public class AppError extends RuntimeException {
 
-    private final HttpStatusCode statusCode;
+    private final HttpStatus status;
 
-    public AppError(String message, HttpStatusCode statusCode) {
+    public AppError(String message, HttpStatus status) {
         super(message);
-        this.statusCode = statusCode;
+        this.status = status;
     }
     
 }
