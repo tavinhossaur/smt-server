@@ -1,16 +1,16 @@
 # Server
 server.port=8080
-server.tomcat.max-http-form-post-size=2097152 # 2mb
+
+# Spring
 spring.application.name=smt_backend
 spring.jackson.time-zone=America/Sao_Paulo
 
 # MongoDB
-spring.data.mongodb.uri=mongodb://localhost:27017/
-spring.data.mongodb.database=smt-db
+spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority&appName=<app-name>
 spring.data.mongodb.auto-index-creation=true
 
-# JWT
-security.jwt.expiration-time=<jwt_expiration_time_here>
+# JWT (expiration time set to 6 months)
+security.jwt.expiration-time=15778800000
 security.jwt.secret-key=<jwt_secret_key_here>
 
 # System user
@@ -18,9 +18,14 @@ system.user.default-password=<your_default_user_password>
 
 # Logging
 logging.level.root=INFO
-logging.level.org.mongodb.driver=WARN
 
-logging.level.org.springframework.security=WARN
+# Setting MongoDB drive to only log errors.
+logging.level.org.mongodb.driver=ERROR
+
+# The system uses a custom configuration for the authentication provider and this is triggering a warning log, 
+# so we're disabling it by setting the level to ERROR.
 logging.level.org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer=ERROR
 
+# There's a dependency from a library that is triggering a warning log, 
+# so we're disabling it by setting the level to ERROR.
 logging.level.org.springframework.data.convert.CustomConversions=ERROR

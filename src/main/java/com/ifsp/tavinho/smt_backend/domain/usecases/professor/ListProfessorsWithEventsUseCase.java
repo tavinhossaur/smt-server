@@ -36,7 +36,7 @@ public class ListProfessorsWithEventsUseCase implements UseCase<String, List<Pro
         List<Event> eventsList = this.eventRepository.findByWeekdayAndCourseId(weekday, courseId);
 
         for (Event event : eventsList) {
-            Optional<Professor> professor = professorRepository.findById(event.getProfessorId());
+            Optional<Professor> professor = this.professorRepository.findById(event.getProfessorId());
 
             if (!professor.isPresent()) continue;
 
