@@ -16,6 +16,7 @@ import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdatePasswordDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateProfilePhotoDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.usecases.user.admin.FindUserUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.profile.ListFavoritesUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.profile.UpdateFavoritesUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.profile.UpdatePasswordUseCase;
@@ -35,10 +36,16 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PHOTO;
 @RequestMapping(PROFILE_ROUTE)
 public class ProfileController {
     
+    private final FindUserUseCase findUser;
     private final ListFavoritesUseCase listFavorites;
     private final UpdateFavoritesUseCase updateFavorites;
     private final UpdatePasswordUseCase updatePassword;
     private final UpdateProfilePhotoUseCase updateProfilePhoto;
+
+    @GetMapping
+    public ResponseEntity<User> findCurrentUser() {
+        return this.findUser.execute(getAuthenticatedUserId());
+    }
 
     @GetMapping(FAVORITES)
     public ResponseEntity<List<Favorite>> listFavorites() {
