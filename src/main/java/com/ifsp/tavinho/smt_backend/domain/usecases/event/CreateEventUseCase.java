@@ -1,5 +1,7 @@
 package com.ifsp.tavinho.smt_backend.domain.usecases.event;
 
+import java.time.LocalTime;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,8 +40,8 @@ public class CreateEventUseCase implements UseCase<EventDTO, Event> {
                 new Event(
                     input.description(), 
                     input.weekday(), 
-                    input.startTime(), 
-                    input.endTime(), 
+                    LocalTime.parse(input.startTime()), 
+                    LocalTime.parse(input.endTime()), 
                     input.classroomId(),
                     input.professorId(),
                     input.courseId(),
