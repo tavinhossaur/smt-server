@@ -1,39 +1,43 @@
 package com.ifsp.tavinho.smt_backend.infra.routes;
 
-public interface Routes {
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-    String API                  = "/api";
-    String V1                   = "/v1";
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Routes {
 
-    String BY_ID                = "/{id}";
+    public static final String API                  = "/api";
+    public static final String V1                   = "/v1";
+
+    public static final String BY_ID                = "/{id}";
     
-    String CLASSROOMS           = "/classrooms";
-    String COURSES              = "/courses";
-    String DISCIPLINES          = "/disciplines";
-    String EVENTS               = "/events";
-    String PROFESSORS           = "/professors";
-    String USERS                = "/users";
-    String FAVORITES            = "/favorites";
-    String PASSWORD             = "/password";
-    String PHOTO                = "/photo";
+    public static final String ADMIN                = "/admin";
+    public static final String PROFILE              = "/profile";
+    public static final String DASHBOARD            = "/dashboard";
 
-    String LOGIN                = "/login";
-    
-    String ADMIN                = "/admin";
-    String PROFILE              = "/profile";
-    String DASHBOARD            = "/dashboard";
+    public static final String CLASSROOMS           = "/classrooms";
+    public static final String COURSES              = "/courses";
+    public static final String DISCIPLINES          = "/disciplines";
+    public static final String EVENTS               = "/events";
+    public static final String PROFESSORS           = "/professors";
+    public static final String USERS                = "/users";
+    public static final String FAVORITES            = "/favorites";
+    public static final String PASSWORD             = "/password";
+    public static final String PHOTO                = "/photo";
 
-    String BASE_API_ROUTE       = API + V1;
+    public static final String LOGIN                = "/login";
 
-    String ADMIN_ROUTE          = BASE_API_ROUTE + ADMIN;
-    String PROFILE_ROUTE        = BASE_API_ROUTE + PROFILE;
-    String DASHBOARD_ROUTE      = BASE_API_ROUTE + DASHBOARD;
+    public static final String BASE_API_ROUTE       = API + V1;
 
-    String ADMIN_CLASSROOMS     = ADMIN_ROUTE + CLASSROOMS;
-    String ADMIN_COURSES        = ADMIN_ROUTE + COURSES;
-    String ADMIN_DISCIPLINES    = ADMIN_ROUTE + DISCIPLINES;
-    String ADMIN_EVENTS         = ADMIN_ROUTE + EVENTS;
-    String ADMIN_PROFESSORS     = ADMIN_ROUTE + PROFESSORS;
-    String ADMIN_USERS          = ADMIN_ROUTE + USERS;
+    public static final String ADMIN_ROUTE          = BASE_API_ROUTE + ADMIN;
+    public static final String PROFILE_ROUTE        = BASE_API_ROUTE + PROFILE;
+    public static final String DASHBOARD_ROUTE      = BASE_API_ROUTE + DASHBOARD;
+
+    public static final String ADMIN_CLASSROOMS     = ADMIN_ROUTE + CLASSROOMS;
+    public static final String ADMIN_COURSES        = ADMIN_ROUTE + COURSES;
+    public static final String ADMIN_DISCIPLINES    = ADMIN_ROUTE + DISCIPLINES;
+    public static final String ADMIN_EVENTS         = ADMIN_ROUTE + EVENTS;
+    public static final String ADMIN_PROFESSORS     = ADMIN_ROUTE + PROFESSORS;
+    public static final String ADMIN_USERS          = ADMIN_ROUTE + USERS;
 
 }
