@@ -3,7 +3,6 @@ server.port=8080
 
 # Spring
 spring.application.name=smt_backend
-spring.jackson.time-zone=America/Sao_Paulo
 
 # MongoDB
 spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority&appName=<app-name>

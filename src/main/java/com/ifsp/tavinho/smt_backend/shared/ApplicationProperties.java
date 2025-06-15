@@ -1,13 +1,15 @@
 package com.ifsp.tavinho.smt_backend.shared;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Component
 @Getter
-public class ApplicationProperties {
+@NoArgsConstructor
+public final class ApplicationProperties {
     
     @Value("${system.user.default-password}")
     private String defaultPassword;
@@ -18,7 +20,7 @@ public class ApplicationProperties {
     @Value("${security.jwt.secret-key}")
     private String jwtSecretKey;
 
-    public final static String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX";
-    public final static String TIMEZONE = "America/Sao_Paulo";
+    public static final String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX";
+    public static final String TIMEZONE = "America/Sao_Paulo";
 
 }
