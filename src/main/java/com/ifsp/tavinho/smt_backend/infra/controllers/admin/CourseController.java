@@ -9,7 +9,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.course.DeleteCourseUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.course.FindCourseUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.course.ListCoursesUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.course.UpdateCourseUseCase;
-import com.ifsp.tavinho.smt_backend.infra.interfaces.CrudOperations;
+import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_COURSES;
 @RestController
 @AllArgsConstructor
 @RequestMapping(ADMIN_COURSES)
-public class CourseController implements CrudOperations<CourseDTO, Course> {
+public class CourseController implements EntityController<CourseDTO, Course> {
 
     private final CreateCourseUseCase createCourse;
     private final UpdateCourseUseCase updateCourse;

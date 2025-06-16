@@ -14,7 +14,7 @@ import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BY_ID;
 
-public interface CrudOperations<I, O> {
+public interface EntityController<I, O> {
 
     @PostMapping
     public ResponseEntity<O> create(@RequestBody I input);

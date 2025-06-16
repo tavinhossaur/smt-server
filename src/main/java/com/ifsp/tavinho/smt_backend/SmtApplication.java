@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-@EnableMongoRepositories(basePackages = "com.ifsp.tavinho.smt_backend.domain.repositories")
+@EnableMongoRepositories(basePackages = "com.ifsp.tavinho.smt_backend.infra.repositories")
 public class SmtApplication {
 	public static void main(String[] args) {
         SpringApplication.run(SmtApplication.class, args);

@@ -9,7 +9,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.event.DeleteEventUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.FindEventUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.ListEventsUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.UpdateEventUseCase;
-import com.ifsp.tavinho.smt_backend.infra.interfaces.CrudOperations;
+import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_EVENTS;
 @RestController
 @AllArgsConstructor
 @RequestMapping(ADMIN_EVENTS)
-public class EventController implements CrudOperations<EventDTO, Event> {
+public class EventController implements EntityController<EventDTO, Event> {
     
     private final CreateEventUseCase createEvent;
     private final UpdateEventUseCase updateEvent;

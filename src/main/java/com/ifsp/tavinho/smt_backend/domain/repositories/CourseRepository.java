@@ -1,9 +1,5 @@
 package com.ifsp.tavinho.smt_backend.domain.repositories;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
-
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
 
-@Repository
-public interface CourseRepository extends MongoRepository<Course, String> { }
+public interface CourseRepository extends EntityRepository<Course> { }

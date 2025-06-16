@@ -9,7 +9,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.DeleteDisciplineU
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.FindDisciplineUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.ListDisciplinesUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.UpdateDisciplineUseCase;
-import com.ifsp.tavinho.smt_backend.infra.interfaces.CrudOperations;
+import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_DISCIPLINES
 @RestController
 @AllArgsConstructor
 @RequestMapping(ADMIN_DISCIPLINES)
-public class DisciplineController implements CrudOperations<DisciplineDTO, Discipline> {
+public class DisciplineController implements EntityController<DisciplineDTO, Discipline> {
     
     private final CreateDisciplineUseCase createDiscipline;
     private final UpdateDisciplineUseCase updateDiscipline;

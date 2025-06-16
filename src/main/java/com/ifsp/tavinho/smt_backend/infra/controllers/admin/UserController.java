@@ -9,7 +9,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.user.admin.DeleteUserUseCase
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.admin.FindUserUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.admin.ListUsersUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.admin.UpdateUserUseCase;
-import com.ifsp.tavinho.smt_backend.infra.interfaces.CrudOperations;
+import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_USERS;
 @RestController
 @AllArgsConstructor
 @RequestMapping(ADMIN_USERS)
-public class UserController implements CrudOperations<UserDTO, User> {
+public class UserController implements EntityController<UserDTO, User> {
     
     private final CreateUserUseCase createUser;
     private final UpdateUserUseCase updateUser;

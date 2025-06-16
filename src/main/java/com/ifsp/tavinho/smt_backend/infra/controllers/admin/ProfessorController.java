@@ -9,7 +9,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.professor.DeleteProfessorUse
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.FindProfessorUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.ListProfessorsUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.UpdateProfessorUseCase;
-import com.ifsp.tavinho.smt_backend.infra.interfaces.CrudOperations;
+import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_PROFESSORS;
 @RestController
 @AllArgsConstructor
 @RequestMapping(ADMIN_PROFESSORS)
-public class ProfessorController implements CrudOperations<ProfessorDTO, Professor> {
+public class ProfessorController implements EntityController<ProfessorDTO, Professor> {
     
     private final CreateProfessorUseCase createProfessor;
     private final UpdateProfessorUseCase updateProfessor;

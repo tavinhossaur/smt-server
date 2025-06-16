@@ -9,7 +9,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.classroom.UpdateClassroomUse
 import com.ifsp.tavinho.smt_backend.domain.usecases.classroom.DeleteClassroomUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.classroom.FindClassroomUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.classroom.ListClassroomsUseCase;
-import com.ifsp.tavinho.smt_backend.infra.interfaces.CrudOperations;
+import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_CLASSROOMS;
 @RestController
 @AllArgsConstructor
 @RequestMapping(ADMIN_CLASSROOMS)
-public class ClassroomController implements CrudOperations<ClassroomDTO, Classroom> {
+public class ClassroomController implements EntityController<ClassroomDTO, Classroom> {
     
     private final CreateClassroomUseCase createClassroom;
     private final UpdateClassroomUseCase updateClassroom;
