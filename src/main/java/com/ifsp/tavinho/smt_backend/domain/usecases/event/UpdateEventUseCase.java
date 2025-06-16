@@ -30,6 +30,7 @@ public class UpdateEventUseCase implements UseCase<EventDTO, Event> {
         if (input.classroomId() != null) existing.setClassroomId(input.classroomId());
         if (input.professorId() != null) existing.setProfessorId(input.professorId());
         if (input.disciplineId() != null) existing.setDisciplineId(input.disciplineId());
+        if (input.courseId() != null) existing.setCourseId(input.courseId());
 
         return ResponseEntity.ok(this.repository.save(existing));
     }

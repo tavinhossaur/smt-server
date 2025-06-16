@@ -9,6 +9,6 @@ public record EventDTO(
     @NotBlank(message = "End time is required") String endTime, 
     @NotBlank(message = "Classroom ID is required") String classroomId, 
     @NotBlank(message = "Professor ID is required") String professorId, 
-    @NotBlank(message = "Course ID is required") String courseId, 
-    @NotBlank(message = "Discipline ID is required") String disciplineId
+    @NotBlank(message = "Discipline ID is required") String disciplineId,
+    @NotBlank(message = "Course ID is required") String courseId
 ) { }

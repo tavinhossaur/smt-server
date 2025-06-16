@@ -44,8 +44,8 @@ public class CreateEventUseCase implements UseCase<EventDTO, Event> {
                     LocalTime.parse(input.endTime()), 
                     input.classroomId(),
                     input.professorId(),
-                    input.courseId(),
-                    input.disciplineId()
+                    input.disciplineId(),
+                    input.courseId()
                 )
             )
         );
