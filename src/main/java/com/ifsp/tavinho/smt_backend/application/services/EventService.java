@@ -12,7 +12,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.event.UpdateEventUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.DeleteEventUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.FindEventUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.ListEventsUseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public class EventService {
         return this.updateEvent.execute(input, id);
     }
 
-    public ResponseEntity<ApiResponse<Void>> delete(String id) {
+    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
         return this.deleteEvent.execute(id);
     }
 

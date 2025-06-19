@@ -12,7 +12,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.user.UpdateUserUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.DeleteUserUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.FindUserUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.user.ListUsersUseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public class UserService {
         return this.updateUser.execute(input, id);
     }
 
-    public ResponseEntity<ApiResponse<Void>> delete(String id) {
+    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
         return this.deleteUser.execute(id);
     }
 

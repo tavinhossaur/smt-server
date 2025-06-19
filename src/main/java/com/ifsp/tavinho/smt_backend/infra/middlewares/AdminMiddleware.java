@@ -10,7 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.domain.enums.Authorities;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,7 +37,7 @@ public class AdminMiddleware extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
 
-            ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+            ServerApiResponse<Void> apiResponse = ServerApiResponse.<Void>builder()
                 .status(Status.ERROR)
                 .message("Token is missing or invalid.")
                 .build();
@@ -57,7 +57,7 @@ public class AdminMiddleware extends OncePerRequestFilter {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json");
 
-        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+        ServerApiResponse<Void> apiResponse = ServerApiResponse.<Void>builder()
             .status(Status.ERROR)
             .message("Admin privileges required.")
             .build();

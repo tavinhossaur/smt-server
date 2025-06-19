@@ -12,7 +12,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.course.UpdateCourseUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.course.DeleteCourseUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.course.FindCourseUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.course.ListCoursesUseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public class CourseService {
         return this.updateCourse.execute(input, id);
     }
 
-    public ResponseEntity<ApiResponse<Void>> delete(String id) {
+    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
         return this.deleteCourse.execute(id);
     }
 

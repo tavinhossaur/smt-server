@@ -40,4 +40,5 @@ public final class Routes {
     public static final String ADMIN_PROFESSORS     = ADMIN_ROUTE + PROFESSORS;
     public static final String ADMIN_USERS          = ADMIN_ROUTE + USERS;
 
+    public static final String[] SWAGGER_ROUTES     = {"/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/favicon.ico"};
 }

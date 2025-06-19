@@ -10,7 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,7 +35,7 @@ public class ProfileMiddleware extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
 
-            ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+            ServerApiResponse<Void> apiResponse = ServerApiResponse.<Void>builder()
                 .status(Status.ERROR)
                 .message("Token is missing or invalid.")
                 .build();
@@ -53,7 +53,7 @@ public class ProfileMiddleware extends OncePerRequestFilter {
             if (id.isBlank() || id == null) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
-                ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                ServerApiResponse<Void> apiResponse = ServerApiResponse.<Void>builder()
                     .status(Status.ERROR)
                     .message("Profile not found.")
                     .build();
@@ -69,7 +69,7 @@ public class ProfileMiddleware extends OncePerRequestFilter {
 
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
-        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+        ServerApiResponse<Void> apiResponse = ServerApiResponse.<Void>builder()
             .status(Status.ERROR)
             .message("You are not allowed to modify this user.")
             .build();

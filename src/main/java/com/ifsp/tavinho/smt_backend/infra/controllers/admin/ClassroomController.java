@@ -6,7 +6,7 @@ import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.ClassroomDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 import com.ifsp.tavinho.smt_backend.application.services.ClassroomService;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +16,16 @@ import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_CLASSROOMS;
 
+@Tag(name = "Classrooms (Admin)", description = "Classroom management. Requires administrator permission.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ADMIN_CLASSROOMS)
@@ -26,26 +34,61 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
     private final ClassroomService classroomService;
 
     @Override
+    @Operation(summary = "Create classroom", description = "Creates a new classroom with the provided data.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Classroom successfully created."),
+        @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
     public ResponseEntity<Classroom> create(@Valid ClassroomDTO input) {
         return this.classroomService.create(input);
     }
 
     @Override
+    @Operation(summary = "Update classroom", description = "Updates an existing classroom by ID.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Classroom successfully updated."),
+        @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Classroom not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
     public ResponseEntity<Classroom> update(ClassroomDTO input, String id) {
         return this.classroomService.update(input, id);
     }
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> delete(String id) {
+    @Operation(summary = "Delete classroom", description = "Deletes a classroom by ID.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Classroom successfully deleted."),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Classroom not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
         return this.classroomService.delete(id);
     }
 
     @Override
+    @Operation(summary = "Find classroom", description = "Finds a classroom by ID.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Classroom found."),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Classroom not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
     public ResponseEntity<Classroom> find(String id) {
         return this.classroomService.find(id);
     }
 
     @Override
+    @Operation(summary = "List classrooms", description = "Lists all registered classrooms.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "List of classrooms successfully returned."),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
     public ResponseEntity<List<Classroom>> list() {
         return this.classroomService.list();
     }

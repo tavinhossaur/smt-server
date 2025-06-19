@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AppError.class)
-    public ResponseEntity<ApiResponse<Void>> handleAppError(AppError error) {
+    public ResponseEntity<ServerApiResponse<Void>> handleAppError(AppError error) {
         return ResponseEntity.status(error.getStatus())
             .body(
-                ApiResponse.<Void>builder()
+                ServerApiResponse.<Void>builder()
                     .status(Status.ERROR)
                     .error(error.getStatus().getReasonPhrase())
                     .message(error.getMessage())
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ServerApiResponse<Void>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         StringBuilder errorMsg = new StringBuilder();
 
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
         }
 
         return ResponseEntity.badRequest().body(
-            ApiResponse.<Void>builder()
+            ServerApiResponse.<Void>builder()
                 .status(Status.ERROR)
                 .error("Object validation error")
                 .message(errorMsg.toString().strip())
@@ -53,10 +53,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleEntityNotFoundException(Exception ex) {
+    public ResponseEntity<ServerApiResponse<Void>> handleEntityNotFoundException(Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(
-                ApiResponse.<Void>builder()
+                ServerApiResponse.<Void>builder()
                     .status(Status.ERROR)
                     .error("Entity not found")
                     .message(ex.getMessage())
@@ -65,10 +65,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ClientAbortException.class)
-    public ResponseEntity<ApiResponse<Void>> handleClientAbortException(Exception ex) {
+    public ResponseEntity<ServerApiResponse<Void>> handleClientAbortException(Exception ex) {
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
             .body(
-                ApiResponse.<Void>builder()
+                ServerApiResponse.<Void>builder()
                     .status(Status.ERROR)
                     .error("Payload too large")
                     .message(ex.getMessage())
@@ -77,10 +77,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadable(Exception ex) {
+    public ResponseEntity<ServerApiResponse<Void>> handleHttpMessageNotReadable(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(
-                ApiResponse.<Void>builder()
+                ServerApiResponse.<Void>builder()
                     .status(Status.ERROR)
                     .error("Invalid request body")
                     .message(ex.getMessage())
@@ -89,10 +89,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({ AuthenticationException.class, JWTVerificationException.class })
-    public ResponseEntity<ApiResponse<String>> handleAuthenticationException(Exception ex) {
+    public ResponseEntity<ServerApiResponse<String>> handleAuthenticationException(Exception ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .body(
-                ApiResponse.<String>builder()
+                ServerApiResponse.<String>builder()
                     .status(Status.ERROR)
                     .error("Authentication failed")
                     .message(ex.getMessage())
@@ -101,10 +101,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleGenericError(Exception ex) {
+    public ResponseEntity<ServerApiResponse<Void>> handleGenericError(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(
-                ApiResponse.<Void>builder()
+                ServerApiResponse.<Void>builder()
                     .status(Status.ERROR)
                     .error("Internal Server Error")
                     .message(ex.getMessage())

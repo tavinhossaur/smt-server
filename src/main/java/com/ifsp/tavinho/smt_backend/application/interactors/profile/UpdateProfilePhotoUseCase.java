@@ -11,18 +11,18 @@ import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateProfilePhotoUseCase implements UseCase<UpdateProfilePhotoDTO, ApiResponse<Void>> {
+public class UpdateProfilePhotoUseCase implements UseCase<UpdateProfilePhotoDTO, ServerApiResponse<Void>> {
 
     private final UserRepository repository;
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> execute(UpdateProfilePhotoDTO input, String userId) {
+    public ResponseEntity<ServerApiResponse<Void>> execute(UpdateProfilePhotoDTO input, String userId) {
         String encodedBase64Image = input.encodedBase64Image();
 
         if (encodedBase64Image.isBlank() || encodedBase64Image == null) {
@@ -36,7 +36,7 @@ public class UpdateProfilePhotoUseCase implements UseCase<UpdateProfilePhotoDTO,
         this.repository.save(user);
 
         return ResponseEntity.ok(
-            ApiResponse.<Void>builder()
+            ServerApiResponse.<Void>builder()
                 .status(Status.SUCCESS)
                 .message("Profile photo updated successfully.")
             .build()
@@ -44,7 +44,7 @@ public class UpdateProfilePhotoUseCase implements UseCase<UpdateProfilePhotoDTO,
     }
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> execute(UpdateProfilePhotoDTO _unused) {
+    public ResponseEntity<ServerApiResponse<Void>> execute(UpdateProfilePhotoDTO _unused) {
         throw new UnsupportedOperationException("ID is required for updating the profile photo.");
     }
     

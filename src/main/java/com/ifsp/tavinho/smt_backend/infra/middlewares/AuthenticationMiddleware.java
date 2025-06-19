@@ -14,9 +14,9 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
-import com.ifsp.tavinho.smt_backend.infra.services.UserDetailsLoader;
 import com.ifsp.tavinho.smt_backend.infra.services.JwtService;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.infra.services.UserDetailsLoader;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,6 +26,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BASE_API_ROUTE;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.SWAGGER_ROUTES;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.LOGIN;
 
 @Component
@@ -38,7 +39,18 @@ public class AuthenticationMiddleware extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getRequestURI().startsWith(BASE_API_ROUTE + LOGIN) || request.getRequestURI().startsWith(BASE_API_ROUTE + "/register");
+        String uri = request.getRequestURI();
+
+        if (uri.startsWith(BASE_API_ROUTE + LOGIN)) return true;
+
+        for (String swaggerRoute : SWAGGER_ROUTES) {
+            if (swaggerRoute.endsWith("/**")) {
+                String prefix = swaggerRoute.substring(0, swaggerRoute.length() - 3);
+                if (uri.startsWith(prefix)) return true;
+            } else if (uri.equals(swaggerRoute)) return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -49,7 +61,7 @@ public class AuthenticationMiddleware extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
 
-            ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+            ServerApiResponse<Void> apiResponse = ServerApiResponse.<Void>builder()
                 .status(Status.ERROR)
                 .message("Token is missing or invalid.")
                 .build();

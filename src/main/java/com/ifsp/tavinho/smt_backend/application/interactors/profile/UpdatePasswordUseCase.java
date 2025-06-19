@@ -12,19 +12,19 @@ import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UpdatePasswordUseCase implements UseCase<UpdatePasswordDTO, ApiResponse<Void>> {
+public class UpdatePasswordUseCase implements UseCase<UpdatePasswordDTO, ServerApiResponse<Void>> {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> execute(UpdatePasswordDTO input, String userId) {
+    public ResponseEntity<ServerApiResponse<Void>> execute(UpdatePasswordDTO input, String userId) {
         String currentPassword = input.currentPassword();
         String newPassword = input.newPassword();
 
@@ -43,7 +43,7 @@ public class UpdatePasswordUseCase implements UseCase<UpdatePasswordDTO, ApiResp
         this.repository.save(user);
 
         return ResponseEntity.ok(
-            ApiResponse.<Void>builder()
+            ServerApiResponse.<Void>builder()
                 .status(Status.SUCCESS)
                 .message("User password updated successfully.")
             .build()
@@ -51,7 +51,7 @@ public class UpdatePasswordUseCase implements UseCase<UpdatePasswordDTO, ApiResp
     }
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> execute(UpdatePasswordDTO _unused) {
+    public ResponseEntity<ServerApiResponse<Void>> execute(UpdatePasswordDTO _unused) {
         throw new UnsupportedOperationException("ID is required for updating the password.");
     }
 

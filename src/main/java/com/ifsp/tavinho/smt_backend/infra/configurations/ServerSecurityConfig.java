@@ -42,6 +42,10 @@ public class ServerSecurityConfig {
             .cors(cors -> cors.configurationSource(this.corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(requests -> requests
+                .requestMatchers("/swagger-ui.html").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-resources/**").permitAll()
                 .requestMatchers(BASE_API_ROUTE + "/**").permitAll()
                 .requestMatchers(DASHBOARD_ROUTE + "/**").authenticated()
                 .requestMatchers(PROFILE_ROUTE + "/**").authenticated()

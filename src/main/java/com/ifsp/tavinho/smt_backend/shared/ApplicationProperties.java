@@ -11,6 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public final class ApplicationProperties {
     
+    @Value("${project.name}")
+    private String projectName;
+
+    @Value("${project.version}")
+    private String projectVersion;
+
+    @Value("${project.description}")
+    private String projectDescription;
+
     @Value("${system.user.default-password}")
     private String defaultPassword;
 

@@ -15,20 +15,20 @@ import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateFavoritesUseCase implements UseCase<UpdateFavoritesDTO, ApiResponse<Void>> {
+public class UpdateFavoritesUseCase implements UseCase<UpdateFavoritesDTO, ServerApiResponse<Void>> {
 
     private final UserRepository userRepository;
     private final ProfessorRepository professorRepository;
     private final FavoriteRepository favoriteRepository;
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> execute(UpdateFavoritesDTO input, String userId) {
+    public ResponseEntity<ServerApiResponse<Void>> execute(UpdateFavoritesDTO input, String userId) {
         String professorId = input.professorId();
 
         if (professorId.isBlank() || professorId == null) {
@@ -44,7 +44,7 @@ public class UpdateFavoritesUseCase implements UseCase<UpdateFavoritesDTO, ApiRe
         else this.favoriteRepository.save(new Favorite(userId, professorId));
 
         return ResponseEntity.ok(
-            ApiResponse.<Void>builder()
+            ServerApiResponse.<Void>builder()
                 .status(Status.SUCCESS)
                 .message("User favorites updated successfully.")
             .build()
@@ -52,7 +52,7 @@ public class UpdateFavoritesUseCase implements UseCase<UpdateFavoritesDTO, ApiRe
     }
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> execute(UpdateFavoritesDTO _unused) {
+    public ResponseEntity<ServerApiResponse<Void>> execute(UpdateFavoritesDTO _unused) {
         throw new UnsupportedOperationException("User ID is required for updating the favorites.");
     }
     

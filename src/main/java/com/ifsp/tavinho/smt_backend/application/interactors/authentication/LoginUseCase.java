@@ -8,20 +8,20 @@ import com.ifsp.tavinho.smt_backend.domain.dtos.input.LoginCredentialsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.LoginResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class LoginUseCase implements UseCase<LoginCredentialsDTO, ApiResponse<LoginResponseDTO>> {
+public class LoginUseCase implements UseCase<LoginCredentialsDTO, ServerApiResponse<LoginResponseDTO>> {
 
     private final AuthenticationService authenticationService;
 
     @Override
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> execute(LoginCredentialsDTO credentials) { 
+    public ResponseEntity<ServerApiResponse<LoginResponseDTO>> execute(LoginCredentialsDTO credentials) { 
         return ResponseEntity.ok(
-            ApiResponse.<LoginResponseDTO>builder()
+            ServerApiResponse.<LoginResponseDTO>builder()
                 .status(Status.SUCCESS)
                 .message("User logged in successfully.")
                 .data(authenticationService.login(credentials)

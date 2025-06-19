@@ -12,7 +12,7 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.professor.UpdateProfessorUse
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.DeleteProfessorUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.FindProfessorUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.ListProfessorsUseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public class ProfessorService {
         return this.updateProfessor.execute(input, id);
     }
 
-    public ResponseEntity<ApiResponse<Void>> delete(String id) {
+    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
         return this.deleteProfessor.execute(id);
     }
 

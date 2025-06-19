@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BY_ID;
 
@@ -23,7 +23,7 @@ public interface EntityController<I, O> {
     public ResponseEntity<O> update(@RequestBody I input, @PathVariable String id);
 
     @DeleteMapping(BY_ID)
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String id);
+    public ResponseEntity<ServerApiResponse<Void>> delete(@PathVariable String id);
 
     @GetMapping(BY_ID)
     public ResponseEntity<O> find(@PathVariable String id);
