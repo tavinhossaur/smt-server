@@ -2,9 +2,9 @@ package com.ifsp.tavinho.smt_backend.domain.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum Status {
     SUCCESS("success"),
     ERROR("error");

@@ -21,10 +21,10 @@ import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
 import com.ifsp.tavinho.smt_backend.shared.utils.LoggerUtil;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JwtService {
 
     private final ApplicationProperties applicationProperties;

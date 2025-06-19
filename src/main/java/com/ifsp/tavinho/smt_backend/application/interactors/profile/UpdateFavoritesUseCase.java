@@ -1,4 +1,4 @@
-package com.ifsp.tavinho.smt_backend.domain.usecases.user.profile;
+package com.ifsp.tavinho.smt_backend.application.interactors.profile;
 
 import java.util.Optional;
 
@@ -17,10 +17,10 @@ import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UpdateFavoritesUseCase implements UseCase<UpdateFavoritesDTO, ApiResponse<Void>> {
 
     private final UserRepository userRepository;

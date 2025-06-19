@@ -1,4 +1,4 @@
-package com.ifsp.tavinho.smt_backend.domain.usecases.user.profile;
+package com.ifsp.tavinho.smt_backend.application.interactors.profile;
 
 import java.util.List;
 
@@ -9,10 +9,10 @@ import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
 import com.ifsp.tavinho.smt_backend.domain.repositories.FavoriteRepository;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ListFavoritesUseCase implements UseCase<String, List<Favorite>> {
 
     private final FavoriteRepository repository;

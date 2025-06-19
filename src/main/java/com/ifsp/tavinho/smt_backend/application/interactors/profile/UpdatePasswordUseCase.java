@@ -1,4 +1,4 @@
-package com.ifsp.tavinho.smt_backend.domain.usecases.user.profile;
+package com.ifsp.tavinho.smt_backend.application.interactors.profile;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UpdatePasswordUseCase implements UseCase<UpdatePasswordDTO, ApiResponse<Void>> {
 
     private final UserRepository repository;

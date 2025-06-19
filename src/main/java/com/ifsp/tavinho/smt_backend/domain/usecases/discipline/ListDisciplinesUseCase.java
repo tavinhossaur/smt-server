@@ -9,10 +9,10 @@ import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
 import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ListDisciplinesUseCase implements UseCase<Void, List<Discipline>> {
 
     private final DisciplineRepository repository;

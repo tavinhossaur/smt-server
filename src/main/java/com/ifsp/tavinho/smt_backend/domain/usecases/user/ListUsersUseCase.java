@@ -1,4 +1,4 @@
-package com.ifsp.tavinho.smt_backend.domain.usecases.user.admin;
+package com.ifsp.tavinho.smt_backend.domain.usecases.user;
 
 import java.util.List;
 
@@ -9,10 +9,10 @@ import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ListUsersUseCase implements UseCase<Void, List<User>> {
 
     private final UserRepository repository;

@@ -4,11 +4,7 @@ import java.util.List;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.CourseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
-import com.ifsp.tavinho.smt_backend.domain.usecases.course.CreateCourseUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.course.DeleteCourseUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.course.FindCourseUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.course.ListCoursesUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.course.UpdateCourseUseCase;
+import com.ifsp.tavinho.smt_backend.application.services.CourseService;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
@@ -18,44 +14,40 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_COURSES;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(ADMIN_COURSES)
 public class CourseController implements EntityController<CourseDTO, Course> {
 
-    private final CreateCourseUseCase createCourse;
-    private final UpdateCourseUseCase updateCourse;
-    private final DeleteCourseUseCase deleteCourse;
-    private final FindCourseUseCase findCourse;
-    private final ListCoursesUseCase listCourses;
+    private final CourseService courseService;
 
     @Override
     public ResponseEntity<Course> create(@Valid CourseDTO input) {
-        return this.createCourse.execute(input);
+        return this.courseService.create(input);
     }
 
     @Override
     public ResponseEntity<Course> update(CourseDTO input, String id) {
-        return this.updateCourse.execute(input, id);
+        return this.courseService.update(input, id);
     }
 
     @Override
     public ResponseEntity<ApiResponse<Void>> delete(String id) {
-        return this.deleteCourse.execute(id);
+        return this.courseService.delete(id);
     }
 
     @Override
     public ResponseEntity<Course> find(String id) {
-        return this.findCourse.execute(id);
+        return this.courseService.find(id);
     }
 
     @Override
     public ResponseEntity<List<Course>> list() {
-        return this.listCourses.execute(null);
+        return this.courseService.list();
     }
     
 }

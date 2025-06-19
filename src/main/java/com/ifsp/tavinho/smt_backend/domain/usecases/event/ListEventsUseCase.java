@@ -9,10 +9,10 @@ import com.ifsp.tavinho.smt_backend.domain.entities.Event;
 import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ListEventsUseCase implements UseCase<Void, List<Event>> {
 
     private final EventRepository repository;

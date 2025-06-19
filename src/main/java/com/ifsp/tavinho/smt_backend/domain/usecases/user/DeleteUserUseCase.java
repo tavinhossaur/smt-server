@@ -1,4 +1,4 @@
-package com.ifsp.tavinho.smt_backend.domain.usecases.user.admin;
+package com.ifsp.tavinho.smt_backend.domain.usecases.user;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,10 +10,10 @@ import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeleteUserUseCase implements UseCase<String, ApiResponse<Void>> {
 
     private final UserRepository repository;

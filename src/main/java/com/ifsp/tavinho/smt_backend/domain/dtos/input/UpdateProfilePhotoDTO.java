@@ -5,6 +5,6 @@ import jakarta.validation.constraints.Pattern;
 
 public record UpdateProfilePhotoDTO(
     @NotBlank(message = "Encoded image is required") 
-    @Pattern(regexp = "^data:image\\/(png|jpeg|jpg|gif);base64,.*$", message = "Invalid image format")
+    @Pattern(regexp = "^data:image\\/(png|jpeg|jpg);base64,.*$", message = "Invalid image format")
     String encodedBase64Image
 ) { }

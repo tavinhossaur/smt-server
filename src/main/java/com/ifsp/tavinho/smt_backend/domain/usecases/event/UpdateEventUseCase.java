@@ -11,10 +11,10 @@ import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UpdateEventUseCase implements UseCase<EventDTO, Event> {
 
     private final EventRepository repository;

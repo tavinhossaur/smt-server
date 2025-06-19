@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
+import com.ifsp.tavinho.smt_backend.application.interactors.profile.ListFavoritesUseCase;
+import com.ifsp.tavinho.smt_backend.application.interactors.profile.UpdateFavoritesUseCase;
+import com.ifsp.tavinho.smt_backend.application.interactors.profile.UpdatePasswordUseCase;
+import com.ifsp.tavinho.smt_backend.application.interactors.profile.UpdateProfilePhotoUseCase;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateFavoritesDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdatePasswordDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateProfilePhotoDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
-import com.ifsp.tavinho.smt_backend.domain.usecases.user.admin.FindUserUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.user.profile.ListFavoritesUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.user.profile.UpdateFavoritesUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.user.profile.UpdatePasswordUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.user.profile.UpdateProfilePhotoUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.user.FindUserUseCase;
 
 import jakarta.validation.Valid;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PROFILE_ROUTE;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PASSWORD;
@@ -32,7 +32,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.FAVORITES;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PHOTO;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(PROFILE_ROUTE)
 public class ProfileController {
     

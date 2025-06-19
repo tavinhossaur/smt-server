@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
-public class AuthUserDetailsService implements UserDetailsService {
+@RequiredArgsConstructor
+public class UserDetailsLoader implements UserDetailsService {
 
     private final UserRepository userRepository;
 

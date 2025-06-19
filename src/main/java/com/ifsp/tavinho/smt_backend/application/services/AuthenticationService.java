@@ -1,29 +1,35 @@
-package com.ifsp.tavinho.smt_backend.infra.services;
+package com.ifsp.tavinho.smt_backend.application.services;
+
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.LoginCredentialsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.UserDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.LoginResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.domain.enums.Authorities;
 import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+import com.ifsp.tavinho.smt_backend.infra.services.JwtService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationService {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final ApplicationProperties applicationProperties;
+    private final JwtService jwtService;
 
     public User register(UserDTO input) {
         String fullName = input.fullName();
@@ -44,7 +50,7 @@ public class AuthenticationService {
         return this.userRepository.save(user);
     }
 
-    public User login(LoginCredentialsDTO input) {
+    public LoginResponseDTO login(LoginCredentialsDTO input) {
         String email = input.email();
         String password = input.password();
         
@@ -54,7 +60,20 @@ public class AuthenticationService {
 
         this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-        return this.userRepository.findByEmail(email).orElseThrow();
+        User user = this.userRepository.findByEmail(email).orElseThrow();
+
+        return this.createAuthenticationResponse(user);
+    }
+
+    private LoginResponseDTO createAuthenticationResponse(User user) {
+        return new LoginResponseDTO(
+            user.getId(),
+            user.getFullName(),
+            user.getEmail(),
+            user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()),
+            this.jwtService.generateToken(user), 
+            this.jwtService.getExpirationTime()
+        );
     }
 
 }

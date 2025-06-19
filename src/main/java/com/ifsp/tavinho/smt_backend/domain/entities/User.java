@@ -38,7 +38,6 @@ public class User implements UserDetails {
     private String password;
 
     @Field(name = "profile_photo")
-    @JsonIgnore
     private String profilePhoto;
 
     @CreatedDate

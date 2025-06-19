@@ -14,7 +14,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
-import com.ifsp.tavinho.smt_backend.infra.services.AuthUserDetailsService;
+import com.ifsp.tavinho.smt_backend.infra.services.UserDetailsLoader;
 import com.ifsp.tavinho.smt_backend.infra.services.JwtService;
 import com.ifsp.tavinho.smt_backend.shared.responses.ApiResponse;
 
@@ -22,17 +22,18 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
+
+import lombok.RequiredArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BASE_API_ROUTE;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.LOGIN;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationMiddleware extends OncePerRequestFilter {
     
     private final HandlerExceptionResolver handlerExceptionResolver;
-    private final AuthUserDetailsService userDetailsService;
+    private final UserDetailsLoader userDetailsService;
     private final JwtService jwtService;
 
     @Override
@@ -55,6 +56,7 @@ public class AuthenticationMiddleware extends OncePerRequestFilter {
 
             response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));
             response.getWriter().flush();
+            
             return;
         }
 

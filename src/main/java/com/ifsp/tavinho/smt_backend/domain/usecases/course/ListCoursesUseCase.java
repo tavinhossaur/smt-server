@@ -9,10 +9,10 @@ import com.ifsp.tavinho.smt_backend.domain.entities.Course;
 import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ListCoursesUseCase implements UseCase<Void, List<Course>> {
 
     private final CourseRepository repository;

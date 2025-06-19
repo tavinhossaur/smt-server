@@ -19,7 +19,7 @@ import com.ifsp.tavinho.smt_backend.infra.middlewares.AdminMiddleware;
 import com.ifsp.tavinho.smt_backend.infra.middlewares.AuthenticationMiddleware;
 import com.ifsp.tavinho.smt_backend.infra.middlewares.ProfileMiddleware;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BASE_API_ROUTE;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.DASHBOARD_ROUTE;
@@ -28,7 +28,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_ROUTE;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;

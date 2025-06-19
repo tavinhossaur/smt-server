@@ -8,15 +8,15 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.ifsp.tavinho.smt_backend.infra.services.AuthUserDetailsService;
+import com.ifsp.tavinho.smt_backend.infra.services.UserDetailsLoader;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationConfig {
 
-    private final AuthUserDetailsService userDetailsService;
+    private final UserDetailsLoader userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
     @Bean

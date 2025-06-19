@@ -7,12 +7,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApplicationConfig {
 
     private final UserRepository userRepository;

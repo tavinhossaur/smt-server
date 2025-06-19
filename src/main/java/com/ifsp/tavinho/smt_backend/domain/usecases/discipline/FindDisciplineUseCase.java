@@ -8,10 +8,10 @@ import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FindDisciplineUseCase implements UseCase<String, Discipline> {
 
     private final DisciplineRepository repository;

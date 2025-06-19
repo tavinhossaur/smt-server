@@ -9,10 +9,10 @@ import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 import com.ifsp.tavinho.smt_backend.domain.repositories.ClassroomRepository;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CreateClassroomUseCase implements UseCase<ClassroomDTO, Classroom> {
 
     private final ClassroomRepository repository;
