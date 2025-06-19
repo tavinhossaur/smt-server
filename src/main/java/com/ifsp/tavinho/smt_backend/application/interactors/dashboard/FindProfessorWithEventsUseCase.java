@@ -27,7 +27,15 @@ public class FindProfessorWithEventsUseCase implements UseCase<String, Professor
         Professor professor = this.professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found with id: " + id));
         List<Event> professorEvents = this.eventRepository.findByProfessorId(id);
 
-        return ResponseEntity.ok(new ProfessorWithEventsDTO(professor, professorEvents));
+        return ResponseEntity.ok(
+            new ProfessorWithEventsDTO(
+                professor.getId(),
+                professor.getName(),
+                professor.getEmail(),
+                professor.getCreatedAt(),
+                professor.getUpdatedAt(),
+                professorEvents
+            ));
     }
     
 }

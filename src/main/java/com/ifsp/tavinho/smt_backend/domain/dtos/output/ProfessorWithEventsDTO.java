@@ -1,8 +1,15 @@
 package com.ifsp.tavinho.smt_backend.domain.dtos.output;
 
 import java.util.List;
+import java.time.Instant;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Event;
-import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
 
-public record ProfessorWithEventsDTO(Professor professor, List<Event> events) { }
+public record ProfessorWithEventsDTO(
+    String id,
+    String name,
+    String email,
+    Instant createdAt,
+    Instant updatedAt,
+    List<Event> events
+) { }

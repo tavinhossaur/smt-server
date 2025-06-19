@@ -13,7 +13,7 @@ import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 
 @Configuration
 @RequiredArgsConstructor
-public class ApplicationConfig {
+public class UserSecurityConfig {
 
     private final UserRepository userRepository;
 

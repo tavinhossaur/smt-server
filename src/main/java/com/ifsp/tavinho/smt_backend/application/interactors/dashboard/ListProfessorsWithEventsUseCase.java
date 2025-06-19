@@ -47,7 +47,11 @@ public class ListProfessorsWithEventsUseCase implements UseCase<String, List<Pro
 
             professorsWithEventsList.add(
                 new ProfessorWithEventsDTO(
-                    professor.get(), 
+                    professor.get().getId(),
+                    professor.get().getName(),
+                    professor.get().getEmail(),
+                    professor.get().getCreatedAt(),
+                    professor.get().getUpdatedAt(),
                     eventsList.stream().filter(
                         e -> e.getProfessorId().equals(event.getProfessorId())
                     ).toList()

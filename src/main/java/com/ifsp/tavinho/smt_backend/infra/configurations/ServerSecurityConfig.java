@@ -29,7 +29,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_ROUTE;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class ServerSecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final AuthenticationMiddleware authenticationMiddleware;

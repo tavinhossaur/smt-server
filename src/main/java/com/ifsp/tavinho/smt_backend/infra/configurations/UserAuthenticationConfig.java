@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-public class AuthenticationConfig {
+public class UserAuthenticationConfig {
 
     private final UserDetailsLoader userDetailsService;
     private final PasswordEncoder passwordEncoder;
