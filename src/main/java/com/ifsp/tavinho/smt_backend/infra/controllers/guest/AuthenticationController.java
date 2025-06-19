@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ifsp.tavinho.smt_backend.application.services.guest.AuthenticationService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.LoginCredentialsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.LoginResponseDTO;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import jakarta.validation.Valid;
@@ -42,7 +43,13 @@ public class AuthenticationController {
     })
     @PostMapping(LOGIN)
     public ResponseEntity<ServerApiResponse<LoginResponseDTO>> login(@RequestBody @Valid LoginCredentialsDTO credentials) { 
-        return this.authenticationService.login(credentials); 
+        return ResponseEntity.ok(
+            ServerApiResponse.<LoginResponseDTO>builder()
+                .status(Status.SUCCESS)
+                .message("User logged in successfully.")
+                .data(this.authenticationService.login(credentials)
+            ).build()
+        );
     }
     
 }

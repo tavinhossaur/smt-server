@@ -5,9 +5,11 @@ import java.util.List;
 import com.ifsp.tavinho.smt_backend.application.services.admin.CourseService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.CourseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +44,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Course> create(@Valid CourseDTO input) {
-        return this.courseService.create(input);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.courseService.create(input));
     }
 
     @Override
@@ -55,7 +57,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Course> update(CourseDTO input, String id) {
-        return this.courseService.update(input, id);
+        return ResponseEntity.ok(this.courseService.update(input, id));
     }
 
     @Override
@@ -67,7 +69,13 @@ public class CourseController implements EntityController<CourseDTO, Course> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.courseService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(
+                ServerApiResponse.<Void>builder()
+                    .status(Status.SUCCESS)
+                    .message("Course deleted successfully.")
+                    .build()
+            );
     }
 
     @Override
@@ -79,7 +87,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Course> find(String id) {
-        return this.courseService.find(id);
+        return ResponseEntity.ok(this.courseService.find(id));
     }
 
     @Override
@@ -90,7 +98,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<List<Course>> list() {
-        return this.courseService.list();
+        return ResponseEntity.ok(this.courseService.list());
     }
     
 }

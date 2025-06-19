@@ -5,9 +5,11 @@ import java.util.List;
 import com.ifsp.tavinho.smt_backend.application.services.admin.ProfessorService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.ProfessorDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +44,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Professor> create(@Valid ProfessorDTO input) {
-        return this.professorService.create(input);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.professorService.create(input));
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Professor> update(ProfessorDTO input, String id) {
-        return this.professorService.update(input, id);
+        return ResponseEntity.ok(this.professorService.update(input, id));
     }
 
     @Override
@@ -67,7 +69,13 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.professorService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(
+                ServerApiResponse.<Void>builder()
+                    .status(Status.SUCCESS)
+                    .message("Professor deleted successfully.")
+                    .build()
+            );
     }
 
     @Override
@@ -79,7 +87,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Professor> find(String id) {
-        return this.professorService.find(id);
+        return ResponseEntity.ok(this.professorService.find(id));
     }
 
     @Override
@@ -90,7 +98,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<List<Professor>> list() {
-        return this.professorService.list();
+        return ResponseEntity.ok(this.professorService.list());
     }
 
 }

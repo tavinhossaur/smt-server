@@ -1,6 +1,5 @@
 package com.ifsp.tavinho.smt_backend.domain.usecases.event;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Event;
@@ -17,8 +16,8 @@ public class FindEventUseCase implements UseCase<String, Event> {
     private final EventRepository repository;
 
     @Override
-    public ResponseEntity<Event> execute(String id) {
-        return ResponseEntity.ok(this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + id)));
+    public Event execute(String id) {
+        return this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + id));
     }
     
 }

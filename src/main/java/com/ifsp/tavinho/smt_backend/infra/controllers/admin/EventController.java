@@ -5,9 +5,11 @@ import java.util.List;
 import com.ifsp.tavinho.smt_backend.application.services.admin.EventService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.EventDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Event;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +44,7 @@ public class EventController implements EntityController<EventDTO, Event> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Event> create(@Valid EventDTO input) {
-        return this.eventService.create(input);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.eventService.create(input));
     }
 
     @Override
@@ -55,7 +57,7 @@ public class EventController implements EntityController<EventDTO, Event> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Event> update(EventDTO input, String id) {
-        return this.eventService.update(input, id);
+        return ResponseEntity.ok(this.eventService.update(input, id));
     }
 
     @Override
@@ -67,7 +69,13 @@ public class EventController implements EntityController<EventDTO, Event> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.eventService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(
+                ServerApiResponse.<Void>builder()
+                    .status(Status.SUCCESS)
+                    .message("Event deleted successfully.")
+                    .build()
+            );
     }
 
     @Override
@@ -79,7 +87,7 @@ public class EventController implements EntityController<EventDTO, Event> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Event> find(String id) {
-        return this.eventService.find(id);
+        return ResponseEntity.ok(this.eventService.find(id));
     }
 
     @Override
@@ -90,7 +98,7 @@ public class EventController implements EntityController<EventDTO, Event> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<List<Event>> list() {
-        return this.eventService.list();
+        return ResponseEntity.ok(this.eventService.list());
     }
 
 }

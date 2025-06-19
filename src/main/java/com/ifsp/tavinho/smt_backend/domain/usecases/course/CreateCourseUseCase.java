@@ -1,7 +1,5 @@
 package com.ifsp.tavinho.smt_backend.domain.usecases.course;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.CourseDTO;
@@ -18,8 +16,8 @@ public class CreateCourseUseCase implements UseCase<CourseDTO, Course> {
     private final CourseRepository repository;
 
     @Override
-    public ResponseEntity<Course> execute(CourseDTO input) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.repository.save(new Course(input.name(), input.abbreviation())));
+    public Course execute(CourseDTO input) {
+        return this.repository.save(new Course(input.name(), input.abbreviation()));
     }
     
 }

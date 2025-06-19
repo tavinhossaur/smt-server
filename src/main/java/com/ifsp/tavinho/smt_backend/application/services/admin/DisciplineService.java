@@ -2,7 +2,6 @@ package com.ifsp.tavinho.smt_backend.application.services.admin;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.DisciplineDTO;
@@ -12,7 +11,6 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.UpdateDisciplineU
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.DeleteDisciplineUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.FindDisciplineUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.ListDisciplinesUseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,23 +24,25 @@ public class DisciplineService {
     private final FindDisciplineUseCase findDiscipline;
     private final ListDisciplinesUseCase listDisciplines;
 
-    public ResponseEntity<Discipline> create(DisciplineDTO input) {
+    public Discipline create(DisciplineDTO input) {
         return this.createDiscipline.execute(input);
     }
 
-    public ResponseEntity<Discipline> update(DisciplineDTO input, String id) {
-        return this.updateDiscipline.execute(input, id);
+    public Discipline update(DisciplineDTO input, String id) {
+        Discipline discipline = this.findDiscipline.execute(id);
+        return this.updateDiscipline.execute(input, discipline);
     }
 
-    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.deleteDiscipline.execute(id);
+    public Boolean delete(String id) {
+        Discipline discipline = this.findDiscipline.execute(id);
+        return this.deleteDiscipline.execute(discipline);
     }
 
-    public ResponseEntity<Discipline> find(String id) {
+    public Discipline find(String id) {
         return this.findDiscipline.execute(id);
     }
 
-    public ResponseEntity<List<Discipline>> list() {
+    public List<Discipline> list() {
         return this.listDisciplines.execute(null);
     }
     

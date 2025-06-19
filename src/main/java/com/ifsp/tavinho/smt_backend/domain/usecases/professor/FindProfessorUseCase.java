@@ -1,6 +1,5 @@
 package com.ifsp.tavinho.smt_backend.domain.usecases.professor;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
@@ -17,8 +16,8 @@ public class FindProfessorUseCase implements UseCase<String, Professor> {
     private final ProfessorRepository repository;
 
     @Override
-    public ResponseEntity<Professor> execute(String id) {
-        return ResponseEntity.ok(this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found with id: " + id)));
+    public Professor execute(String id) {
+        return this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found with id: " + id));
     }
     
 }

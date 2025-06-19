@@ -47,7 +47,7 @@ public class DashboardController {
     })
     @GetMapping(PROFESSORS + BY_ID)
     public ResponseEntity<ProfessorWithEventsDTO> getProfessorWithWeekEventsList(@PathVariable String id) {
-        return this.dashboardService.getProfessorWithWeekEventsList(id);
+        return ResponseEntity.ok(this.dashboardService.getProfessorWithWeekEventsList(id));
     }
     
     @Operation(summary = "List professors with events", description = "Lists all professors and their events filtered by weekday and course.")
@@ -58,7 +58,7 @@ public class DashboardController {
     })
     @GetMapping(PROFESSORS)
     public ResponseEntity<List<ProfessorWithEventsDTO>> getProfessorsWithWeekEventsListFromDayAndCourse(@RequestParam String weekday, @RequestParam String course) {
-        return this.dashboardService.getProfessorsWithWeekEventsListFromDayAndCourse(weekday, course);
+        return ResponseEntity.ok(this.dashboardService.getProfessorsWithWeekEventsListFromDayAndCourse(weekday, course));
     }
     
     @Operation(summary = "List classrooms by floor and course", description = "Lists all classrooms filtered by floor and course.")
@@ -69,7 +69,7 @@ public class DashboardController {
     })
     @GetMapping(CLASSROOMS)
     public ResponseEntity<List<Classroom>> getClassroomsFromFloorAndCourse(@RequestParam String floor, @RequestParam String course) {
-        return this.dashboardService.getClassroomsFromFloorAndCourse(floor, course);
+        return ResponseEntity.ok(this.dashboardService.getClassroomsFromFloorAndCourse(floor, course));
     }
 
     @Operation(summary = "List all courses", description = "Lists all available courses.")
@@ -80,7 +80,7 @@ public class DashboardController {
     })
     @GetMapping(COURSES)
     public ResponseEntity<List<Course>> getAllCoursesList() {
-        return this.dashboardService.getAllCoursesList();
+        return ResponseEntity.ok(this.dashboardService.getAllCoursesList());
     }
     
 }

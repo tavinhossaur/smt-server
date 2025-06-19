@@ -2,8 +2,6 @@ package com.ifsp.tavinho.smt_backend.domain.usecases.event;
 
 import java.time.LocalTime;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.EventDTO;
@@ -29,24 +27,22 @@ public class CreateEventUseCase implements UseCase<EventDTO, Event> {
     private final DisciplineRepository disciplineRepository;
 
     @Override
-    public ResponseEntity<Event> execute(EventDTO input) {
+    public Event execute(EventDTO input) {
         this.classroomRepository.findById(input.classroomId()).orElseThrow(() -> new EntityNotFoundException("Classroom not found with id: " + input.classroomId()));
         this.professorRepository.findById(input.professorId()).orElseThrow(() -> new EntityNotFoundException("Professor not found with id: " + input.professorId()));
         this.courseRepository.findById(input.courseId()).orElseThrow(() -> new EntityNotFoundException("Course not found with id: " + input.courseId()));
         this.disciplineRepository.findById(input.disciplineId()).orElseThrow(() -> new EntityNotFoundException("Discipline not found with id: " + input.disciplineId()));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            this.eventRepository.save(
-                new Event(
-                    input.description(), 
-                    input.weekday(), 
-                    LocalTime.parse(input.startTime()), 
-                    LocalTime.parse(input.endTime()), 
-                    input.classroomId(),
-                    input.professorId(),
-                    input.disciplineId(),
-                    input.courseId()
-                )
+        return this.eventRepository.save(
+            new Event(
+                input.description(), 
+                input.weekday(), 
+                LocalTime.parse(input.startTime()), 
+                LocalTime.parse(input.endTime()), 
+                input.classroomId(),
+                input.professorId(),
+                input.disciplineId(),
+                input.courseId()
             )
         );
     }

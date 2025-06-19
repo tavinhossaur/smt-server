@@ -1,7 +1,5 @@
 package com.ifsp.tavinho.smt_backend.domain.usecases.discipline;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.DisciplineDTO;
@@ -21,15 +19,13 @@ public class CreateDisciplineUseCase implements UseCase<DisciplineDTO, Disciplin
     private final CourseRepository courseRepository;
 
     @Override
-    public ResponseEntity<Discipline> execute(DisciplineDTO input) {
+    public Discipline execute(DisciplineDTO input) {
         this.courseRepository.findById(input.courseId()).orElseThrow(() -> new EntityNotFoundException("Course not found with id: " + input.courseId()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            this.disciplineRepository.save(
-                new Discipline(
-                    input.name(), 
-                    input.abbreviation(), 
-                    input.courseId()
-                )
+        return this.disciplineRepository.save(
+            new Discipline(
+                input.name(), 
+                input.abbreviation(), 
+                input.courseId()
             )
         );
     }

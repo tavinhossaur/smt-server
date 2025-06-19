@@ -1,6 +1,5 @@
 package com.ifsp.tavinho.smt_backend.domain.usecases.classroom;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
@@ -17,8 +16,8 @@ public class FindClassroomUseCase implements UseCase<String, Classroom> {
     private final ClassroomRepository repository;
 
     @Override
-    public ResponseEntity<Classroom> execute(String id) {
-        return ResponseEntity.ok(this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Classroom not found with id: " + id)));
+    public Classroom execute(String id) {
+        return this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Classroom not found with id: " + id));
     }
     
 }

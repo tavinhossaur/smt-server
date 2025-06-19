@@ -5,9 +5,11 @@ import java.util.List;
 import com.ifsp.tavinho.smt_backend.application.services.admin.ClassroomService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.ClassroomDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +44,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Classroom> create(@Valid ClassroomDTO input) {
-        return this.classroomService.create(input);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.classroomService.create(input));
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Classroom> update(ClassroomDTO input, String id) {
-        return this.classroomService.update(input, id);
+        return ResponseEntity.ok(this.classroomService.update(input, id));
     }
 
     @Override
@@ -67,7 +69,13 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.classroomService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(
+                ServerApiResponse.<Void>builder()
+                    .status(Status.SUCCESS)
+                    .message("Classroom deleted successfully.")
+                    .build()
+            );
     }
 
     @Override
@@ -79,7 +87,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Classroom> find(String id) {
-        return this.classroomService.find(id);
+        return ResponseEntity.ok(this.classroomService.find(id));
     }
 
     @Override
@@ -90,7 +98,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<List<Classroom>> list() {
-        return this.classroomService.list();
+        return ResponseEntity.ok(this.classroomService.list());
     }
 
 }

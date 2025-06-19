@@ -1,6 +1,5 @@
 package com.ifsp.tavinho.smt_backend.domain.usecases.user;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
@@ -17,8 +16,8 @@ public class FindUserUseCase implements UseCase<String, User> {
     private final UserRepository repository;
 
     @Override
-    public ResponseEntity<User> execute(String id) {
-        return ResponseEntity.ok(this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id)));
+    public User execute(String id) {
+        return this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
     
 }

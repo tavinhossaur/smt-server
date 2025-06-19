@@ -2,7 +2,6 @@ package com.ifsp.tavinho.smt_backend.domain.usecases.event;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Event;
@@ -18,8 +17,8 @@ public class ListEventsUseCase implements UseCase<Void, List<Event>> {
     private final EventRepository repository;
 
     @Override
-    public ResponseEntity<List<Event>> execute(Void v) {
-        return ResponseEntity.ok(this.repository.findAll());
+    public List<Event> execute(Void v) {
+        return this.repository.findAll();
     }
     
 }

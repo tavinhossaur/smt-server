@@ -16,6 +16,7 @@ import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdatePasswordDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateProfilePhotoDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 
 import jakarta.validation.Valid;
 
@@ -50,7 +51,7 @@ public class ProfileController {
     })
     @GetMapping
     public ResponseEntity<User> findCurrentUser() {
-        return this.profileService.findCurrentUser();
+        return ResponseEntity.ok(this.profileService.findCurrentUser());
     }
 
     @Operation(summary = "List favorites", description = "Lists all favorites of the authenticated user.")
@@ -61,43 +62,61 @@ public class ProfileController {
     })
     @GetMapping(FAVORITES)
     public ResponseEntity<List<Favorite>> listFavorites() {
-        return this.profileService.listFavorites(); 
+        return ResponseEntity.ok(this.profileService.listFavorites()); 
     }
 
     @Operation(summary = "Update favorites", description = "Updates the list of favorites for the authenticated user.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Favorites successfully updated."),
+        @ApiResponse(responseCode = "200", description = "Favorites updated successfully."),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     @PatchMapping(FAVORITES)
-    public ResponseEntity<ServerApiResponse<Void>> updateFavorites(@RequestBody @Valid UpdateFavoritesDTO input) { 
-        return this.profileService.updateFavorites(input); 
+    public ResponseEntity<ServerApiResponse<Boolean>> updateFavorites(@RequestBody @Valid UpdateFavoritesDTO input) {
+        return ResponseEntity.ok(
+            ServerApiResponse.<Boolean>builder()
+                .status(Status.SUCCESS)
+                .message("Favorites updated successfully.")
+                .data(this.profileService.updateFavorites(input))
+            .build()
+        );
     }
 
     @Operation(summary = "Update password", description = "Updates the password for the authenticated user.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Password successfully updated."),
+        @ApiResponse(responseCode = "200", description = "Password updated successfully."),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     @PatchMapping(PASSWORD)
-    public ResponseEntity<ServerApiResponse<Void>> updatePassword(@RequestBody @Valid UpdatePasswordDTO input) { 
-        return this.profileService.updatePassword(input); 
+    public ResponseEntity<ServerApiResponse<Boolean>> updatePassword(@RequestBody @Valid UpdatePasswordDTO input) { 
+        return ResponseEntity.ok(
+            ServerApiResponse.<Boolean>builder()
+                .status(Status.SUCCESS)
+                .message("Password updated successfully.")
+                .data(this.profileService.updatePassword(input))
+            .build()
+        );
     }
 
     @Operation(summary = "Update profile photo", description = "Updates the profile photo for the authenticated user.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Profile photo successfully updated."),
+        @ApiResponse(responseCode = "200", description = "Profile photo updated successfully."),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     @PatchMapping(PHOTO)
-    public ResponseEntity<ServerApiResponse<Void>> updateProfilePhoto(@RequestBody @Valid UpdateProfilePhotoDTO input) { 
-        return this.profileService.updateProfilePhoto(input); 
+    public ResponseEntity<ServerApiResponse<Boolean>> updateProfilePhoto(@RequestBody @Valid UpdateProfilePhotoDTO input) { 
+        return ResponseEntity.ok(
+            ServerApiResponse.<Boolean>builder()
+                .status(Status.SUCCESS)
+                .message("Profile photo updated successfully.")
+                .data(this.profileService.updateProfilePhoto(input))
+            .build()
+        );
     }
 
 }

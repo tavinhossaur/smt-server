@@ -2,7 +2,6 @@ package com.ifsp.tavinho.smt_backend.domain.usecases.discipline;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
@@ -18,8 +17,8 @@ public class ListDisciplinesUseCase implements UseCase<Void, List<Discipline>> {
     private final DisciplineRepository repository;
 
     @Override
-    public ResponseEntity<List<Discipline>> execute(Void v) {
-        return ResponseEntity.ok(this.repository.findAll());
+    public List<Discipline> execute(Void v) {
+        return this.repository.findAll();
     }
     
 }

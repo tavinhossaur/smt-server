@@ -2,7 +2,6 @@ package com.ifsp.tavinho.smt_backend.application.services.admin;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.ProfessorDTO;
@@ -12,7 +11,6 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.professor.UpdateProfessorUse
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.DeleteProfessorUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.FindProfessorUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.professor.ListProfessorsUseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,23 +24,25 @@ public class ProfessorService {
     private final FindProfessorUseCase findProfessor;
     private final ListProfessorsUseCase listProfessors;
 
-    public ResponseEntity<Professor> create(ProfessorDTO input) {
+    public Professor create(ProfessorDTO input) {
         return this.createProfessor.execute(input);
     }
 
-    public ResponseEntity<Professor> update(ProfessorDTO input, String id) {
-        return this.updateProfessor.execute(input, id);
+    public Professor update(ProfessorDTO input, String id) {
+        Professor professor = this.findProfessor.execute(id);
+        return this.updateProfessor.execute(input, professor);
     }
 
-    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.deleteProfessor.execute(id);
+    public Boolean delete(String id) {
+        Professor professor = this.findProfessor.execute(id);
+        return this.deleteProfessor.execute(professor);
     }
 
-    public ResponseEntity<Professor> find(String id) {
+    public Professor find(String id) {
         return this.findProfessor.execute(id);
     }
 
-    public ResponseEntity<List<Professor>> list() {
+    public List<Professor> list() {
         return this.listProfessors.execute(null);
     }
     

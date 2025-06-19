@@ -2,7 +2,6 @@ package com.ifsp.tavinho.smt_backend.application.services.admin;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.ClassroomDTO;
@@ -12,7 +11,6 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.classroom.UpdateClassroomUse
 import com.ifsp.tavinho.smt_backend.domain.usecases.classroom.DeleteClassroomUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.classroom.FindClassroomUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.classroom.ListClassroomsUseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,23 +24,25 @@ public class ClassroomService {
     private final FindClassroomUseCase findClassroom;
     private final ListClassroomsUseCase listClassrooms;
 
-    public ResponseEntity<Classroom> create(ClassroomDTO input) {
+    public Classroom create(ClassroomDTO input) {
         return this.createClassroom.execute(input);
     }
 
-    public ResponseEntity<Classroom> update(ClassroomDTO input, String id) {
-        return this.updateClassroom.execute(input, id);
+    public Classroom update(ClassroomDTO input, String id) {
+        Classroom classroom = this.findClassroom.execute(id);
+        return this.updateClassroom.execute(input, classroom);
     }
 
-    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.deleteClassroom.execute(id);
+    public Boolean delete(String id) {
+        Classroom classroom = this.findClassroom.execute(id);
+        return this.deleteClassroom.execute(classroom);
     }
 
-    public ResponseEntity<Classroom> find(String id) {
+    public Classroom find(String id) {
         return this.findClassroom.execute(id);
     }
 
-    public ResponseEntity<List<Classroom>> list() {
+    public List<Classroom> list() {
         return this.listClassrooms.execute(null);
     }
     

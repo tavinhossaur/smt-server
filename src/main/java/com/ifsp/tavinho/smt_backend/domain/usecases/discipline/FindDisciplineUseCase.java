@@ -1,6 +1,5 @@
 package com.ifsp.tavinho.smt_backend.domain.usecases.discipline;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
@@ -17,8 +16,8 @@ public class FindDisciplineUseCase implements UseCase<String, Discipline> {
     private final DisciplineRepository repository;
 
     @Override
-    public ResponseEntity<Discipline> execute(String id) {
-        return ResponseEntity.ok(this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Discipline not found with id: " + id)));
+    public Discipline execute(String id) {
+        return this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Discipline not found with id: " + id));
     }
     
 }

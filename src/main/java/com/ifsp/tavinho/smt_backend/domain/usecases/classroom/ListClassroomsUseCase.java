@@ -2,7 +2,6 @@ package com.ifsp.tavinho.smt_backend.domain.usecases.classroom;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
@@ -18,8 +17,8 @@ public class ListClassroomsUseCase implements UseCase<Void, List<Classroom>> {
     private final ClassroomRepository classroomRepository;
 
     @Override
-    public ResponseEntity<List<Classroom>> execute(Void _unused) {
-        return ResponseEntity.ok(this.classroomRepository.findAll());
+    public List<Classroom> execute(Void _unused) {
+        return this.classroomRepository.findAll();
     }
     
 }

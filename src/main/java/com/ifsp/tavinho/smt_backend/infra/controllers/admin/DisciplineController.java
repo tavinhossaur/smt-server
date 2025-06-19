@@ -3,11 +3,13 @@ package com.ifsp.tavinho.smt_backend.infra.controllers.admin;
 import java.util.List;
 
 import com.ifsp.tavinho.smt_backend.application.services.admin.DisciplineService;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.DisciplineDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +44,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Discipline> create(@Valid DisciplineDTO input) {
-        return this.disciplineService.create(input);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.disciplineService.create(input));
     }
 
     @Override
@@ -55,7 +57,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Discipline> update(DisciplineDTO input, String id) {
-        return this.disciplineService.update(input, id);
+        return ResponseEntity.ok(this.disciplineService.update(input, id));
     }
 
     @Override
@@ -67,7 +69,13 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.disciplineService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(
+                ServerApiResponse.<Void>builder()
+                    .status(Status.SUCCESS)
+                    .message("Discipline deleted successfully.")
+                    .build()
+            );
     }
 
     @Override
@@ -79,7 +87,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<Discipline> find(String id) {
-        return this.disciplineService.find(id);
+        return ResponseEntity.ok(this.disciplineService.find(id));
     }
 
     @Override
@@ -90,7 +98,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<List<Discipline>> list() {
-        return this.disciplineService.list();
+        return ResponseEntity.ok(this.disciplineService.list());
     }
 
 }

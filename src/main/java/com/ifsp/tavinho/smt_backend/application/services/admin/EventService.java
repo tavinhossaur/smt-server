@@ -2,7 +2,6 @@ package com.ifsp.tavinho.smt_backend.application.services.admin;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.EventDTO;
@@ -12,7 +11,6 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.event.UpdateEventUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.DeleteEventUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.FindEventUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.event.ListEventsUseCase;
-import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,23 +24,25 @@ public class EventService {
     private final FindEventUseCase findEvent;
     private final ListEventsUseCase listEvents;
 
-    public ResponseEntity<Event> create(EventDTO input) {
+    public Event create(EventDTO input) {
         return this.createEvent.execute(input);
     }
 
-    public ResponseEntity<Event> update(EventDTO input, String id) {
-        return this.updateEvent.execute(input, id);
+    public Event update(EventDTO input, String id) {
+        Event event = this.findEvent.execute(id);
+        return this.updateEvent.execute(input, event);
     }
 
-    public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
-        return this.deleteEvent.execute(id);
+    public Boolean delete(String id) {
+        Event event = this.findEvent.execute(id);
+        return this.deleteEvent.execute(event);
     }
 
-    public ResponseEntity<Event> find(String id) {
+    public Event find(String id) {
         return this.findEvent.execute(id);
     }
 
-    public ResponseEntity<List<Event>> list() {
+    public List<Event> list() {
         return this.listEvents.execute(null);
     }
     
