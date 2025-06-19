@@ -26,6 +26,7 @@ public final class Routes {
     public static final String PHOTO                = "/photo";
 
     public static final String LOGIN                = "/login";
+    public static final String HEALTH               = "/health";
 
     public static final String BASE_API_ROUTE       = API + V1;
 
