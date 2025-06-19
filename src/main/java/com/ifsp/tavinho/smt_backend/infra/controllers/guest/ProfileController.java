@@ -3,7 +3,6 @@ package com.ifsp.tavinho.smt_backend.infra.controllers.guest;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,16 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
-import com.ifsp.tavinho.smt_backend.application.interactors.profile.ListFavoritesUseCase;
-import com.ifsp.tavinho.smt_backend.application.interactors.profile.UpdateFavoritesUseCase;
-import com.ifsp.tavinho.smt_backend.application.interactors.profile.UpdatePasswordUseCase;
-import com.ifsp.tavinho.smt_backend.application.interactors.profile.UpdateProfilePhotoUseCase;
+import com.ifsp.tavinho.smt_backend.application.services.guest.ProfileService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateFavoritesDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdatePasswordDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateProfilePhotoDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
-import com.ifsp.tavinho.smt_backend.domain.usecases.user.FindUserUseCase;
 
 import jakarta.validation.Valid;
 
@@ -44,11 +39,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PHOTO;
 @RequestMapping(PROFILE_ROUTE)
 public class ProfileController {
     
-    private final FindUserUseCase findUser;
-    private final ListFavoritesUseCase listFavorites;
-    private final UpdateFavoritesUseCase updateFavorites;
-    private final UpdatePasswordUseCase updatePassword;
-    private final UpdateProfilePhotoUseCase updateProfilePhoto;
+    private final ProfileService profileService;
 
     @Operation(summary = "Get current user", description = "Retrieves the currently authenticated user's profile.")
     @ApiResponses({
@@ -59,7 +50,7 @@ public class ProfileController {
     })
     @GetMapping
     public ResponseEntity<User> findCurrentUser() {
-        return this.findUser.execute(getAuthenticatedUserId());
+        return this.profileService.findCurrentUser();
     }
 
     @Operation(summary = "List favorites", description = "Lists all favorites of the authenticated user.")
@@ -70,7 +61,7 @@ public class ProfileController {
     })
     @GetMapping(FAVORITES)
     public ResponseEntity<List<Favorite>> listFavorites() {
-        return this.listFavorites.execute(getAuthenticatedUserId()); 
+        return this.profileService.listFavorites(); 
     }
 
     @Operation(summary = "Update favorites", description = "Updates the list of favorites for the authenticated user.")
@@ -82,7 +73,7 @@ public class ProfileController {
     })
     @PatchMapping(FAVORITES)
     public ResponseEntity<ServerApiResponse<Void>> updateFavorites(@RequestBody @Valid UpdateFavoritesDTO input) { 
-        return this.updateFavorites.execute(input, getAuthenticatedUserId()); 
+        return this.profileService.updateFavorites(input); 
     }
 
     @Operation(summary = "Update password", description = "Updates the password for the authenticated user.")
@@ -94,7 +85,7 @@ public class ProfileController {
     })
     @PatchMapping(PASSWORD)
     public ResponseEntity<ServerApiResponse<Void>> updatePassword(@RequestBody @Valid UpdatePasswordDTO input) { 
-        return this.updatePassword.execute(input, getAuthenticatedUserId()); 
+        return this.profileService.updatePassword(input); 
     }
 
     @Operation(summary = "Update profile photo", description = "Updates the profile photo for the authenticated user.")
@@ -106,11 +97,7 @@ public class ProfileController {
     })
     @PatchMapping(PHOTO)
     public ResponseEntity<ServerApiResponse<Void>> updateProfilePhoto(@RequestBody @Valid UpdateProfilePhotoDTO input) { 
-        return this.updateProfilePhoto.execute(input, getAuthenticatedUserId()); 
-    }
-
-    private String getAuthenticatedUserId() {
-        return ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        return this.profileService.updateProfilePhoto(input); 
     }
 
 }

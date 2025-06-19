@@ -2,9 +2,9 @@ package com.ifsp.tavinho.smt_backend.infra.controllers.admin;
 
 import java.util.List;
 
+import com.ifsp.tavinho.smt_backend.application.services.admin.UserService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.UserDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
-import com.ifsp.tavinho.smt_backend.application.services.UserService;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 

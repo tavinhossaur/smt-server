@@ -1,4 +1,4 @@
-package com.ifsp.tavinho.smt_backend.application.services;
+package com.ifsp.tavinho.smt_backend.application.services.admin;
 
 import java.util.List;
 

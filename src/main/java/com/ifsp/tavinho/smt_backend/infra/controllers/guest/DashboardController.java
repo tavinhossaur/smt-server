@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifsp.tavinho.smt_backend.domain.usecases.course.ListCoursesUseCase;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
-import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindProfessorWithEventsUseCase;
-import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListClassroomsFromCourseUseCase;
-import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListProfessorsWithEventsUseCase;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
+import com.ifsp.tavinho.smt_backend.application.services.guest.DashboardService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,10 +36,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BY_ID;
 @RequestMapping(DASHBOARD_ROUTE)
 public class DashboardController {
     
-    private final FindProfessorWithEventsUseCase findProfessorWithEvents;
-    private final ListProfessorsWithEventsUseCase listProfessorWithEvents;
-    private final ListClassroomsFromCourseUseCase listClassrooms;
-    private final ListCoursesUseCase listCourses;
+    private final DashboardService dashboardService;
 
     @Operation(summary = "Get professor with events", description = "Retrieves a professor and their events by professor ID.")
     @ApiResponses({
@@ -53,7 +47,7 @@ public class DashboardController {
     })
     @GetMapping(PROFESSORS + BY_ID)
     public ResponseEntity<ProfessorWithEventsDTO> getProfessorWithWeekEventsList(@PathVariable String id) {
-        return this.findProfessorWithEvents.execute(id);
+        return this.dashboardService.getProfessorWithWeekEventsList(id);
     }
     
     @Operation(summary = "List professors with events", description = "Lists all professors and their events filtered by weekday and course.")
@@ -64,7 +58,7 @@ public class DashboardController {
     })
     @GetMapping(PROFESSORS)
     public ResponseEntity<List<ProfessorWithEventsDTO>> getProfessorsWithWeekEventsListFromDayAndCourse(@RequestParam String weekday, @RequestParam String course) {
-        return this.listProfessorWithEvents.execute(weekday, course);
+        return this.dashboardService.getProfessorsWithWeekEventsListFromDayAndCourse(weekday, course);
     }
     
     @Operation(summary = "List classrooms by floor and course", description = "Lists all classrooms filtered by floor and course.")
@@ -75,7 +69,7 @@ public class DashboardController {
     })
     @GetMapping(CLASSROOMS)
     public ResponseEntity<List<Classroom>> getClassroomsFromFloorAndCourse(@RequestParam String floor, @RequestParam String course) {
-        return this.listClassrooms.execute(floor, course);
+        return this.dashboardService.getClassroomsFromFloorAndCourse(floor, course);
     }
 
     @Operation(summary = "List all courses", description = "Lists all available courses.")
@@ -86,7 +80,7 @@ public class DashboardController {
     })
     @GetMapping(COURSES)
     public ResponseEntity<List<Course>> getAllCoursesList() {
-        return this.listCourses.execute(null);
+        return this.dashboardService.getAllCoursesList();
     }
     
 }

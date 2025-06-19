@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifsp.tavinho.smt_backend.application.interactors.authentication.LoginUseCase;
+import com.ifsp.tavinho.smt_backend.application.services.guest.AuthenticationService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.LoginCredentialsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.LoginResponseDTO;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
@@ -31,7 +31,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.LOGIN;
 @RequestMapping(BASE_API_ROUTE)
 public class AuthenticationController {
 
-    private final LoginUseCase login;
+    private final AuthenticationService authenticationService;
 
     @Operation(summary = "User login", description = "Authenticates a user and returns a JWT token if credentials are valid.")
     @ApiResponses({
@@ -42,7 +42,7 @@ public class AuthenticationController {
     })
     @PostMapping(LOGIN)
     public ResponseEntity<ServerApiResponse<LoginResponseDTO>> login(@RequestBody @Valid LoginCredentialsDTO credentials) { 
-        return this.login.execute(credentials); 
+        return this.authenticationService.login(credentials); 
     }
     
 }
