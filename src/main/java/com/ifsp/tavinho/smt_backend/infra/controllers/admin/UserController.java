@@ -69,6 +69,7 @@ public class UserController implements EntityController<UserDTO, User> {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
+        this.userService.delete(id);
         return ResponseEntity.status(HttpStatus.OK)
             .body(
                 ServerApiResponse.<Void>builder()

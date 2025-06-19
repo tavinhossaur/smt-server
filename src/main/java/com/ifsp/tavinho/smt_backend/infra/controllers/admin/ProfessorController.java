@@ -69,6 +69,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
+        this.professorService.delete(id);
         return ResponseEntity.status(HttpStatus.OK)
             .body(
                 ServerApiResponse.<Void>builder()
