@@ -41,6 +41,7 @@ public class DashboardController {
     @Operation(summary = "Get professor with events", description = "Retrieves a professor and their events by professor ID.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Professor and events successfully returned."),
+        @ApiResponse(responseCode = "400", description = "Professor ID was not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Professor not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -53,6 +54,7 @@ public class DashboardController {
     @Operation(summary = "List professors with events", description = "Lists all professors and their events filtered by weekday and course.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "List of professors and events successfully returned."),
+        @ApiResponse(responseCode = "400", description = "Weekday or course values were not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
@@ -61,15 +63,16 @@ public class DashboardController {
         return ResponseEntity.ok(this.dashboardService.getProfessorsWithWeekEventsListFromDayAndCourse(weekday, course));
     }
     
-    @Operation(summary = "List classrooms by floor and course", description = "Lists all classrooms filtered by floor and course.")
+    @Operation(summary = "List classrooms by floor", description = "Lists all classrooms filtered by floor.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "List of classrooms successfully returned."),
+        @ApiResponse(responseCode = "400", description = "Floor value was not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     @GetMapping(CLASSROOMS)
-    public ResponseEntity<List<Classroom>> getClassroomsFromFloorAndCourse(@RequestParam String floor, @RequestParam String course) {
-        return ResponseEntity.ok(this.dashboardService.getClassroomsFromFloorAndCourse(floor, course));
+    public ResponseEntity<List<Classroom>> getClassroomsFromFloor(@RequestParam String floor) {
+        return ResponseEntity.ok(this.dashboardService.getClassroomsFromFloor(floor));
     }
 
     @Operation(summary = "List all courses", description = "Lists all available courses.")

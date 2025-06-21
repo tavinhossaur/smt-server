@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindProfessorWithEventsUseCase;
+import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListClassroomsFromFloorUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListProfessorsWithEventsUseCase;
-import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListClassroomsFromCourseUseCase;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
@@ -26,7 +26,7 @@ public class DashboardService {
 
     private final FindProfessorWithEventsUseCase findProfessorWithEvents;
     private final ListProfessorsWithEventsUseCase listProfessorWithEvents;
-    private final ListClassroomsFromCourseUseCase listClassrooms;
+    private final ListClassroomsFromFloorUseCase listClassroomsFromFloor;
     private final ListCoursesUseCase listCourses;
 
     private final ProfessorRepository professorRepository;
@@ -47,14 +47,9 @@ public class DashboardService {
         return this.listProfessorWithEvents.execute(weekday, courseId);
     }
 
-    public List<Classroom> getClassroomsFromFloorAndCourse(String floor, String courseId) {
-        if (floor.isBlank() || floor == null || courseId.isBlank() || courseId == null) {
-            throw new AppError("Floor and course values must be provided.", HttpStatus.BAD_REQUEST);
-        }
-
-        this.courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("Course not found with id: " + courseId));
-
-        return this.listClassrooms.execute(floor, courseId);
+    public List<Classroom> getClassroomsFromFloor(String floor) {
+        if (floor.isBlank() || floor == null) throw new AppError("Floor value must be provided.", HttpStatus.BAD_REQUEST);
+        return this.listClassroomsFromFloor.execute(floor);
     }
 
     public List<Course> getAllCoursesList() {
