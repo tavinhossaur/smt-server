@@ -8,6 +8,5 @@ public interface EntityRepository<T> {
     Optional<T> findById(String id);
     List<T> findAll();
     void delete(T entity);
-    void deleteById(String id);
     boolean existsById(String id);
 }

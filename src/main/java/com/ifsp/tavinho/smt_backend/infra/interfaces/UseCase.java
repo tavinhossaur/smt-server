@@ -8,7 +8,7 @@ public interface UseCase<I, O> {
         throw new UnsupportedOperationException("This use case does not support ID-based execution.");
     }
 
-    default O execute(I input, O existing) {
+    default O execute(I input, O entity) {
         throw new UnsupportedOperationException("An existing entity is required for this use case.");
     }
 }

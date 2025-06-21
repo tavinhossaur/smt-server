@@ -2,6 +2,7 @@ package com.ifsp.tavinho.smt_backend.application.services.admin;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.DisciplineDTO;
@@ -11,6 +12,8 @@ import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.UpdateDisciplineU
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.DeleteDisciplineUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.FindDisciplineUseCase;
 import com.ifsp.tavinho.smt_backend.domain.usecases.discipline.ListDisciplinesUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.event.IsEntityLinkedToEventUseCase;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +27,8 @@ public class DisciplineService {
     private final FindDisciplineUseCase findDiscipline;
     private final ListDisciplinesUseCase listDisciplines;
 
+    private final IsEntityLinkedToEventUseCase isEntityLinkedToEvent;
+
     public Discipline create(DisciplineDTO input) {
         return this.createDiscipline.execute(input);
     }
@@ -35,6 +40,11 @@ public class DisciplineService {
 
     public Boolean delete(String id) {
         Discipline discipline = this.findDiscipline.execute(id);
+
+        if (this.isEntityLinkedToEvent.execute(discipline)) {
+            throw new AppError("Discipline could not be deleted because it is linked to an event.", HttpStatus.CONFLICT);
+        }
+
         return this.deleteDiscipline.execute(discipline);
     }
 

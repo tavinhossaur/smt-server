@@ -66,6 +66,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
         @ApiResponse(responseCode = "200", description = "Course successfully deleted."),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Course not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "409", description = "Course could not be deleted because it is linked to an event.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     public ResponseEntity<ServerApiResponse<Void>> delete(String id) {
