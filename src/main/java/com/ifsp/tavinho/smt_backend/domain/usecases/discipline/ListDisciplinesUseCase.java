@@ -18,7 +18,7 @@ public class ListDisciplinesUseCase implements UseCase<Void, List<Discipline>> {
 
     @Override
     public List<Discipline> execute(Void v) {
-        return this.repository.findAll();
+        return this.repository.findAllByOrderByNameAsc();
     }
     
 }

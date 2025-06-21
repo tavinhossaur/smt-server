@@ -18,7 +18,7 @@ public class ListProfessorsUseCase implements UseCase<Void, List<Professor>> {
 
     @Override
     public List<Professor> execute(Void v) {
-        return this.repository.findAll();
+        return this.repository.findAllByOrderByNameAsc();
     }
     
 }

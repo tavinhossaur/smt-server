@@ -18,7 +18,7 @@ public class ListEventsUseCase implements UseCase<Void, List<Event>> {
 
     @Override
     public List<Event> execute(Void v) {
-        return this.repository.findAll();
+        return this.repository.findAllByOrderByWeekdayAscStartTimeAsc();
     }
     
 }

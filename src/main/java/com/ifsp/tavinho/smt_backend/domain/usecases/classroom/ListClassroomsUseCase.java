@@ -18,7 +18,7 @@ public class ListClassroomsUseCase implements UseCase<Void, List<Classroom>> {
 
     @Override
     public List<Classroom> execute(Void _unused) {
-        return this.classroomRepository.findAll();
+        return this.classroomRepository.findAllByOrderByDescriptionAscFloorAsc();
     }
     
 }

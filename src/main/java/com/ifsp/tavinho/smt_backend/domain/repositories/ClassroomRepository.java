@@ -8,6 +8,7 @@ import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 
 public interface ClassroomRepository extends EntityRepository<Classroom> { 
     List<Classroom> findAllByFloor(String floor);
+    List<Classroom> findAllByOrderByDescriptionAscFloorAsc();
 
     @Query("{ '$or': [ { 'description': { $regex: ?0, $options: 'i' } }, { 'observation': { $regex: ?0, $options: 'i' } } ] }")
     List<Classroom> searchClassrooms(String search);

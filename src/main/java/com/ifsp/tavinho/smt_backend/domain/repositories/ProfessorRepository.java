@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.repository.Query;
 import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
 
 public interface ProfessorRepository extends EntityRepository<Professor> {
+    List<Professor> findAllByOrderByNameAsc();
+
     @Query("{ '$or': [ { 'name': { $regex: ?0, $options: 'i' } }, { 'email': { $regex: ?0, $options: 'i' } } ] }")
     List<Professor> searchProfessors(String search);
 }

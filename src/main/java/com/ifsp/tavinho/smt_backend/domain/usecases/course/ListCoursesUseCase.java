@@ -18,7 +18,7 @@ public class ListCoursesUseCase implements UseCase<Void, List<Course>> {
 
     @Override
     public List<Course> execute(Void v) {
-        return this.repository.findAll();
+        return this.repository.findAllByOrderByNameAsc();
     }
 
 }

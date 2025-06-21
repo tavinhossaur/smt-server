@@ -18,7 +18,7 @@ public class ListUsersUseCase implements UseCase<Void, List<User>> {
 
     @Override
     public List<User> execute(Void v) {
-        return this.repository.findAll();
+        return this.repository.findAllByOrderByFullNameAsc();
     }
     
 }
