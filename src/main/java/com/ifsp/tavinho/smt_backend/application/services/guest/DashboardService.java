@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindEventDetailedInfoUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindProfessorWithEventsUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListClassroomsFromFloorUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListProfessorsWithEventsUseCase;
+import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.SearchProfessorsAndClassroomsUseCase;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.SearchQueryResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
@@ -15,7 +18,6 @@ import com.ifsp.tavinho.smt_backend.domain.entities.Course;
 import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
 import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
-import com.ifsp.tavinho.smt_backend.domain.repositories.ClassroomRepository;
 import com.ifsp.tavinho.smt_backend.domain.usecases.course.ListCoursesUseCase;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
@@ -30,10 +32,15 @@ public class DashboardService {
     private final ListProfessorsWithEventsUseCase listProfessorWithEvents;
     private final ListClassroomsFromFloorUseCase listClassroomsFromFloor;
     private final ListCoursesUseCase listCourses;
-
+    private final SearchProfessorsAndClassroomsUseCase searchProfessorsAndClassrooms;
+    private final FindEventDetailedInfoUseCase findEventDetailedInfo;
+    
     private final ProfessorRepository professorRepository;
     private final CourseRepository courseRepository;
-    private final ClassroomRepository classroomRepository;
+
+    public EventDetailsResponseDTO getDetailedEventInfo(String id) {
+        return this.findEventDetailedInfo.execute(id);
+    }
     
     public ProfessorWithEventsDTO getProfessorWithWeekEventsList(String id) {
         Professor professor = this.professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found with id: " + id));
@@ -61,10 +68,7 @@ public class DashboardService {
 
     public SearchQueryResponseDTO searchProfessorsAndClassrooms(String query) {
         if (query == null || query.isBlank()) throw new AppError("Query term must be provided.", HttpStatus.BAD_REQUEST);
-
-        return new SearchQueryResponseDTO(
-            this.professorRepository.searchProfessors(query),
-            this.classroomRepository.searchClassrooms(query)
-        );
+        return this.searchProfessorsAndClassrooms.execute(query);
     }
+
 }

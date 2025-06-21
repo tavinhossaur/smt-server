@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.SearchQueryResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
@@ -29,16 +30,30 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.DASHBOARD_ROUTE;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PROFESSORS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.CLASSROOMS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.COURSES;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.EVENTS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BY_ID;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.SEARCH;
 
-@Tag(name = "Dashboard (Guest)", description = "Endpoints for dashboard data access, such as professors, classrooms, and courses.")
+@Tag(name = "Dashboard (Guest)", description = "Endpoints for dashboard data access, such as professors, classrooms, courses and events.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(DASHBOARD_ROUTE)
 public class DashboardController {
     
     private final DashboardService dashboardService;
+
+    @Operation(summary = "Get detailed event info", description = "Retrieves a detailed event info by event ID.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Event info successfully returned."),
+        @ApiResponse(responseCode = "400", description = "Event ID was not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Event not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(EVENTS + BY_ID)
+    public ResponseEntity<EventDetailsResponseDTO> getDetailedEventInfo(@PathVariable String id) {
+        return ResponseEntity.ok(this.dashboardService.getDetailedEventInfo(id));
+    }
 
     @Operation(summary = "Get professor with events", description = "Retrieves a professor and their events by professor ID.")
     @ApiResponses({
