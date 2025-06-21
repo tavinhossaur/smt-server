@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.SearchQueryResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
 import com.ifsp.tavinho.smt_backend.application.services.guest.DashboardService;
@@ -29,6 +30,7 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PROFESSORS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.CLASSROOMS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.COURSES;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BY_ID;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.SEARCH;
 
 @Tag(name = "Dashboard (Guest)", description = "Endpoints for dashboard data access, such as professors, classrooms, and courses.")
 @RestController
@@ -84,6 +86,17 @@ public class DashboardController {
     @GetMapping(COURSES)
     public ResponseEntity<List<Course>> getAllCoursesList() {
         return ResponseEntity.ok(this.dashboardService.getAllCoursesList());
+    }
+    
+    @Operation(summary = "Search professors and classrooms", description = "Searches for professors and classrooms by the provided term.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Search successful."),
+        @ApiResponse(responseCode = "400", description = "Invalid query.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(SEARCH)
+    public ResponseEntity<SearchQueryResponseDTO> searchProfessorsAndClassrooms(@RequestParam String query) {
+        return ResponseEntity.ok(this.dashboardService.searchProfessorsAndClassrooms(query));
     }
     
 }

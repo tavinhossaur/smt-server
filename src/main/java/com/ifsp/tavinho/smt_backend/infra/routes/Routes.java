@@ -10,6 +10,7 @@ public final class Routes {
     public static final String V1                   = "/v1";
 
     public static final String BY_ID                = "/{id}";
+    public static final String SEARCH               = "/search";
     
     public static final String ADMIN                = "/admin";
     public static final String PROFILE              = "/profile";
