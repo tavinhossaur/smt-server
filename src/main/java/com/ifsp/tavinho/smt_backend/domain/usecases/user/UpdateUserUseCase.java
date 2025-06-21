@@ -20,6 +20,7 @@ public class UpdateUserUseCase implements UseCase<UserDTO, User> {
     public User execute(UserDTO input, User existing) {
         if (input.fullName() != null) existing.setFullName(input.fullName());
         if (input.email() != null) existing.setEmail(input.email());
+        if (input.enrollment() != null) existing.setEnrollment(input.enrollment());
         
         if (input.isAdmin() != null) {
             if (input.isAdmin() && !existing.getAuthoritiesList().contains(Authorities.ROLE_ADMIN_USER)) {
