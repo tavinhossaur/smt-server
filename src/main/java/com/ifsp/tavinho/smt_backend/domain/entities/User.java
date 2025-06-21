@@ -30,6 +30,7 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
 
     @Field(name = "profile_photo")
+    @JsonIgnore
     private String profilePhoto;
 
     private List<Authorities> authorities = new ArrayList<>();

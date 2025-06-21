@@ -14,6 +14,7 @@ import com.ifsp.tavinho.smt_backend.application.services.guest.ProfileService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateFavoritesDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdatePasswordDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateProfilePhotoDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfilePhotoResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
@@ -52,6 +53,18 @@ public class ProfileController {
     @GetMapping
     public ResponseEntity<User> findCurrentUser() {
         return ResponseEntity.ok(this.profileService.findCurrentUser());
+    }
+
+    @Operation(summary = "Get current user profile photo", description = "Retrieves the currently authenticated user's profile photo.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "User profile photo successfully returned."),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "404", description = "User not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(PHOTO)
+    public ResponseEntity<ProfilePhotoResponseDTO> findCurrentUserProfilePhoto() {
+        return ResponseEntity.ok(this.profileService.findCurrentUserProfilePhoto());
     }
 
     @Operation(summary = "List favorites", description = "Lists all favorites of the authenticated user.")

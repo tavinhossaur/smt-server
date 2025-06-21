@@ -13,6 +13,7 @@ import com.ifsp.tavinho.smt_backend.application.interactors.profile.UpdateProfil
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateFavoritesDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdatePasswordDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateProfilePhotoDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfilePhotoResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
@@ -36,6 +37,10 @@ public class ProfileService {
 
     public User findCurrentUser() {
         return this.findUser.execute(getAuthenticatedUserId());
+    }
+
+    public ProfilePhotoResponseDTO findCurrentUserProfilePhoto() {
+        return new ProfilePhotoResponseDTO(this.findUser.execute(getAuthenticatedUserId()).getProfilePhoto());
     }
 
     public List<Favorite> listFavorites() {
