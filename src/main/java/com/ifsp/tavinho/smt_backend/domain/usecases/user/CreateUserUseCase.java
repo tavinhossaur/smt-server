@@ -27,13 +27,14 @@ public class CreateUserUseCase implements UseCase<UserDTO, User> {
         String fullName = input.fullName();
         String email = input.email();
         String password = applicationProperties.getDefaultPassword();
+        String enrollment = input.enrollment();
         Boolean isAdmin = input.isAdmin();
 
         if (this.userRepository.findByEmail(email).isPresent()) {
             throw new AppError("This email has already been taken.", HttpStatus.BAD_REQUEST);
         } 
 
-        User user = new User(fullName, email, this.passwordEncoder.encode(password));
+        User user = new User(fullName, email, enrollment, this.passwordEncoder.encode(password));
 
         user.getAuthoritiesList().add(Authorities.ROLE_DEFAULT_USER);
 

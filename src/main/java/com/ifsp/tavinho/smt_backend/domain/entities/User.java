@@ -24,6 +24,7 @@ public class User extends BaseEntity implements UserDetails {
 
     private String fullName;
     private String email;
+    private String enrollment;
 
     @JsonIgnore
     private String password;
@@ -33,9 +34,10 @@ public class User extends BaseEntity implements UserDetails {
 
     private List<Authorities> authorities = new ArrayList<>();
 
-    public User(String fullName, String email, String password) {
+    public User(String fullName, String email, String enrollment, String password) {
         this.fullName = fullName;
         this.email = email;
+        this.enrollment = enrollment;
         this.password = password;
     }
 
