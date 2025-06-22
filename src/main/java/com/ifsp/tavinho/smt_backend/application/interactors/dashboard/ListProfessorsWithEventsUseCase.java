@@ -1,8 +1,10 @@
 package com.ifsp.tavinho.smt_backend.application.interactors.dashboard;
 
+import java.util.Optional;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -25,15 +27,20 @@ public class ListProfessorsWithEventsUseCase implements UseCase<Weekday, List<Pr
 
     @Override
     public List<ProfessorWithEventsDTO> execute(Weekday weekday, String courseId) {
-        List<ProfessorWithEventsDTO> professorsWithEventsList = new ArrayList<>();
-
         List<Event> eventsList = this.eventRepository.findByWeekdayAndCourseId(weekday.name(), courseId);
-
-        for (Event event : eventsList) {
-            Optional<Professor> professor = this.professorRepository.findById(event.getProfessorId());
-
+    
+        Map<String, List<Event>> eventsByProfessor = eventsList.stream().collect(Collectors.groupingBy(Event::getProfessorId));
+    
+        List<ProfessorWithEventsDTO> professorsWithEventsList = new ArrayList<>();
+    
+        for (Map.Entry<String, List<Event>> entry : eventsByProfessor.entrySet()) {
+            String professorId = entry.getKey();
+            List<Event> professorEvents = entry.getValue();
+    
+            Optional<Professor> professor = this.professorRepository.findById(professorId);
+            
             if (!professor.isPresent()) continue;
-
+    
             professorsWithEventsList.add(
                 new ProfessorWithEventsDTO(
                     professor.get().getId(),
@@ -41,13 +48,11 @@ public class ListProfessorsWithEventsUseCase implements UseCase<Weekday, List<Pr
                     professor.get().getEmail(),
                     professor.get().getCreatedAt(),
                     professor.get().getUpdatedAt(),
-                    eventsList.stream().filter(
-                        e -> e.getProfessorId().equals(event.getProfessorId())
-                    ).toList()
+                    professorEvents
                 )
             );
         }
-
+    
         return professorsWithEventsList;
     }
 
