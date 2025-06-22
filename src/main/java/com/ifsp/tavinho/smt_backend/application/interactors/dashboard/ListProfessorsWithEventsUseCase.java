@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.ifsp.tavinho.smt_backend.domain.enums.Weekday;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Event;
 import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
@@ -17,16 +18,16 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ListProfessorsWithEventsUseCase implements UseCase<String, List<ProfessorWithEventsDTO>> {
+public class ListProfessorsWithEventsUseCase implements UseCase<Weekday, List<ProfessorWithEventsDTO>> {
 
     private final ProfessorRepository professorRepository;
     private final EventRepository eventRepository;
 
     @Override
-    public List<ProfessorWithEventsDTO> execute(String weekday, String courseId) {
+    public List<ProfessorWithEventsDTO> execute(Weekday weekday, String courseId) {
         List<ProfessorWithEventsDTO> professorsWithEventsList = new ArrayList<>();
 
-        List<Event> eventsList = this.eventRepository.findByWeekdayAndCourseId(weekday, courseId);
+        List<Event> eventsList = this.eventRepository.findByWeekdayAndCourseId(weekday.name(), courseId);
 
         for (Event event : eventsList) {
             Optional<Professor> professor = this.professorRepository.findById(event.getProfessorId());
@@ -51,7 +52,7 @@ public class ListProfessorsWithEventsUseCase implements UseCase<String, List<Pro
     }
 
     @Override
-    public List<ProfessorWithEventsDTO> execute(String _unused) {
+    public List<ProfessorWithEventsDTO> execute(Weekday _unused) {
         throw new UnsupportedOperationException("Course ID is required for this query.");
     }
     

@@ -19,6 +19,7 @@ import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
 import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
 import com.ifsp.tavinho.smt_backend.domain.usecases.course.ListCoursesUseCase;
+import com.ifsp.tavinho.smt_backend.domain.enums.Weekday;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
 
@@ -47,10 +48,12 @@ public class DashboardService {
         return this.findProfessorWithEvents.execute(professor);
     }
 
-    public List<ProfessorWithEventsDTO> getProfessorsWithWeekEventsListFromDayAndCourse(String weekday, String courseId) {
-        if (weekday.isBlank() || weekday == null || courseId.isBlank() || courseId == null) {
+    public List<ProfessorWithEventsDTO> getProfessorsWithWeekEventsListFromDayAndCourse(String weekdayName, String courseId) {
+        if (weekdayName.isBlank() || weekdayName == null || courseId.isBlank() || courseId == null) {
             throw new AppError("Weekday and course values must be provided.", HttpStatus.BAD_REQUEST);
         }
+
+        Weekday weekday = Weekday.valueOf(weekdayName.toUpperCase());
 
         this.courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("Course not found with id: " + courseId));
 
