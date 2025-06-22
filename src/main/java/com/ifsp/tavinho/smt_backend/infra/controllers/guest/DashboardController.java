@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.ClassroomWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.SearchQueryResponseDTO;
@@ -78,6 +79,19 @@ public class DashboardController {
     @GetMapping(PROFESSORS)
     public ResponseEntity<List<ProfessorWithEventsDTO>> getProfessorsWithWeekEventsListFromDayAndCourse(@RequestParam String weekday, @RequestParam String course) {
         return ResponseEntity.ok(this.dashboardService.getProfessorsWithWeekEventsListFromDayAndCourse(weekday, course));
+    }
+
+    @Operation(summary = "Get classroom with events", description = "Retrieves a classroom and their events by classroom ID.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Classroom and events successfully returned."),
+        @ApiResponse(responseCode = "400", description = "Classroom ID was not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Classroom not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(CLASSROOMS + BY_ID)
+    public ResponseEntity<ClassroomWithEventsDTO> getClassroomWithWeekEventsList(@PathVariable String id) {
+        return ResponseEntity.ok(this.dashboardService.getClassroomWithEvents(id));
     }
     
     @Operation(summary = "List classrooms by floor", description = "Lists all classrooms filtered by floor.")
