@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BASE_API_ROUTE;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.SWAGGER_ROUTES;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.LOGIN;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.HEALTH;
 
 @Component
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class AuthenticationMiddleware extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String uri = request.getRequestURI();
 
-        if (uri.startsWith(BASE_API_ROUTE + LOGIN)) return true;
+        if (uri.startsWith(BASE_API_ROUTE + LOGIN) || uri.startsWith(BASE_API_ROUTE + HEALTH)) return true;
 
         for (String swaggerRoute : SWAGGER_ROUTES) {
             if (swaggerRoute.endsWith("/**")) {
