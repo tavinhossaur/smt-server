@@ -28,5 +28,15 @@
     "name": "project.version",
     "type": "java.lang.String",
     "description": "Project version."
+  },
+  {
+    "name": "nginx.conf.path",
+    "type": "java.lang.String",
+    "description": "Path for 'nginx.conf'"
+  },
+  {
+    "name": "nginx.cmd.path",
+    "type": "java.lang.String",
+    "description": "Path for 'nginx.cmd'"
   }
 ]}
