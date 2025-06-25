@@ -3,10 +3,17 @@
   <head>
     <title>smt-server-restful-api</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
   </head>
   <body>
-    <redoc spec-url="./openapi.json"></redoc>
+    <div id="redoc-container" style="min-height:100vh;"></div>
+    <script>
+      Redoc.init(
+        "https://raw.githubusercontent.com/tavinhossaur/smt-server/develop/docs/openapi.json",
+        {},
+        document.getElementById("redoc-container")
+      );
+    </script>
   </body>
 </html>
