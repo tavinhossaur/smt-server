@@ -1,113 +1,156 @@
-# Sistema de Monitoramento de Tutores (SMT) - Backend
+<!-- Banner -->
+<div align="center" style="margin-bottom: 24px;">
+  <img src="https://img.shields.io/badge/SMT%20Backend-Spring%20Boot%20%7C%20MongoDB%20%7C%20JWT-6DB33F?style=for-the-badge&logo=springboot" alt="SMT Backend" width="420"/>
+  <h1 style="margin-top: 16px;">SMT Server - RESTful API</h1>
+  <p style="font-size: 1.2em; max-width: 700px; margin: 0 auto;">
+    A robust RESTful API for managing tutors, professors, classrooms, courses, disciplines, and events.<br>
+    Built with Java 21, Spring Boot, and MongoDB.<br>
+    <b>Powering the SMT (Sistema de Monitoramento de Tutores) mobile app.</b>
+  </p>
+  <br>
+  <!-- Badges -->
+  <a href="https://tavinhossaur.github.io/smt-server" style="display:inline-block; padding:10px 22px; background:#6DB33F; color:#fff; border-radius:6px; text-decoration:none; font-weight:bold;">API Documentation</a>
+</div>
 
-Backend application for the SMT (Sistema de Monitoramento de Tutores) mobile app, built with Spring Boot 3.5.0.
+---
 
-## Overview
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/info.png" width="20"/> About The Project
 
-SMT Backend is a RESTful API service that manages tutors/professors monitoring system. It provides endpoints for managing classrooms, courses, disciplines, events, professors, and users with authentication and authorization features.
+<blockquote style="border-left:4px solid #6DB33F; padding:12px 18px;">
+  The SMT Backend is designed to support the academic environment by providing a centralized system for managing professors, classrooms, courses, disciplines, and events. It features JWT-based authentication, role-based access control (Admin/User), and a dashboard for real-time academic data. The API is documented with Swagger and follows clean architecture and SOLID principles.
+</blockquote>
 
-## Technologies
+---
 
-- Java 21
-- Spring Boot 3.5.0
-- Spring Security
-- MongoDB
-- JWT Authentication
-- Maven
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/settings.png" width="20"/> Built With
 
-## Features
+<table>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Java-21-007396?style=flat-square&logo=java"/></td>
+    <td>Java 21</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Spring%20Boot-3.5.3-6DB33F?style=flat-square&logo=springboot"/></td>
+    <td>Spring Boot 3.5.3</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat-square&logo=springsecurity"/></td>
+    <td>Spring Security</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/MongoDB-4EA94B?style=flat-square&logo=mongodb"/></td>
+    <td>MongoDB</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jwt"/></td>
+    <td>JWT Authentication</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Maven-3.9.6-C71A36?style=flat-square&logo=apachemaven"/></td>
+    <td>Maven</td>
+  </tr>
+</table>
 
-- **Authentication & Authorization**
-  - JWT-based authentication
-  - Role-based access control (Admin/User)
-  - Secure password handling
+---
 
-- **Entity Management**
-  - Classrooms
-  - Courses
-  - Disciplines
-  - Events
-  - Professors
-  - Users
-
-- **User Features**
-  - Profile management
-  - Password updates
-  - Profile photo management
-  - Favorites system
-
-- **Dashboard**
-  - Professor schedules
-  - Classroom availability
-  - Course information
-
-## Project Structure
-
-```bash
-src/main/java/com/ifsp/tavinho/smt_backend/
-├── domain/
-│   ├── dtos/ # Data Transfer Objects
-│   ├── entities/ # Domain Entities
-│   ├── enums/ # Useful Enums 
-│   ├── repositories/ # MongoDB Repositories
-│   └── usecases/ # Business Logic
-├── infra/
-│   ├── configurations/ # Spring Configurations
-│   ├── controllers/ # REST Controllers
-│   ├── exceptions/ # Exception Handling
-│   ├── interfaces/ # Common Interfaces
-│   ├── middlewares/ # Security Filters
-│   ├── routes/ # API Routes
-│   └── services/ # Core Services
-└── shared/
-    ├── errors/ # Error Handling
-    ├── responses/ # API Response Models
-    └── utils/ # Utility Classes
-```
-
-## API Routes
-
-- `/api/v1/admin/*` - Administrative endpoints
-- `/api/v1/profile/*` - User profile management
-- `/api/v1/dashboard/*` - Public dashboard data
-- `/api/v1/login` - Authentication endpoint
-
-## Setup
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/rocket.png" width="20"/> Getting Started
 
 ### Prerequisites
 
-- Java 21
-- MongoDB
-- Maven
+<ul>
+  <li>Java 21+</li>
+  <li>MongoDB</li>
+  <li>Maven</li>
+</ul>
+
+### Installation
+
+<ol>
+  <li><b>Clone the repository:</b>
+    <pre><code>git clone https://github.com/your_username/sistema-de-monitoramento-de-tutores-backend.git
+cd sistema-de-monitoramento-de-tutores-backend</code></pre>
+  </li>
+  <li><b>Install dependencies:</b>
+    <pre><code>./mvnw clean install</code></pre>
+  </li>
+</ol>
 
 ### Configuration
 
-- Copy the example properties file:
-
-```bash
-cp src/main/resources/application.properties.example src/main/resources/application.properties
-```
-
-- Update the following properties in `application.properties`:
-
-- `spring.data.mongodb.uri`: Your MongoDB connection string
-- `security.jwt.secret-key`: A secure random string for JWT signing
-- `security.jwt.expiration-time`: JWT token expiration time in milliseconds
-- `system.user.default-password`: Default password for new users
+<ol>
+  <li><b>Copy the example properties file:</b>
+    <pre><code>cp src/main/resources/application.properties.example src/main/resources/application.properties</code></pre>
+  </li>
+  <li><b>Edit <code>src/main/resources/application.properties</code> with your environment values:</b>
+    <ul>
+      <li><code>spring.data.mongodb.uri</code>: MongoDB connection string</li>
+      <li><code>security.jwt.secret-key</code>: Secure random string for JWT</li>
+      <li><code>security.jwt.expiration-time</code>: JWT expiration in ms</li>
+      <li><code>system.user.default-password</code>: Default password for new users</li>
+      <li><code>project.name</code>, <code>project.version</code>, <code>project.description</code>: Project metadata</li>
+    </ul>
+  </li>
+</ol>
 
 ### Running the Application
 
-```bash
-./mvnw spring-boot:run
-```
+<pre><code>./mvnw spring-boot:run</code></pre>
 
-## Security
+---
 
-This application uses JWT for authentication. To access protected endpoints:
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/play.png" width="20"/> Usage
 
-1. Get a token through the login endpoint
-2. Include the token in the Authorization header: `Bearer <token>`
+### Authentication
 
-## License
+<ul>
+  <li>Obtain a JWT token via <code>POST /api/v1/login</code> with <code>{ "email": "...", "password": "..." }</code>.</li>
+  <li>Use the token in the <code>Authorization: Bearer &lt;token&gt;</code> header for protected endpoints.</li>
+</ul>
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### Example Endpoints
+
+<table>
+  <tr><th>Type</th><th>Endpoint</th><th>Access</th></tr>
+  <tr><td>Admin</td><td><code>/api/v1/admin/*</code></td><td>Admin only</td></tr>
+  <tr><td>Profile</td><td><code>/api/v1/profile/*</code></td><td>Authenticated user</td></tr>
+  <tr><td>Dashboard</td><td><code>/api/v1/dashboard/*</code></td><td>Authenticated user</td></tr>
+  <tr><td>Login</td><td><code>/api/v1/login</code></td><td>Public</td></tr>
+</table>
+
+<div style="margin: 18px 0;">
+  <a href="https://tavinhossaur.github.io/smt-server" style="display:inline-block; padding:10px 22px; background:#6DB33F; color:#fff; border-radius:6px; text-decoration:none; font-weight:bold;">View Full API Docs</a>
+</div>
+
+---
+
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/folder-invoices--v1.png" width="20"/> Project Structure
+
+<pre>
+src/main/java/com/ifsp/tavinho/smt_backend/
+├── domain/         # Entities, DTOs, Enums, Repositories, Use Cases
+├── application/    # Services and Interactors (business logic)
+├── infra/          # Controllers, Configurations, Middlewares, Persistence
+├── shared/         # Utilities, Error Handling, Response Models
+└── SmtServerApplication.java
+</pre>
+
+---
+
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/api-settings.png" width="20"/> API Overview
+
+<ul>
+  <li><b>Authentication & Authorization:</b> JWT, Admin/User roles</li>
+  <li><b>Entities:</b> Professors, Classrooms, Courses, Disciplines, Events, Users</li>
+  <li><b>User Features:</b> Profile, password, photo, favorites</li>
+  <li><b>Dashboard:</b> Professor schedules, classroom availability, course info</li>
+  <li><b>Admin:</b> Full CRUD for all entities</li>
+  <li><b>Error Handling:</b> Consistent API responses, global exception handler</li>
+</ul>
+
+---
+
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/copyright.png" width="20"/> License
+
+Distributed under the MIT License. See <code>LICENSE</code> for more information.
+
+---
