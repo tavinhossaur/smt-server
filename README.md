@@ -1,6 +1,6 @@
 <!-- Banner -->
 <div align="center" style="margin-bottom: 24px;">
-  <img src="https://img.shields.io/badge/SMT%20Backend-Spring%20Boot%20%7C%20MongoDB%20%7C%20JWT-6DB33F?style=for-the-badge&logo=springboot" alt="SMT Backend" width="420"/>
+  <img src="https://img.shields.io/badge/SMT%20Server-Spring%20Boot%20%7C%20MongoDB%20%7C%20JWT-6DB33F?style=for-the-badge&logo=springboot" alt="SMT Server" width="420"/>
   <h1 style="margin-top: 16px;">SMT Server - RESTful API</h1>
   <p style="font-size: 1.2em; max-width: 700px; margin: 0 auto;">
     A robust RESTful API for managing tutors, professors, classrooms, courses, disciplines, and events.<br>
@@ -17,7 +17,7 @@
 ## <img src="https://img.icons8.com/ios-filled/24/6DB33F/info.png" width="20"/> About The Project
 
 <blockquote style="border-left:4px solid #6DB33F; padding:12px 18px;">
-  The SMT Backend is designed to support the academic environment by providing a centralized system for managing professors, classrooms, courses, disciplines, and events. It features JWT-based authentication, role-based access control (Admin/User), and a dashboard for real-time academic data. The API is documented with Swagger and follows clean architecture and SOLID principles.
+  The SMT Server is designed to support the academic environment by providing a centralized system for managing professors, classrooms, courses, disciplines, and events. It features JWT-based authentication, role-based access control (Admin/User), and a dashboard for real-time academic data. The API is documented with Swagger and follows clean architecture and SOLID principles.
 </blockquote>
 
 ---
@@ -30,15 +30,15 @@
     <td>Java 21</td>
   </tr>
   <tr>
-    <td><img src="https://img.shields.io/badge/Spring%20Boot-3.5.3-6DB33F?style=flat-square&logo=springboot"/></td>
+    <td><img src="https://img.shields.io/badge/Spring%20Boot-3.5.3-000000?style=flat-square&logo=springboot"/></td>
     <td>Spring Boot 3.5.3</td>
   </tr>
   <tr>
-    <td><img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat-square&logo=springsecurity"/></td>
+    <td><img src="https://img.shields.io/badge/Spring%20Security-000000?style=flat-square&logo=springsecurity"/></td>
     <td>Spring Security</td>
   </tr>
   <tr>
-    <td><img src="https://img.shields.io/badge/MongoDB-4EA94B?style=flat-square&logo=mongodb"/></td>
+    <td><img src="https://img.shields.io/badge/MongoDB-000000?style=flat-square&logo=mongodb"/></td>
     <td>MongoDB</td>
   </tr>
   <tr>
@@ -67,8 +67,8 @@
 
 <ol>
   <li><b>Clone the repository:</b>
-    <pre><code>git clone https://github.com/your_username/sistema-de-monitoramento-de-tutores-backend.git
-cd sistema-de-monitoramento-de-tutores-backend</code></pre>
+    <pre><code>git clone https://github.com/tavinhossaur/smt-server.git
+cd smt-server</code></pre>
   </li>
   <li><b>Install dependencies:</b>
     <pre><code>./mvnw clean install</code></pre>
@@ -76,6 +76,8 @@ cd sistema-de-monitoramento-de-tutores-backend</code></pre>
 </ol>
 
 ### Configuration
+
+Note that there are different application properties profiles examples in <code>src/main/resources</code>.
 
 <ol>
   <li><b>Copy the example properties file:</b>
@@ -87,14 +89,17 @@ cd sistema-de-monitoramento-de-tutores-backend</code></pre>
       <li><code>security.jwt.secret-key</code>: Secure random string for JWT</li>
       <li><code>security.jwt.expiration-time</code>: JWT expiration in ms</li>
       <li><code>system.user.default-password</code>: Default password for new users</li>
-      <li><code>project.name</code>, <code>project.version</code>, <code>project.description</code>: Project metadata</li>
     </ul>
   </li>
 </ol>
 
 ### Running the Application
 
-<pre><code>./mvnw spring-boot:run</code></pre>
+With application-dev.properties
+<pre><code>mvn spring-boot:run -Dspring-boot.run.profiles=dev</code></pre>
+
+With application-prod.properties
+<pre><code>mvn spring-boot:run -Dspring-boot.run.profiles=prod</code></pre>
 
 ---
 
