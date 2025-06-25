@@ -1,19 +1,13 @@
+# Project
+project.name=@project.name@
+project.version=@project.version@
+project.description=@project.description@
+
 # Server
 server.port=8080
 
 # Spring
-spring.application.name=smt_backend
-
-# MongoDB
-spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority&appName=<app-name>
-spring.data.mongodb.auto-index-creation=true
-
-# JWT (expiration time set to 6 months)
-security.jwt.expiration-time=15778800000
-security.jwt.secret-key=<jwt_secret_key_here>
-
-# System user
-system.user.default-password=<your_default_user_password>
+spring.application.name=smt-server
 
 # Logging
 logging.level.root=INFO
