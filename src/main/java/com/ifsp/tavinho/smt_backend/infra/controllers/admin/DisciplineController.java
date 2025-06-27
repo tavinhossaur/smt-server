@@ -38,7 +38,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
     @Override
     @Operation(summary = "Create discipline", description = "Creates a new discipline with the provided data.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Discipline successfully created."),
+        @ApiResponse(responseCode = "201", description = "Discipline successfully created.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Discipline.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -50,7 +50,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
     @Override
     @Operation(summary = "Update discipline", description = "Updates an existing discipline by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Discipline successfully updated."),
+        @ApiResponse(responseCode = "200", description = "Discipline successfully updated.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Discipline.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Discipline not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -63,7 +63,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
     @Override
     @Operation(summary = "Delete discipline", description = "Deletes a discipline by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Discipline successfully deleted."),
+        @ApiResponse(responseCode = "200", description = "Discipline successfully deleted.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Discipline not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "409", description = "Discipline could not be deleted because it is linked to an event.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -83,7 +83,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
     @Override
     @Operation(summary = "Find discipline", description = "Finds a discipline by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Discipline found."),
+        @ApiResponse(responseCode = "200", description = "Discipline found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Discipline.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Discipline not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -95,7 +95,7 @@ public class DisciplineController implements EntityController<DisciplineDTO, Dis
     @Override
     @Operation(summary = "List disciplines", description = "Lists all registered disciplines.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "List of disciplines successfully returned."),
+        @ApiResponse(responseCode = "200", description = "List of disciplines successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = Discipline.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })

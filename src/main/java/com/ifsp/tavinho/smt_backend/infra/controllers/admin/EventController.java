@@ -38,7 +38,7 @@ public class EventController implements EntityController<EventDTO, Event> {
     @Override
     @Operation(summary = "Create event", description = "Creates a new event with the provided data.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Event successfully created."),
+        @ApiResponse(responseCode = "201", description = "Event successfully created.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Event.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -50,7 +50,7 @@ public class EventController implements EntityController<EventDTO, Event> {
     @Override
     @Operation(summary = "Update event", description = "Updates an existing event by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Event successfully updated."),
+        @ApiResponse(responseCode = "200", description = "Event successfully updated.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Event.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Event not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -63,7 +63,7 @@ public class EventController implements EntityController<EventDTO, Event> {
     @Override
     @Operation(summary = "Delete event", description = "Deletes an event by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Event successfully deleted."),
+        @ApiResponse(responseCode = "200", description = "Event successfully deleted.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Event not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -82,7 +82,7 @@ public class EventController implements EntityController<EventDTO, Event> {
     @Override
     @Operation(summary = "Find event", description = "Finds an event by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Event found."),
+        @ApiResponse(responseCode = "200", description = "Event found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Event.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Event not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -94,7 +94,7 @@ public class EventController implements EntityController<EventDTO, Event> {
     @Override
     @Operation(summary = "List events", description = "Lists all registered events.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "List of events successfully returned."),
+        @ApiResponse(responseCode = "200", description = "List of events successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = Event.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
