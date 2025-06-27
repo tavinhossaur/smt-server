@@ -1,20 +1,20 @@
 <!-- Banner -->
 <div align="center" style="margin-bottom: 24px;">
-  <img src="https://img.shields.io/badge/SMT%20Server-Spring%20Boot%20%7C%20MongoDB%20%7C%20JWT-6DB33F?style=for-the-badge&logo=springboot" alt="SMT Server" width="420"/>
+  <img src="https://img.shields.io/badge/SMT%20Server-Spring%20Boot%20%7C%20MongoDB%20%7C%20JWT-000?style=for-the-badge&logo=springboot" alt="SMT Server" width="420" style="border-radius:20px;"/>
   <h1 style="margin-top: 16px;">SMT Server - RESTful API</h1>
   <p style="font-size: 1.2em; max-width: 700px; margin: 0 auto;">
-    A robust RESTful API for managing tutors, professors, classrooms, courses, disciplines, and events.<br>
-    Built with Java 21, Spring Boot, and MongoDB.<br>
-    <b>Powering the SMT (Sistema de Monitoramento de Tutores) mobile app.</b>
+    A RESTful API for managing common entities of a college campus. <br>
+    <a href="https://tavinhossaur.github.io/smt-server" style="display:inline-block; padding:6px 15px; background:#6DB33F; color:#fff; border-radius:10px; margin-top: 15px; text-decoration:none; font-size: 14px; font-weight:bold;">API Documentation</a>
   </p>
   <br>
-  <!-- Badges -->
-  <a href="https://tavinhossaur.github.io/smt-server" style="display:inline-block; padding:10px 22px; background:#6DB33F; color:#fff; border-radius:6px; text-decoration:none; font-weight:bold;">API Documentation</a>
+  <b>This project provides a server for the SMT (Sistema de Monitoramento de Tutores) mobile app.</b>
+  <a href="https://github.com/StringKaori/SMT-Sistema_de_Monitoramento_de_Tutores" style="display:inline-block; padding:6px 15px; background:#6DB33F; color:#fff; border-radius:10px; margin-top: 15px; text-decoration:none; font-size: 14px; font-weight:bold;">Mobile App Repository by StringKaori</a>
+  <br>
 </div>
 
 ---
 
-## <img src="https://img.icons8.com/ios-filled/24/6DB33F/info.png" width="20"/> About The Project
+## <img src="https://img.icons8.com/ios-filled/32/6DB33F/info.png" width="20"/> About The Project <hr style="visibility: hidden;">
 
 <blockquote style="border-left:4px solid #6DB33F; padding:12px 18px;">
   The SMT Server is designed to support the academic environment by providing a centralized system for managing professors, classrooms, courses, disciplines, and events. It features JWT-based authentication, role-based access control (Admin/User), and a dashboard for real-time academic data. The API is documented with Swagger and follows clean architecture and SOLID principles.
@@ -22,38 +22,38 @@
 
 ---
 
-## <img src="https://img.icons8.com/ios-filled/24/6DB33F/settings.png" width="20"/> Built With
+## <img src="https://img.icons8.com/ios-filled/32/6DB33F/settings.png" width="20"/> Built With <hr style="visibility: hidden;">
 
 <table>
   <tr>
-    <td><img src="https://img.shields.io/badge/Java-21-007396?style=flat-square&logo=java"/></td>
+    <td><img src="https://img.shields.io/badge/Java-21-000?&logo=java"/></td>
     <td>Java 21</td>
   </tr>
   <tr>
-    <td><img src="https://img.shields.io/badge/Spring%20Boot-3.5.3-000000?style=flat-square&logo=springboot"/></td>
+    <td><img src="https://img.shields.io/badge/Spring%20Boot-3.5.3-000?&logo=springboot"/></td>
     <td>Spring Boot 3.5.3</td>
   </tr>
   <tr>
-    <td><img src="https://img.shields.io/badge/Spring%20Security-000000?style=flat-square&logo=springsecurity"/></td>
+    <td><img src="https://img.shields.io/badge/Spring%20Security-000?&logo=springsecurity"/></td>
     <td>Spring Security</td>
   </tr>
   <tr>
-    <td><img src="https://img.shields.io/badge/MongoDB-000000?style=flat-square&logo=mongodb"/></td>
+    <td><img src="https://img.shields.io/badge/MongoDB-000?&logo=mongodb"/></td>
     <td>MongoDB</td>
   </tr>
   <tr>
-    <td><img src="https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jwt"/></td>
+    <td><img src="https://img.shields.io/badge/JWT-000?&logo=jwt"/></td>
     <td>JWT Authentication</td>
   </tr>
   <tr>
-    <td><img src="https://img.shields.io/badge/Maven-3.9.6-C71A36?style=flat-square&logo=apachemaven"/></td>
+    <td><img src="https://img.shields.io/badge/Maven-3.9.6-000?&logo=apachemaven"/></td>
     <td>Maven</td>
   </tr>
 </table>
 
 ---
 
-## <img src="https://img.icons8.com/ios-filled/24/6DB33F/rocket.png" width="20"/> Getting Started
+## <img src="https://img.icons8.com/ios-filled/32/6DB33F/rocket.png" width="20"/> Getting Started <hr style="visibility: hidden;">
 
 ### Prerequisites
 
@@ -89,6 +89,7 @@ Note that there are different application properties profiles examples in <code>
       <li><code>security.jwt.secret-key</code>: Secure random string for JWT</li>
       <li><code>security.jwt.expiration-time</code>: JWT expiration in ms</li>
       <li><code>system.user.default-password</code>: Default password for new users</li>
+      <li><code>system.database.seeder.enabled</code>: Run the database seeder (this property is only on application-dev.properties)</li>
     </ul>
   </li>
 </ol>
@@ -103,7 +104,7 @@ With application-prod.properties
 
 ---
 
-## <img src="https://img.icons8.com/ios-filled/24/6DB33F/play.png" width="20"/> Usage
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/play.png" width="20"/> Usage <hr style="visibility: hidden;">
 
 ### Authentication
 
@@ -128,7 +129,7 @@ With application-prod.properties
 
 ---
 
-## <img src="https://img.icons8.com/ios-filled/24/6DB33F/folder-invoices--v1.png" width="20"/> Project Structure
+## <img src="https://img.icons8.com/ios-filled/24/6DB33F/folder-invoices--v1.png" width="20"/> Project Structure <hr style="visibility: hidden;">
 
 <pre>
 src/main/java/com/ifsp/tavinho/smt_backend/
@@ -141,7 +142,7 @@ src/main/java/com/ifsp/tavinho/smt_backend/
 
 ---
 
-## <img src="https://img.icons8.com/ios-filled/24/6DB33F/api-settings.png" width="20"/> API Overview
+## <img src="https://img.icons8.com/ios-filled/32/6DB33F/api-settings.png" width="20"/> API Overview <hr style="visibility: hidden;">
 
 <ul>
   <li><b>Authentication & Authorization:</b> JWT, Admin/User roles</li>
@@ -154,7 +155,7 @@ src/main/java/com/ifsp/tavinho/smt_backend/
 
 ---
 
-## <img src="https://img.icons8.com/ios-filled/24/6DB33F/copyright.png" width="20"/> License
+## <img src="https://img.icons8.com/ios-filled/32/6DB33F/copyright.png" width="20"/> License <hr style="visibility: hidden;">
 
 Distributed under the MIT License. See <code>LICENSE</code> for more information.
 
