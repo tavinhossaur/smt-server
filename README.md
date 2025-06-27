@@ -4,11 +4,11 @@
   <h1 style="margin-top: 16px;">SMT Server - RESTful API</h1>
   <p style="font-size: 1.2em; max-width: 700px; margin: 0 auto;">
     A RESTful API for managing common entities of a college campus. <br>
-    <a href="https://tavinhossaur.github.io/smt-server" target="_blank" style="display:inline-block; padding:6px 15px; background:#6DB33F; color:#fff; border-radius:10px; margin-top: 15px; text-decoration:none; font-size: 14px; font-weight:bold;">API Documentation</a>
+    <a href="https://tavinhossaur.github.io/smt-server" style="display:inline-block; padding:6px 15px; background:#6DB33F; color:#fff; border-radius:10px; margin-top: 15px; text-decoration:none; font-size: 14px; font-weight:bold;">API Documentation</a>
   </p>
   <br>
   <b>This project provides a server for the SMT (Sistema de Monitoramento de Tutores) mobile app.</b> <br>
-  <a href="https://github.com/StringKaori/SMT-Sistema_de_Monitoramento_de_Tutores" target="_blank" style="display:inline-block; padding:6px 15px; background:#6DB33F; color:#fff; border-radius:10px; margin-top: 15px; text-decoration:none; font-size: 14px; font-weight:bold;">Mobile App Repository by StringKaori</a>
+  <a href="https://github.com/StringKaori/SMT-Sistema_de_Monitoramento_de_Tutores" style="display:inline-block; padding:6px 15px; background:#6DB33F; color:#fff; border-radius:10px; margin-top: 15px; text-decoration:none; font-size: 14px; font-weight:bold;">Mobile App Repository by StringKaori</a>
   <br>
 </div>
 
@@ -124,7 +124,7 @@ With application-prod.properties
 </table>
 
 <div style="margin: 18px 0;">
-  <a href="https://tavinhossaur.github.io/smt-server" target="_blank" style="display:inline-block; padding:10px 22px; background:#6DB33F; color:#fff; border-radius:6px; text-decoration:none; font-weight:bold;">View Full API Docs</a>
+  <a href="https://tavinhossaur.github.io/smt-server" style="display:inline-block; padding:10px 22px; background:#6DB33F; color:#fff; border-radius:6px; text-decoration:none; font-weight:bold;">View Full API Docs</a>
 </div>
 
 ---
