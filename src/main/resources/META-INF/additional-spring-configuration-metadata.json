@@ -38,5 +38,10 @@
     "name": "nginx.cmd.path",
     "type": "java.lang.String",
     "description": "Path for 'nginx.cmd'"
+  },
+  {
+    "name": "system.database.seeder.enabled",
+    "type": "java.lang.Boolean",
+    "description": "Run database seeder"
   }
 ]}

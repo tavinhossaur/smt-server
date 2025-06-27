@@ -11,3 +11,6 @@ security.jwt.secret-key=<jwt_secret_key_here>
 
 # System user
 system.user.default-password=@test123
+
+# Run database seeder
+system.database.seeder.enabled=true
