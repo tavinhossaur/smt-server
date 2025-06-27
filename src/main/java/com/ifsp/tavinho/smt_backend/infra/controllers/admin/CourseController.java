@@ -38,7 +38,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
     @Override
     @Operation(summary = "Create course", description = "Creates a new course with the provided data.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Course successfully created."),
+        @ApiResponse(responseCode = "201", description = "Course successfully created.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Course.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -50,7 +50,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
     @Override
     @Operation(summary = "Update course", description = "Updates an existing course by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Course successfully updated."),
+        @ApiResponse(responseCode = "200", description = "Course successfully updated.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Course.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Course not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -63,7 +63,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
     @Override
     @Operation(summary = "Delete course", description = "Deletes a course by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Course successfully deleted."),
+        @ApiResponse(responseCode = "200", description = "Course successfully deleted.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Course not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "409", description = "Course could not be deleted because it is linked to an event.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -83,7 +83,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
     @Override
     @Operation(summary = "Find course", description = "Finds a course by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Course found."),
+        @ApiResponse(responseCode = "200", description = "Course found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Course.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Course not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -95,7 +95,7 @@ public class CourseController implements EntityController<CourseDTO, Course> {
     @Override
     @Operation(summary = "List courses", description = "Lists all registered courses.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "List of courses successfully returned."),
+        @ApiResponse(responseCode = "200", description = "List of courses successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = Course.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })

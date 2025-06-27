@@ -38,7 +38,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
     @Override
     @Operation(summary = "Create professor", description = "Creates a new professor with the provided data.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Professor successfully created."),
+        @ApiResponse(responseCode = "201", description = "Professor successfully created.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Professor.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -50,7 +50,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
     @Override
     @Operation(summary = "Update professor", description = "Updates an existing professor by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Professor successfully updated."),
+        @ApiResponse(responseCode = "200", description = "Professor successfully updated.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Professor.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Professor not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -63,7 +63,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
     @Override
     @Operation(summary = "Delete professor", description = "Deletes a professor by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Professor successfully deleted."),
+        @ApiResponse(responseCode = "200", description = "Professor successfully deleted.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Professor not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "409", description = "Professor could not be deleted because it is linked to an event.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -83,7 +83,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
     @Override
     @Operation(summary = "Find professor", description = "Finds a professor by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Professor found."),
+        @ApiResponse(responseCode = "200", description = "Professor found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Professor.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Professor not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -95,7 +95,7 @@ public class ProfessorController implements EntityController<ProfessorDTO, Profe
     @Override
     @Operation(summary = "List professors", description = "Lists all registered professors.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "List of professors successfully returned."),
+        @ApiResponse(responseCode = "200", description = "List of professors successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = Professor.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })

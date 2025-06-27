@@ -38,7 +38,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
     @Override
     @Operation(summary = "Create classroom", description = "Creates a new classroom with the provided data.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Classroom successfully created."),
+        @ApiResponse(responseCode = "201", description = "Classroom successfully created.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Classroom.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -50,7 +50,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
     @Override
     @Operation(summary = "Update classroom", description = "Updates an existing classroom by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Classroom successfully updated."),
+        @ApiResponse(responseCode = "200", description = "Classroom successfully updated.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Classroom.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Classroom not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -63,7 +63,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
     @Override
     @Operation(summary = "Delete classroom", description = "Deletes a classroom by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Classroom successfully deleted."),
+        @ApiResponse(responseCode = "200", description = "Classroom successfully deleted.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Classroom not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "409", description = "Classroom could not be deleted because it is linked to an event.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -83,7 +83,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
     @Override
     @Operation(summary = "Find classroom", description = "Finds a classroom by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Classroom found."),
+        @ApiResponse(responseCode = "200", description = "Classroom found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Classroom.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Classroom not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -95,7 +95,7 @@ public class ClassroomController implements EntityController<ClassroomDTO, Class
     @Override
     @Operation(summary = "List classrooms", description = "Lists all registered classrooms.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "List of classrooms successfully returned."),
+        @ApiResponse(responseCode = "200", description = "List of classrooms successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = Classroom.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })

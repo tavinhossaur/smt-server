@@ -45,7 +45,7 @@ public class ProfileController {
 
     @Operation(summary = "Get current user", description = "Retrieves the currently authenticated user's profile.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "User profile successfully returned."),
+        @ApiResponse(responseCode = "200", description = "User profile successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "User not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -57,7 +57,7 @@ public class ProfileController {
 
     @Operation(summary = "Get current user profile photo", description = "Retrieves the currently authenticated user's profile photo.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "User profile photo successfully returned."),
+        @ApiResponse(responseCode = "200", description = "User profile photo successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProfilePhotoResponseDTO.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "User not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -69,7 +69,7 @@ public class ProfileController {
 
     @Operation(summary = "List favorites", description = "Lists all favorites of the authenticated user.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Favorites successfully returned."),
+        @ApiResponse(responseCode = "200", description = "Favorites successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = Favorite.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
@@ -80,7 +80,7 @@ public class ProfileController {
 
     @Operation(summary = "Update favorites", description = "Updates the list of favorites for the authenticated user.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Favorites updated successfully."),
+        @ApiResponse(responseCode = "200", description = "Favorites updated successfully.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -98,7 +98,7 @@ public class ProfileController {
 
     @Operation(summary = "Update password", description = "Updates the password for the authenticated user.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Password updated successfully."),
+        @ApiResponse(responseCode = "200", description = "Password updated successfully.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -116,7 +116,7 @@ public class ProfileController {
 
     @Operation(summary = "Update profile photo", description = "Updates the profile photo for the authenticated user.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Profile photo updated successfully."),
+        @ApiResponse(responseCode = "200", description = "Profile photo updated successfully.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))

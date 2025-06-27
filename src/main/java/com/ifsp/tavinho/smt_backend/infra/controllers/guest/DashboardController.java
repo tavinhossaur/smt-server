@@ -45,7 +45,7 @@ public class DashboardController {
 
     @Operation(summary = "Get detailed event info", description = "Retrieves a detailed event info by event ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Event info successfully returned."),
+        @ApiResponse(responseCode = "200", description = "Event info successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventDetailsResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Event ID was not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Event not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -58,7 +58,7 @@ public class DashboardController {
 
     @Operation(summary = "Get professor with events", description = "Retrieves a professor and their events by professor ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Professor and events successfully returned."),
+        @ApiResponse(responseCode = "200", description = "Professor and events successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProfessorWithEventsDTO.class))),
         @ApiResponse(responseCode = "400", description = "Professor ID was not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Professor not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -83,7 +83,7 @@ public class DashboardController {
 
     @Operation(summary = "Get classroom with events", description = "Retrieves a classroom and their events by classroom ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Classroom and events successfully returned."),
+        @ApiResponse(responseCode = "200", description = "Classroom and events successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClassroomWithEventsDTO.class))),
         @ApiResponse(responseCode = "400", description = "Classroom ID was not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "Classroom not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -96,7 +96,7 @@ public class DashboardController {
     
     @Operation(summary = "List classrooms by floor", description = "Lists all classrooms filtered by floor.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "List of classrooms successfully returned."),
+        @ApiResponse(responseCode = "200", description = "List of classrooms successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = Classroom.class))),
         @ApiResponse(responseCode = "400", description = "Floor value was not provided.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -108,7 +108,7 @@ public class DashboardController {
 
     @Operation(summary = "List all courses", description = "Lists all available courses.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "List of courses successfully returned."),
+        @ApiResponse(responseCode = "200", description = "List of courses successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = Course.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
@@ -119,7 +119,7 @@ public class DashboardController {
     
     @Operation(summary = "Search professors and classrooms", description = "Searches for professors and classrooms by the provided term.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Search successful."),
+        @ApiResponse(responseCode = "200", description = "Search successful.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SearchQueryResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Invalid query.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })

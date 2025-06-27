@@ -38,7 +38,7 @@ public class UserController implements EntityController<UserDTO, User> {
     @Override
     @Operation(summary = "Create user", description = "Creates a new user with the provided data.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "User successfully created."),
+        @ApiResponse(responseCode = "201", description = "User successfully created.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -50,7 +50,7 @@ public class UserController implements EntityController<UserDTO, User> {
     @Override
     @Operation(summary = "Update user", description = "Updates an existing user by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "User successfully updated."),
+        @ApiResponse(responseCode = "200", description = "User successfully updated.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "User not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
@@ -63,7 +63,7 @@ public class UserController implements EntityController<UserDTO, User> {
     @Override
     @Operation(summary = "Delete user", description = "Deletes a user by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "User successfully deleted."),
+        @ApiResponse(responseCode = "200", description = "User successfully deleted.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "User not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -82,7 +82,7 @@ public class UserController implements EntityController<UserDTO, User> {
     @Override
     @Operation(summary = "Find user", description = "Finds a user by ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "User found."),
+        @ApiResponse(responseCode = "200", description = "User found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "404", description = "User not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
@@ -94,7 +94,7 @@ public class UserController implements EntityController<UserDTO, User> {
     @Override
     @Operation(summary = "List users", description = "Lists all registered users.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "List of users successfully returned."),
+        @ApiResponse(responseCode = "200", description = "List of users successfully returned.", content = @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = User.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
