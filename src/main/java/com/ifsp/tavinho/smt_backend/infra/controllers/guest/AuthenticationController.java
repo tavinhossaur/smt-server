@@ -36,7 +36,7 @@ public class AuthenticationController {
 
     @Operation(summary = "User login", description = "Authenticates a user and returns a JWT token if credentials are valid.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Login successful. JWT token returned.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponseDTO.class))),
+        @ApiResponse(responseCode = "200", description = "Login successful. JWT token returned."),
         @ApiResponse(responseCode = "400", description = "Invalid credentials or validation error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))

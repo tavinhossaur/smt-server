@@ -32,7 +32,7 @@ public class ServerController {
 
     @Operation(summary = "Health check", description = "Checks if the server is running.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Server is running.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = HealthCheckResponseDTO.class))),
+        @ApiResponse(responseCode = "200", description = "Server is running."),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     @GetMapping(HEALTH)
