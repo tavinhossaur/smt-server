@@ -1,15 +1,17 @@
 package com.ifsp.tavinho.smt_backend.infra.database;
 
-import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
+import com.ifsp.tavinho.smt_backend.application.services.admin.UserService;
 import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.UserDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
-import com.ifsp.tavinho.smt_backend.application.services.admin.UserService;
+import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
+@Profile("dev")
 @Component
 @RequiredArgsConstructor
 public class DatabaseSeeder implements CommandLineRunner {
@@ -19,7 +21,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (applicationProperties.isDevEnvironment() && applicationProperties.isDatabaseSeederEnabled()) this.seedAdminUser();
+        if (applicationProperties.isDatabaseSeederEnabled()) this.seedAdminUser();
     }
 
     private User seedAdminUser() {

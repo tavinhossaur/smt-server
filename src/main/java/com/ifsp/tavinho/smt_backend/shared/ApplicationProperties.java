@@ -37,8 +37,4 @@ public final class ApplicationProperties {
 
     public static final String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX";
     public static final String TIMEZONE = "America/Sao_Paulo";
-
-    public boolean isDevEnvironment() {
-        return this.activeProfile.equals("dev");
-    }
 }
