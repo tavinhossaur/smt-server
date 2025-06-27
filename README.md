@@ -7,7 +7,7 @@
     <a href="https://tavinhossaur.github.io/smt-server" style="display:inline-block; padding:6px 15px; background:#6DB33F; color:#fff; border-radius:10px; margin-top: 15px; text-decoration:none; font-size: 14px; font-weight:bold;">API Documentation</a>
   </p>
   <br>
-  <b>This project provides a server for the SMT (Sistema de Monitoramento de Tutores) mobile app.</b>
+  <b>This project provides a server for the SMT (Sistema de Monitoramento de Tutores) mobile app.</b> <br>
   <a href="https://github.com/StringKaori/SMT-Sistema_de_Monitoramento_de_Tutores" style="display:inline-block; padding:6px 15px; background:#6DB33F; color:#fff; border-radius:10px; margin-top: 15px; text-decoration:none; font-size: 14px; font-weight:bold;">Mobile App Repository by StringKaori</a>
   <br>
 </div>
