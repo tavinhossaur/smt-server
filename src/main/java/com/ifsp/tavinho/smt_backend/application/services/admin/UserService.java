@@ -42,6 +42,10 @@ public class UserService {
         return this.findUser.execute(id);
     }
 
+    public User findByEmail(String email) {
+        return this.findUser.execute(email, "");
+    }
+
     public List<User> list() {
         return this.listUsers.execute(null);
     }

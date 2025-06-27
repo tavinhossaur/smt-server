@@ -19,5 +19,9 @@ public class FindUserUseCase implements UseCase<String, User> {
     public User execute(String id) {
         return this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
+
+    public User execute(String email, String _unused) {
+        return this.repository.findByEmail(email).orElse(null);
+    }
     
 }

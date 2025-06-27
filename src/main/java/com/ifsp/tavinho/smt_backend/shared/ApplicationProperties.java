@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public final class ApplicationProperties {
+
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
     
     @Value("${project.name}")
     private String projectName;
@@ -29,7 +32,13 @@ public final class ApplicationProperties {
     @Value("${security.jwt.secret-key}")
     private String jwtSecretKey;
 
+    @Value("${system.database.seeder.enabled}")
+    private boolean databaseSeederEnabled;
+
     public static final String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX";
     public static final String TIMEZONE = "America/Sao_Paulo";
 
+    public boolean isDevEnvironment() {
+        return this.activeProfile.equals("dev");
+    }
 }
