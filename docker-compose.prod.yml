@@ -1,0 +1,42 @@
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: app-nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      smt-server:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://127.0.0.1/nginx-health']
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  smt-server:
+    build: .
+    image: smt/server:prod
+    container_name: app-smt-server
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATA_MONGODB_URI: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_CLUSTER_NAME}.rnyoxdr.mongodb.net/${MONGO_DATABASE_NAME}?retryWrites=true&w=majority&appName=${MONGO_CLUSTER_NAME}
+      SECURITY_JWT_SECRET_KEY: ${JWT_SECRET}
+      SYSTEM_USER_DEFAULT_PASSWORD: ${DEFAULT_USER_PASSWORD}
+      JAVA_OPTS: -Xms512m -Xmx1024m
+    expose:
+      - "8080"
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/api/v1/health']
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped

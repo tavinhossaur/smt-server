@@ -1,13 +1,2 @@
-# Server
-server.port=8000
-
-# MongoDB (prod)
-spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority&appName=smt_backend
-spring.data.mongodb.auto-index-creation=true
-
 # JWT (expiration time set to 6 months)
 security.jwt.expiration-time=15778800000
-security.jwt.secret-key=<jwt_secret_key_here>
-
-# System user
-system.user.default-password=<your_default_user_password>
