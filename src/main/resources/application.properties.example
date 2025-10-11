@@ -9,6 +9,9 @@ server.port=8080
 # Spring
 spring.application.name=smt-server
 
+# MongoDB
+spring.data.mongodb.auto-index-creation=true
+
 # Logging
 logging.level.root=INFO
 

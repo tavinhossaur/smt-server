@@ -1,16 +1,5 @@
-# Server
-server.port=8080
-
-# MongoDB (dev)
-spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority&appName=smt_backend
-spring.data.mongodb.auto-index-creation=true
-
 # JWT (expiration time set to 1 hour)
 security.jwt.expiration-time=3600000
-security.jwt.secret-key=<jwt_secret_key_here>
-
-# System user
-system.user.default-password=@test123
 
 # Run database seeder
 system.database.seeder.enabled=true
