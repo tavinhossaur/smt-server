@@ -2,6 +2,7 @@ package com.ifsp.tavinho.smt_backend.infra.middlewares;
 
 import java.io.IOException;
 
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,12 @@ import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PROFILE_ROUTE;
 public class ProfileMiddleware extends OncePerRequestFilter {
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         return !request.getRequestURI().startsWith(PROFILE_ROUTE);
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {

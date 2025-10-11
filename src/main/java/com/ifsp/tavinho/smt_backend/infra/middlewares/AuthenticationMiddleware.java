@@ -39,7 +39,7 @@ public class AuthenticationMiddleware extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         String uri = request.getRequestURI();
 
         if (uri.startsWith(BASE_API_ROUTE + LOGIN) || uri.startsWith(BASE_API_ROUTE + HEALTH)) return true;
