@@ -4,6 +4,7 @@ project.version=@project.version@
 project.description=@project.description@
 
 # Server
+server.address=0.0.0.0
 server.port=8080
 
 # Spring

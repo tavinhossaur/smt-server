@@ -94,13 +94,104 @@ Note that there are different application properties profiles examples in <code>
   </li>
 </ol>
 
-### Running the Application
+## 🚀 Running the Application
 
-With application-dev.properties
-<pre><code>mvn spring-boot:run -Dspring-boot.run.profiles=dev</code></pre>
+This project can be executed in two main environments: **development (Swarm)** and **production (Compose)**.\
+Both use Docker and environment variables defined in the `.env` file.
 
-With application-prod.properties
-<pre><code>mvn spring-boot:run -Dspring-boot.run.profiles=prod</code></pre>
+> The development stack uses Docker Swarm to mimic a distributed environment, while production uses a simpler Compose setup suitable for deployment on a single host or server.
+
+## 🧑‍💻 Development Environment (Docker Swarm)
+
+The **development environment** uses Docker Swarm to enable service replication and monitoring via Visualizer.
+
+### 1️⃣ Build the application image
+
+Before deploying the stack, build the application image locally:
+
+```bash
+docker build -t smt/server:dev . --no-cache
+```
+
+### 2️⃣ Initialize Docker Swarm
+
+If Swarm is not initialized yet:
+
+```bash
+docker swarm init --advertise-addr eth0
+```
+
+### 3️⃣ Deploy the stack
+
+Use the `docker-compose.dev.yml` file to deploy all services (MongoDB, API, Nginx, Mongo Express, and Visualizer):
+
+```bash
+docker stack deploy -c docker-compose.dev.yml smt-stack --detach=false
+```
+
+### 4️⃣ Check service status
+
+To verify if everything is running correctly:
+
+```bash
+docker service ls
+```
+
+### 5️⃣ Stop and remove the stack
+
+When finished, remove all running services:
+
+```bash
+docker stack rm smt-stack
+```
+
+## 🌐 Production Environment (Docker Compose)
+
+The **production environment** uses a simpler setup that runs via Docker Compose.
+
+### 1️⃣ Start the containers
+
+Run the following command:
+
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+This will create:
+
+- `nginx` (reverse proxy)
+- `smt-server` (Spring Boot application)
+
+### 2️⃣ View logs
+
+```bash
+docker compose -f docker-compose.prod.yml logs -f
+```
+
+### 3️⃣ Stop the containers
+
+```bash
+docker compose -f docker-compose.prod.yml down
+```
+
+## 🧠 Useful Tips
+
+- To check the MongoDB or container status:
+
+  ```bash
+  docker ps
+  docker logs <container-name>
+  ```
+
+- Access **Mongo Express** at:\
+  🔗 [http://localhost:8081](http://localhost:8081)
+
+- Access **Visualizer (Swarm Dashboard)** at:\
+  🔗 [http://localhost:8082](http://localhost:8082)
+
+- Main API available at:\
+  🔗 [http://localhost:8080](http://localhost:8080)\
+  (or via Nginx proxy at [http://localhost](http://localhost))
 
 ---
 
