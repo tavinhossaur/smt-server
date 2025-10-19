@@ -1,0 +1,40 @@
+# Arquivos e diretórios do Git
+.git/
+.gitignore
+.gitattributes
+
+# Diretório de build do Maven
+target/
+
+# Arquivos de IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+.factorypath
+.springBeans
+.sts4-cache
+
+# Executáveis do Maven Wrapper
+mvnw
+mvnw.cmd
+
+# Documentação e outros arquivos do projeto
+docs/
+README.md
+LICENSE
+
+# Arquivos do Docker Compose
+docker-compose.dev.yml
+docker-compose.prod.yml
+
+# Variáveis de ambiente
+.env
+.env.example
+
+# Logs
+*.log
