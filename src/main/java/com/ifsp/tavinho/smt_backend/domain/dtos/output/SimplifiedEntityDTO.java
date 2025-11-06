@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "id" })
 public record SimplifiedEntityDTO(
-    String id;
-    String description;
+    String id,
+    String description
 ) { }

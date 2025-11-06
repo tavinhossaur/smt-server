@@ -13,8 +13,8 @@ public record EventDetailsResponseDTO(
     Weekday weekday,
     LocalTime startTime,
     LocalTime endTime,
-    SimplifiedEntityDTO classroom;
-    SimplifiedEntityDTO professor;
-    SimplifiedEntityDTO course;
-    SimplifiedEntityDTO discipline;
+    SimplifiedEntityDTO classroom,
+    SimplifiedEntityDTO professor,
+    SimplifiedEntityDTO course,
+    SimplifiedEntityDTO discipline
 ) { }
