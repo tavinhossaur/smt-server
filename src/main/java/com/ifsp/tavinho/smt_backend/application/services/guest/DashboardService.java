@@ -9,6 +9,7 @@ import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindClassr
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindEventDetailedInfoUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindProfessorWithEventsUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListClassroomsFromFloorUseCase;
+import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListEventsWithDetailedInfoUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListProfessorsWithEventsUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.SearchProfessorsAndClassroomsUseCase;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ClassroomWithEventsDTO;
@@ -34,11 +35,12 @@ public class DashboardService {
 
     private final FindClassroomsWithEventsUseCase findClassroomsWithEvents;
     private final FindProfessorWithEventsUseCase findProfessorWithEvents;
+    private final FindEventDetailedInfoUseCase findEventDetailedInfo;
+    private final ListEventsWithDetailedInfoUseCase listEventDetailedInfoUseCase;
     private final ListProfessorsWithEventsUseCase listProfessorWithEvents;
     private final ListClassroomsFromFloorUseCase listClassroomsFromFloor;
     private final ListCoursesUseCase listCourses;
     private final SearchProfessorsAndClassroomsUseCase searchProfessorsAndClassrooms;
-    private final FindEventDetailedInfoUseCase findEventDetailedInfo;
     
     private final ClassroomRepository classroomRepository;
     private final ProfessorRepository professorRepository;
@@ -51,6 +53,10 @@ public class DashboardService {
     public ProfessorWithEventsDTO getProfessorWithWeekEventsList(String id) {
         Professor professor = this.professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found with id: " + id));
         return this.findProfessorWithEvents.execute(professor);
+    }
+
+    public List<EventDetailsResponseDTO> listEventsWithDetailedInfo() {
+        return this.listEventDetailedInfoUseCase.execute(null);
     }
 
     public List<ProfessorWithEventsDTO> getProfessorsWithWeekEventsListFromDayAndCourse(String weekdayName, String courseId) {

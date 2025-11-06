@@ -68,6 +68,17 @@ public class DashboardController {
     public ResponseEntity<ProfessorWithEventsDTO> getProfessorWithWeekEventsList(@PathVariable String id) {
         return ResponseEntity.ok(this.dashboardService.getProfessorWithWeekEventsList(id));
     }
+
+    @Operation(summary = "List events with detailed info", description = "Lists all events and their professors, classrooms, courses and disciplines.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "List of events with detailed info successfully returned."),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(EVENTS)
+    public ResponseEntity<List<EventDetailsResponseDTO>> getEventsWithDetailedInfo() {
+        return ResponseEntity.ok(this.dashboardService.listEventsWithDetailedInfo());
+    }
     
     @Operation(summary = "List professors with events", description = "Lists all professors and their events filtered by weekday and course.")
     @ApiResponses({
