@@ -3,8 +3,12 @@ package com.ifsp.tavinho.smt_backend.domain.dtos.output;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.SimplifiedEntityDTO;
+
 import com.ifsp.tavinho.smt_backend.domain.enums.Weekday;
+import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
+import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
+import com.ifsp.tavinho.smt_backend.domain.entities.Course;
+import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
 
 @JsonPropertyOrder({ "id" })
 public record EventDetailsResponseDTO(
@@ -13,8 +17,8 @@ public record EventDetailsResponseDTO(
     Weekday weekday,
     LocalTime startTime,
     LocalTime endTime,
-    SimplifiedEntityDTO classroom,
-    SimplifiedEntityDTO professor,
-    SimplifiedEntityDTO course,
-    SimplifiedEntityDTO discipline
+    Classroom classroom,
+    Professor professor,
+    Course course,
+    Discipline discipline
 ) { }
