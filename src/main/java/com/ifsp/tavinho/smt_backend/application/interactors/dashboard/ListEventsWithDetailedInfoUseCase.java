@@ -33,32 +33,7 @@ public class ListEventsWithDetailedInfoUseCase implements UseCase<Void, List<Eve
 
     @Override
     public List<EventDetailsResponseDTO> execute(Void _unused) {
-        List<Event> eventsList = this.eventRepository.findAll();
-
-        List<EventDetailsResponseDTO> eventsWithDetailsList = new ArrayList<>();
-
-        for (Event event : eventsList) {            
-            Optional<Classroom> classroom = this.classroomRepository.findById(event.getClassroomId());
-            Optional<Professor> professor = this.professorRepository.findById(event.getProfessorId());
-            Optional<Course> course = this.courseRepository.findById(event.getCourseId());
-            Optional<Discipline> discipline = this.disciplineRepository.findById(event.getDisciplineId());
-
-            eventsWithDetailsList.add(
-                new EventDetailsResponseDTO(
-                    event.getId(),
-                    event.getDescription(),
-                    event.getWeekday(),
-                    event.getStartTime(),
-                    event.getEndTime(),
-                    classroom.orElse(null),
-                    professor.orElse(null),
-                    course.orElse(null),
-                    discipline.orElse(null)
-                )
-            );
-        }
-
-        return eventsWithDetailsList;
+        return this.eventRepository.findAllWithMinimalDetails();
     }
     
 }
