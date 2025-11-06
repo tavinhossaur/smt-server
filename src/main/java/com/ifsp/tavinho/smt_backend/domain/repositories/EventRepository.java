@@ -3,6 +3,7 @@ package com.ifsp.tavinho.smt_backend.domain.repositories;
 import java.util.List;
 
 import com.ifsp.tavinho.smt_backend.domain.entities.Event;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
 
 public interface EventRepository extends EntityRepository<Event> {
     List<Event> findAllByOrderByWeekdayAscStartTimeAsc();
@@ -10,6 +11,8 @@ public interface EventRepository extends EntityRepository<Event> {
     List<Event> findByClassroomId(String id);
     List<Event> findByCourseId(String courseId); 
     List<Event> findByWeekdayAndCourseId(String weekday, String courseId);
+    
+    List<EventDetailsResponseDTO> findAllWithMinimalDetails();
     
     boolean existsByProfessorId(String professorId);
     boolean existsByClassroomId(String classroomId);
