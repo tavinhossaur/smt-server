@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ClassroomWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseSimplifiedDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.SearchQueryResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
@@ -76,7 +77,7 @@ public class DashboardController {
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
     @GetMapping(EVENTS)
-    public ResponseEntity<List<EventDetailsResponseDTO>> getEventsWithDetailedInfo() {
+    public ResponseEntity<List<EventDetailsResponseSimplifiedDTO>> getEventsWithDetailedInfo() {
         return ResponseEntity.ok(this.dashboardService.listEventsWithDetailedInfo());
     }
     
