@@ -14,6 +14,7 @@ import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListProfes
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.SearchProfessorsAndClassroomsUseCase;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ClassroomWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseSimplifiedDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.SearchQueryResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
@@ -55,7 +56,7 @@ public class DashboardService {
         return this.findProfessorWithEvents.execute(professor);
     }
 
-    public List<EventDetailsResponseDTO> listEventsWithDetailedInfo() {
+    public List<EventDetailsResponseSimplifiedDTO> listEventsWithDetailedInfo() {
         return this.listEventDetailedInfoUseCase.execute(null);
     }
 
