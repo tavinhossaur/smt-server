@@ -32,6 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.DASHBOARD_ROUTE;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PROFESSORS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.CLASSROOMS;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.DISCIPLINES;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.COURSES;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.EVENTS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BY_ID;
@@ -88,7 +89,7 @@ public class DashboardController {
         @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
     })
-    @GetMapping(EVENTS)
+    @GetMapping(DISCIPLINES)
     public ResponseEntity<List<DisciplineDetailsResponseSimplifiedDTO>> getDisciplinesWithCourses() {
         return ResponseEntity.ok(this.dashboardService.listDisciplinesWithCourses());
     }

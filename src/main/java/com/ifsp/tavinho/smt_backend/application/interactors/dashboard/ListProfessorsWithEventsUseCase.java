@@ -39,7 +39,7 @@ public class ListProfessorsWithEventsUseCase implements UseCase<Weekday, List<Pr
     
             Optional<Professor> professor = this.professorRepository.findById(professorId);
             
-            if (!professor.isPresent()) continue;
+            if (professor.isEmpty()) continue;
     
             professorsWithEventsList.add(
                 new ProfessorWithEventsDTO(
