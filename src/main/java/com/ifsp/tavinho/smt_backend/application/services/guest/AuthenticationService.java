@@ -21,7 +21,7 @@ public class AuthenticationService {
     public LoginResponseDTO login(LoginCredentialsDTO credentials) {
         String email = credentials.email();
 
-        if (!this.userRepository.findByEmail(email).isPresent()) {
+        if (this.userRepository.findByEmail(email).isEmpty()) {
             throw new AppError("The email informed was not found.", HttpStatus.BAD_REQUEST);
         }
 
