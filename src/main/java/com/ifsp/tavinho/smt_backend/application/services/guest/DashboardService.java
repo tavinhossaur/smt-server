@@ -9,10 +9,12 @@ import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindClassr
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindEventDetailedInfoUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.FindProfessorWithEventsUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListClassroomsFromFloorUseCase;
+import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListDisciplinesWithCoursesUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListEventsWithDetailedInfoUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.ListProfessorsWithEventsUseCase;
 import com.ifsp.tavinho.smt_backend.application.interactors.dashboard.SearchProfessorsAndClassroomsUseCase;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ClassroomWithEventsDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.DisciplineDetailsResponseSimplifiedDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseSimplifiedDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
@@ -38,6 +40,7 @@ public class DashboardService {
     private final FindProfessorWithEventsUseCase findProfessorWithEvents;
     private final FindEventDetailedInfoUseCase findEventDetailedInfo;
     private final ListEventsWithDetailedInfoUseCase listEventDetailedInfoUseCase;
+    private final ListDisciplinesWithCoursesUseCase listDisciplinesWithCoursesUseCase;
     private final ListProfessorsWithEventsUseCase listProfessorWithEvents;
     private final ListClassroomsFromFloorUseCase listClassroomsFromFloor;
     private final ListCoursesUseCase listCourses;
@@ -58,6 +61,10 @@ public class DashboardService {
 
     public List<EventDetailsResponseSimplifiedDTO> listEventsWithDetailedInfo() {
         return this.listEventDetailedInfoUseCase.execute(null);
+    }
+
+    public List<DisciplineDetailsResponseSimplifiedDTO> listDisciplinesWithCourses() {
+        return this.listDisciplinesWithCoursesUseCase.execute(null);
     }
 
     public List<ProfessorWithEventsDTO> getProfessorsWithWeekEventsListFromDayAndCourse(String weekdayName, String courseId) {
