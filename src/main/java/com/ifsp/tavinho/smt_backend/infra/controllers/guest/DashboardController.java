@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ClassroomWithEventsDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.DisciplineDetailsResponseSimplifiedDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
+import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseSimplifiedDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
 import com.ifsp.tavinho.smt_backend.domain.dtos.output.SearchQueryResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
@@ -30,6 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.DASHBOARD_ROUTE;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PROFESSORS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.CLASSROOMS;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.DISCIPLINES;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.COURSES;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.EVENTS;
 import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.BY_ID;
@@ -67,6 +70,28 @@ public class DashboardController {
     @GetMapping(PROFESSORS + BY_ID)
     public ResponseEntity<ProfessorWithEventsDTO> getProfessorWithWeekEventsList(@PathVariable String id) {
         return ResponseEntity.ok(this.dashboardService.getProfessorWithWeekEventsList(id));
+    }
+
+    @Operation(summary = "List events with detailed info", description = "Lists all events and their professors, classrooms, courses and disciplines.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "List of events with detailed info successfully returned."),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(EVENTS)
+    public ResponseEntity<List<EventDetailsResponseSimplifiedDTO>> getEventsWithDetailedInfo() {
+        return ResponseEntity.ok(this.dashboardService.listEventsWithDetailedInfo());
+    }
+
+    @Operation(summary = "List disciplines with courses", description = "Lists all disciplines and their courses.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "List of disciplines with courses successfully returned."),
+        @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(DISCIPLINES)
+    public ResponseEntity<List<DisciplineDetailsResponseSimplifiedDTO>> getDisciplinesWithCourses() {
+        return ResponseEntity.ok(this.dashboardService.listDisciplinesWithCourses());
     }
     
     @Operation(summary = "List professors with events", description = "Lists all professors and their events filtered by weekday and course.")
