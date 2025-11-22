@@ -1,5 +1,2 @@
 # JWT (expiration time set to 1 hour)
 security.jwt.expiration-time=3600000
-
-# Run database seeder
-system.database.seeder.enabled=true
