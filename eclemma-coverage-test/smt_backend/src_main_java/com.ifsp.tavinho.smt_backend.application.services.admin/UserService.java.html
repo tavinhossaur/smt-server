@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">RN01-02-03-CoverageTest (Nov 23, 2025 6:04:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt_backend</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.application.services.admin</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.application.services.admin;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.UserDTO;
+import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.usecases.user.CreateUserUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.user.UpdateUserUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.user.DeleteUserUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.user.FindUserUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.user.ListUsersUseCase;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final CreateUserUseCase createUser;
+    private final UpdateUserUseCase updateUser;
+    private final DeleteUserUseCase deleteUser;
+    private final FindUserUseCase findUser;
+    private final ListUsersUseCase listUsers;
+
+    public User create(UserDTO input) {
+<span class="nc" id="L28">        return this.createUser.execute(input);</span>
+    }
+
+    public User update(UserDTO input, String id) {
+<span class="nc" id="L32">        User user = this.findUser.execute(id);</span>
+<span class="nc" id="L33">        return this.updateUser.execute(input, user);</span>
+    }
+
+    public Boolean delete(String id) {
+<span class="nc" id="L37">        User user = this.findUser.execute(id);</span>
+<span class="nc" id="L38">        return this.deleteUser.execute(user);</span>
+    }
+
+    public User find(String id) {
+<span class="nc" id="L42">        return this.findUser.execute(id);</span>
+    }
+
+    public User findByEmail(String email) {
+<span class="nc" id="L46">        return this.findUser.execute(email, &quot;&quot;);</span>
+    }
+
+    public List&lt;User&gt; list() {
+<span class="nc" id="L50">        return this.listUsers.execute(null);</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>RN01-02-03-CoverageTest (Nov 23, 2025 6:04:18 PM)</div></body></html>

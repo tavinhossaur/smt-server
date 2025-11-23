@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EventService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">RN01-02-03-CoverageTest (Nov 23, 2025 6:04:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt_backend</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.application.services.admin</a> &gt; <span class="el_source">EventService.java</span></div><h1>EventService.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.application.services.admin;
+
+import java.util.List;
+import java.time.LocalTime;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.EventDTO;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+import com.ifsp.tavinho.smt_backend.domain.entities.Event;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ClassroomRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
+import com.ifsp.tavinho.smt_backend.domain.usecases.event.CreateEventUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.event.UpdateEventUseCase;
+import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
+import com.ifsp.tavinho.smt_backend.domain.usecases.event.DeleteEventUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.event.FindEventUseCase;
+import com.ifsp.tavinho.smt_backend.domain.usecases.event.ListEventsUseCase;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class EventService {
+
+    private final EventRepository eventRepository;
+    private final ClassroomRepository classroomRepository;
+    private final ProfessorRepository professorRepository;
+    private final CourseRepository courseRepository;
+    private final DisciplineRepository disciplineRepository;
+
+    private final CreateEventUseCase createEvent;
+    private final UpdateEventUseCase updateEvent;
+    private final DeleteEventUseCase deleteEvent;
+    private final FindEventUseCase findEvent;
+    private final ListEventsUseCase listEvents;
+
+    public Event create(EventDTO input) {
+<span class="pc" id="L43">        this.classroomRepository.findById(input.classroomId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Classroom not found with id: &quot; + input.classroomId()));</span>
+<span class="pc" id="L44">        this.professorRepository.findById(input.professorId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Professor not found with id: &quot; + input.professorId()));</span>
+<span class="pc" id="L45">        this.courseRepository.findById(input.courseId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Course not found with id: &quot; + input.courseId()));</span>
+<span class="pc" id="L46">        this.disciplineRepository.findById(input.disciplineId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Discipline not found with id: &quot; + input.disciplineId()));</span>
+
+<span class="fc" id="L48">        this.checkProfessorAvailability(input, input.professorId());</span>
+<span class="fc" id="L49">        this.checkClassroomAvailability(input, input.classroomId());</span>
+
+<span class="fc" id="L51">        this.checkInvalidTime(LocalTime.parse(input.startTime()), LocalTime.parse(input.endTime()));</span>
+
+<span class="fc" id="L53">        return this.createEvent.execute(input);</span>
+    }
+
+    public Event update(EventDTO input, String id) {
+<span class="nc" id="L57">        Event event = this.findEvent.execute(id);</span>
+<span class="nc" id="L58">        return this.updateEvent.execute(input, event);</span>
+    }
+
+    public Boolean delete(String id) {
+<span class="nc" id="L62">        Event event = this.findEvent.execute(id);</span>
+<span class="nc" id="L63">        return this.deleteEvent.execute(event);</span>
+    }
+
+    public Event find(String id) {
+<span class="nc" id="L67">        return this.findEvent.execute(id);</span>
+    }
+
+    public List&lt;Event&gt; list() {
+<span class="nc" id="L71">        return this.listEvents.execute(null);</span>
+    }
+
+    private Boolean checkClassroomAvailability(EventDTO newEvent, String classroomId) {
+<span class="fc" id="L75">        List&lt;Event&gt; events = this.eventRepository.findByClassroomId(classroomId);</span>
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (Event existingEvent : events) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            if (!this.isAvailable(existingEvent, newEvent))</span>
+<span class="fc" id="L79">                throw new AppError(&quot;This classroom is already attached to an event at the desired day and time.&quot;, HttpStatus.CONFLICT);</span>
+        }
+
+<span class="fc" id="L82">        return true;</span>
+    }
+
+    private Boolean checkProfessorAvailability(EventDTO newEvent, String professorId) {
+<span class="fc" id="L86">        List&lt;Event&gt; events = this.eventRepository.findByProfessorId(professorId);</span>
+
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (Event existingEvent : events) {</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            if (!this.isAvailable(existingEvent, newEvent))</span>
+<span class="fc" id="L90">                throw new AppError(&quot;This professor is already attached to an event at the desired day and time.&quot;, HttpStatus.CONFLICT);</span>
+        }
+
+<span class="fc" id="L93">        return true;</span>
+    }
+
+    private Boolean isAvailable(Event existingEvent, EventDTO newEvent) {
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (existingEvent.getWeekday() != newEvent.weekday()) return true;</span>
+
+<span class="fc" id="L99">        LocalTime newStart = LocalTime.parse(newEvent.startTime());</span>
+<span class="fc" id="L100">        LocalTime newEnd = LocalTime.parse(newEvent.endTime());</span>
+
+<span class="fc" id="L102">        LocalTime existingStart = existingEvent.getStartTime();</span>
+<span class="fc" id="L103">        LocalTime existingEnd = existingEvent.getEndTime();</span>
+
+<span class="fc bfc" id="L105" title="All 4 branches covered.">        if (newStart.equals(existingEnd) || newEnd.equals(existingStart)) return true;</span>
+
+<span class="pc bpc" id="L107" title="2 of 4 branches missed.">        boolean overlap = newStart.isBefore(existingEnd) &amp;&amp; newEnd.isAfter(existingStart);</span>
+
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        return !overlap;</span>
+    }
+
+    private Boolean checkInvalidTime(LocalTime startTime, LocalTime endTime) {
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if (startTime.isAfter(endTime)) {</span>
+<span class="fc" id="L114">            throw new AppError(</span>
+<span class="fc" id="L115">                &quot;The start time and end time of the event are retroactive to each other.&quot;,</span>
+<span class="fc" id="L116">                HttpStatus.BAD_REQUEST</span>
+            );
+        }
+
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (startTime.equals(endTime)) {</span>
+<span class="fc" id="L121">            throw new AppError(</span>
+<span class="fc" id="L122">                &quot;The start time can't be the same as the end time.&quot;,</span>
+<span class="fc" id="L123">                HttpStatus.BAD_REQUEST</span>
+            );
+        }
+
+<span class="fc" id="L127">        return true;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>RN01-02-03-CoverageTest (Nov 23, 2025 6:04:18 PM)</div></body></html>

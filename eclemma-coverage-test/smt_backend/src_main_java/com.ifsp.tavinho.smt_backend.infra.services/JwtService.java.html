@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>JwtService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">RN01-02-03-CoverageTest (Nov 23, 2025 6:04:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt_backend</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.infra.services</a> &gt; <span class="el_source">JwtService.java</span></div><h1>JwtService.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.infra.services;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
+import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+import com.ifsp.tavinho.smt_backend.shared.utils.LoggerUtil;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class JwtService {
+
+    private final ApplicationProperties applicationProperties;
+
+    public String extractEmail(String token) {
+<span class="nc" id="L33">        return this.extractClaim(token, DecodedJWT::getSubject);</span>
+    }
+
+    public String generateToken(UserDetails userDetails) {
+<span class="nc" id="L37">        Map&lt;String, Object&gt; extraClaims = new HashMap&lt;&gt;();</span>
+        
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (userDetails instanceof User user) {</span>
+<span class="nc" id="L40">            extraClaims.put(&quot;id&quot;, user.getId());</span>
+<span class="nc" id="L41">            extraClaims.put(&quot;authorities&quot;, user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));</span>
+        }
+        
+<span class="nc" id="L44">        return this.generateToken(extraClaims, userDetails);</span>
+    }
+
+    public String generateToken(Map&lt;String, Object&gt; extraClaims, UserDetails userDetails) {
+<span class="nc" id="L48">        return buildToken(extraClaims, userDetails, this.getExpirationTime());</span>
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+<span class="nc" id="L52">        String email = this.extractEmail(token);</span>
+<span class="nc bnc" id="L53" title="All 6 branches missed.">        return (email != null &amp;&amp; email.equals(userDetails.getUsername())) &amp;&amp; !this.isTokenExpired(token);</span>
+    }
+    
+    public long getExpirationTime() {
+<span class="nc" id="L57">        return Long.parseLong(this.applicationProperties.getJwtExpirationTime());</span>
+    }
+
+    private String buildToken(Map&lt;String, Object&gt; extraClaims, UserDetails userDetails, long expiration) {
+<span class="nc" id="L61">        return JWT.create()</span>
+<span class="nc" id="L62">                .withPayload(extraClaims)</span>
+<span class="nc" id="L63">                .withSubject(userDetails.getUsername())</span>
+<span class="nc" id="L64">                .withIssuedAt(new Date(System.currentTimeMillis()))</span>
+<span class="nc" id="L65">                .withExpiresAt(new Date(System.currentTimeMillis() + expiration))</span>
+<span class="nc" id="L66">                .sign(Algorithm.HMAC256(this.applicationProperties.getJwtSecretKey()));</span>
+    }
+
+    private boolean isTokenExpired(String token) {
+<span class="nc" id="L70">        return this.extractExpiration(token).before(new Date());</span>
+    }
+
+    private Date extractExpiration(String token) {
+<span class="nc" id="L74">        return this.extractClaim(token, DecodedJWT::getExpiresAt);</span>
+    }
+
+    private &lt;T&gt; T extractClaim(String token, Function&lt;DecodedJWT, T&gt; claimsResolver) {
+        try {
+<span class="nc" id="L79">            final DecodedJWT jwt = JWT.decode(token);</span>
+<span class="nc" id="L80">            return claimsResolver.apply(jwt);</span>
+<span class="nc" id="L81">        } catch (JWTDecodeException e) {</span>
+<span class="nc" id="L82">            LoggerUtil.error(&quot;Error decoding JWT: &quot; + e.getMessage());</span>
+<span class="nc" id="L83">            throw new AppError(&quot;Error decoding JWT: &quot; + e.getMessage(), HttpStatus.UNAUTHORIZED);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>RN01-02-03-CoverageTest (Nov 23, 2025 6:04:18 PM)</div></body></html>
