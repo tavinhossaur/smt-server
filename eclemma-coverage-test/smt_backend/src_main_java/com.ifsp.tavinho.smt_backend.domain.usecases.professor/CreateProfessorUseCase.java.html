@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CreateProfessorUseCase.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">RN01-02-03-CoverageTest (Nov 23, 2025 6:04:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt_backend</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.domain.usecases.professor</a> &gt; <span class="el_source">CreateProfessorUseCase.java</span></div><h1>CreateProfessorUseCase.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.domain.usecases.professor;
+
+import org.springframework.stereotype.Service;
+
+import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.ProfessorDTO;
+import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
+import com.ifsp.tavinho.smt_backend.infra.interfaces.UseCase;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class CreateProfessorUseCase implements UseCase&lt;ProfessorDTO, Professor&gt; {
+
+    private final ProfessorRepository repository;
+
+    @Override
+    public Professor execute(ProfessorDTO input) {
+<span class="nc" id="L20">        return this.repository.save(new Professor(input.name(), input.email()));</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>RN01-02-03-CoverageTest (Nov 23, 2025 6:04:18 PM)</div></body></html>
