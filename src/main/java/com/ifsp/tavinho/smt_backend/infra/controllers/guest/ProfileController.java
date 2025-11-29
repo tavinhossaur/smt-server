@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdateFavoritesDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdatePasswordDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdateProfilePhotoDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.ProfilePhotoResponseDTO;
 import com.ifsp.tavinho.smt_backend.application.services.guest.ProfileService;
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateFavoritesDTO;
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdatePasswordDTO;
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.UpdateProfilePhotoDTO;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfilePhotoResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;

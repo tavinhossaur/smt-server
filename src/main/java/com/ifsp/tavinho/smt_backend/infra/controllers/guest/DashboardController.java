@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.ClassroomWithEventsDTO;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.DisciplineDetailsResponseSimplifiedDTO;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseDTO;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.EventDetailsResponseSimplifiedDTO;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.ProfessorWithEventsDTO;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.SearchQueryResponseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.ClassroomWithEventsDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.DisciplineDetailsResponseSimplifiedDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.EventDetailsResponseDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.EventDetailsResponseSimplifiedDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.ProfessorWithEventsDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.SearchQueryResponseDTO;
 import com.ifsp.tavinho.smt_backend.application.services.guest.DashboardService;
 
 import lombok.RequiredArgsConstructor;

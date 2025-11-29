@@ -3,7 +3,7 @@ package com.ifsp.tavinho.smt_backend.infra.repositories.implementations;
 import java.util.Collections;
 import java.util.List;
 
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.*;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.*;
 import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineAggregationRepository;
 
 import org.bson.Document;
