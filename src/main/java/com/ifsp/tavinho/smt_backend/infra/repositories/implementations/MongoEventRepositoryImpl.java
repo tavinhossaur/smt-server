@@ -5,7 +5,7 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.*;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.*;
 import com.ifsp.tavinho.smt_backend.domain.enums.Weekday;
 import com.ifsp.tavinho.smt_backend.domain.repositories.EventAggregationRepository;
 

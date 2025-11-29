@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalTime;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+import com.ifsp.tavinho.smt_backend.application.dtos.input.EventDTO;
 import com.ifsp.tavinho.smt_backend.application.services.admin.EventService;
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.EventDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
 import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
@@ -29,7 +28,6 @@ import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
-import com.ifsp.tavinho.smt_backend.domain.usecases.event.CreateEventUseCase;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
 
 /**
@@ -55,9 +53,6 @@ class RN03_EventTimeValidationTest {
     @Mock
     private DisciplineRepository disciplineRepository;
 
-    @Mock
-    private CreateEventUseCase createEventUseCase;
-
     @InjectMocks
     private EventService eventService;
 
@@ -81,8 +76,7 @@ class RN03_EventTimeValidationTest {
         discipline.setId("disc111");
 
         // Mock padrão para os repositórios
-        // Retorna um 'Optional' só para garantir a execução e evitar uma exception presente no CreateEventUseCase
-        // que verifica se o ID da entidade relacionada ao evento já existe no banco.
+        // Retorna um 'Optional' só para garantir a execução e evitar um lançamento de exception no EventService
         when(classroomRepository.findById(anyString())).thenReturn(Optional.of(classroom));
         when(professorRepository.findById(anyString())).thenReturn(Optional.of(professor));
         when(courseRepository.findById(anyString())).thenReturn(Optional.of(course));
@@ -105,19 +99,8 @@ class RN03_EventTimeValidationTest {
             "course111"
         );
 
-        Event savedEvent = new Event(
-            eventDTO.description(),
-            eventDTO.weekday(),
-            LocalTime.parse(eventDTO.startTime()),
-            LocalTime.parse(eventDTO.endTime()),
-            eventDTO.classroomId(),
-            eventDTO.professorId(),
-            eventDTO.disciplineId(),
-            eventDTO.courseId()
-        );
-
-        // Quando ele chamar o método para registrar no banco, ele retorna a entidade criada acima
-        when(createEventUseCase.execute(any(EventDTO.class))).thenReturn(savedEvent);
+        // Simula o retorno da entidade do banco pegando o mesmo argumento enviado no método
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         Event result = eventService.create(eventDTO);
@@ -125,7 +108,7 @@ class RN03_EventTimeValidationTest {
         // Assert
         assertNotNull(result);
         assertTrue(result.getStartTime().isBefore(result.getEndTime()));
-        verify(createEventUseCase, times(1)).execute(any(EventDTO.class));  // Verifica se chamou o método execute uma única vez
+        verify(eventRepository, times(1)).save(any(Event.class)); // Verifica que o save foi chamado uma vez
     }
 
     @Test
@@ -151,7 +134,7 @@ class RN03_EventTimeValidationTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertTrue(exception.getMessage().equals("The start time can't be the same as the end time."));
-        verify(createEventUseCase, never()).execute(any(EventDTO.class)); // Verifica se nunca chamou o método execute do createEventUseCase
+        verify(eventRepository, never()).save(any(Event.class)); // Verifica se nunca chamou o método save do repository
     }
 
     @Test
@@ -177,7 +160,7 @@ class RN03_EventTimeValidationTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertTrue(exception.getMessage().equals("The start time and end time of the event are retroactive to each other."));
-        verify(createEventUseCase, never()).execute(any(EventDTO.class));
+        verify(eventRepository, never()).save(any(Event.class));
     }
 
     @Test
@@ -196,18 +179,7 @@ class RN03_EventTimeValidationTest {
             "course111"
         );
 
-        Event savedEvent = new Event(
-            eventDTO.description(),
-            eventDTO.weekday(),
-            LocalTime.parse(eventDTO.startTime()),
-            LocalTime.parse(eventDTO.endTime()),
-            eventDTO.classroomId(),
-            eventDTO.professorId(),
-            eventDTO.disciplineId(),
-            eventDTO.courseId()
-        );
-
-        when(createEventUseCase.execute(any(EventDTO.class))).thenReturn(savedEvent);
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         Event result = eventService.create(eventDTO);
@@ -215,7 +187,7 @@ class RN03_EventTimeValidationTest {
         // Assert
         assertNotNull(result);
         assertTrue(result.getStartTime().isBefore(result.getEndTime()));
-        verify(createEventUseCase, times(1)).execute(any(EventDTO.class));
+        verify(eventRepository, times(1)).save(any(Event.class));
     }
 
 }

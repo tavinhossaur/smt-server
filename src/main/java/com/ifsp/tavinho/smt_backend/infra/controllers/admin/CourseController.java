@@ -2,8 +2,8 @@ package com.ifsp.tavinho.smt_backend.infra.controllers.admin;
 
 import java.util.List;
 
+import com.ifsp.tavinho.smt_backend.application.dtos.input.CourseDTO;
 import com.ifsp.tavinho.smt_backend.application.services.admin.CourseService;
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.CourseDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.HealthCheckResponseDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.HealthCheckResponseDTO;
 import com.ifsp.tavinho.smt_backend.application.services.guest.ServerService;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
 

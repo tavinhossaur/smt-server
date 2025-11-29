@@ -1,7 +1,7 @@
 package com.ifsp.tavinho.smt_backend.infra.database;
 
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UserDTO;
 import com.ifsp.tavinho.smt_backend.application.services.admin.UserService;
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.UserDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
 

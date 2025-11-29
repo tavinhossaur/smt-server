@@ -6,7 +6,7 @@ import java.time.Duration;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.stereotype.Service;
 
-import com.ifsp.tavinho.smt_backend.domain.dtos.output.HealthCheckResponseDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.HealthCheckResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 

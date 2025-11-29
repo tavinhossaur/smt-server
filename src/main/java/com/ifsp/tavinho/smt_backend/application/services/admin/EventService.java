@@ -6,22 +6,18 @@ import java.time.LocalTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.EventDTO;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+
+import lombok.RequiredArgsConstructor;
+
+import com.ifsp.tavinho.smt_backend.application.dtos.input.EventDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Event;
 import com.ifsp.tavinho.smt_backend.domain.repositories.ClassroomRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
-import com.ifsp.tavinho.smt_backend.domain.usecases.event.CreateEventUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.event.UpdateEventUseCase;
 import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
-import com.ifsp.tavinho.smt_backend.domain.usecases.event.DeleteEventUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.event.FindEventUseCase;
-import com.ifsp.tavinho.smt_backend.domain.usecases.event.ListEventsUseCase;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +28,6 @@ public class EventService {
     private final ProfessorRepository professorRepository;
     private final CourseRepository courseRepository;
     private final DisciplineRepository disciplineRepository;
-
-    private final CreateEventUseCase createEvent;
-    private final UpdateEventUseCase updateEvent;
-    private final DeleteEventUseCase deleteEvent;
-    private final FindEventUseCase findEvent;
-    private final ListEventsUseCase listEvents;
 
     public Event create(EventDTO input) {
         this.classroomRepository.findById(input.classroomId()).orElseThrow(() -> new EntityNotFoundException("Classroom not found with id: " + input.classroomId()));
@@ -50,25 +40,49 @@ public class EventService {
 
         this.checkInvalidTime(LocalTime.parse(input.startTime()), LocalTime.parse(input.endTime()));
 
-        return this.createEvent.execute(input);
+        return this.eventRepository.save(
+            new Event(
+                input.description(), 
+                input.weekday(), 
+                LocalTime.parse(input.startTime()), 
+                LocalTime.parse(input.endTime()), 
+                input.classroomId(),
+                input.professorId(),
+                input.disciplineId(),
+                input.courseId()
+            )
+        );
     }
 
     public Event update(EventDTO input, String id) {
-        Event event = this.findEvent.execute(id);
-        return this.updateEvent.execute(input, event);
+        Event existing = this.find(id);
+        
+        if (input.description() != null) existing.setDescription(input.description());
+        if (input.weekday() != null) existing.setWeekday(input.weekday());
+        if (input.startTime() != null) existing.setStartTime(LocalTime.parse(input.startTime()));
+        if (input.endTime() != null) existing.setEndTime(LocalTime.parse(input.endTime()));
+        if (input.classroomId() != null) existing.setClassroomId(input.classroomId());
+        if (input.professorId() != null) existing.setProfessorId(input.professorId());
+        if (input.disciplineId() != null) existing.setDisciplineId(input.disciplineId());
+        if (input.courseId() != null) existing.setCourseId(input.courseId());
+
+        return this.eventRepository.save(existing);
     }
 
     public Boolean delete(String id) {
-        Event event = this.findEvent.execute(id);
-        return this.deleteEvent.execute(event);
+        Event event = this.find(id);
+
+        this.eventRepository.delete(event);
+
+        return true;
     }
 
     public Event find(String id) {
-        return this.findEvent.execute(id);
+        return this.eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + id));
     }
 
     public List<Event> list() {
-        return this.listEvents.execute(null);
+        return this.eventRepository.findAllByOrderByWeekdayAscStartTimeAsc();
     }
 
     private Boolean checkClassroomAvailability(EventDTO newEvent, String classroomId) {

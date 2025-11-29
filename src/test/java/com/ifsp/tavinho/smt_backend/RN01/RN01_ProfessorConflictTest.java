@@ -8,13 +8,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+import com.ifsp.tavinho.smt_backend.application.dtos.input.EventDTO;
 import com.ifsp.tavinho.smt_backend.application.services.admin.EventService;
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.EventDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
 import com.ifsp.tavinho.smt_backend.domain.entities.Course;
 import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
@@ -26,7 +27,6 @@ import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
 import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
-import com.ifsp.tavinho.smt_backend.domain.usecases.event.CreateEventUseCase;
 import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,9 +55,6 @@ class RN01_ProfessorConflictTest {
     
     @Mock
     private DisciplineRepository disciplineRepository;
-
-    @Mock
-    private CreateEventUseCase createEventUseCase;
 
     @InjectMocks
     private EventService eventService;
@@ -94,8 +91,7 @@ class RN01_ProfessorConflictTest {
         );
 
         // Mock padrão para os repositórios
-        // Retorna um 'Optional' só para garantir a execução e evitar uma exception presente no CreateEventUseCase
-        // que verifica se o ID da entidade relacionada ao evento já existe no banco.
+        // Retorna um 'Optional' só para garantir a execução e evitar um lançamento de exception no EventService
         when(classroomRepository.findById(anyString())).thenReturn(Optional.of(classroom));
         when(professorRepository.findById(anyString())).thenReturn(Optional.of(professor));
         when(courseRepository.findById(anyString())).thenReturn(Optional.of(course));
@@ -107,24 +103,11 @@ class RN01_ProfessorConflictTest {
     void shouldAllowEventCreationWhenNoProfessorConflict() {
         
         // Arrange
-        // Retorna sempre um array vazio de eventos relacionados aquele professor, mesmo que o professor
-        // tivesse de fato, eventos cadastrados e relacionados a ele.
+        // Simula que não há eventos existentes para esse professor retornando um array vazio
         when(eventRepository.findByProfessorId(anyString())).thenReturn(Arrays.asList());
 
-        // Cria uma entidade do evento que o banco retornaria
-        Event savedEvent = new Event(
-            eventDTO.description(),
-            eventDTO.weekday(),
-            LocalTime.parse(eventDTO.startTime()),
-            LocalTime.parse(eventDTO.endTime()),
-            eventDTO.classroomId(),
-            eventDTO.professorId(),
-            eventDTO.disciplineId(),
-            eventDTO.courseId()
-        );
-
-        // Quando ele chamar o método para registrar no banco, ele retorna a entidade criada acima
-        when(createEventUseCase.execute(any(EventDTO.class))).thenReturn(savedEvent);
+        // Simula o retorno da entidade do banco pegando o mesmo argumento enviado no método
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         Event result = eventService.create(eventDTO);
@@ -132,7 +115,7 @@ class RN01_ProfessorConflictTest {
         // Assert
         assertNotNull(result);
         assertEquals(eventDTO.professorId(), result.getProfessorId());
-        verify(createEventUseCase, times(1)).execute(any(EventDTO.class)); // Verifica se chamou o método execute uma única vez
+        verify(eventRepository, times(1)).save(any(Event.class)); // Verifica que o save foi chamado uma vez
     }
 
     @Test
@@ -151,6 +134,7 @@ class RN01_ProfessorConflictTest {
             "course123"
         );
 
+        // Simula que já tem um evento existente retornando um array com o evento criado acima
         when(eventRepository.findByProfessorId("prof123")).thenReturn(Arrays.asList(existingEvent));
 
         // Act & Assert
@@ -160,7 +144,7 @@ class RN01_ProfessorConflictTest {
 
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
         assertTrue(exception.getMessage().equals("This professor is already attached to an event at the desired day and time."));
-        verify(createEventUseCase, never()).execute(any(EventDTO.class)); // Verifica se nunca chamou o método execute do createEventUseCase
+        verify(eventRepository, never()).save(any(Event.class)); // Verifica se nunca chamou o método save do repository
     }
 
     @Test
@@ -179,7 +163,6 @@ class RN01_ProfessorConflictTest {
             "course123"
         );
         
-        // Retorna um array com o evento existente criado anteriormente
         when(eventRepository.findByProfessorId("prof123")).thenReturn(Arrays.asList(existingEvent));
         
         // Act & Assert
@@ -190,7 +173,7 @@ class RN01_ProfessorConflictTest {
 
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
         assertTrue(exception.getMessage().equals("This professor is already attached to an event at the desired day and time."));
-        verify(createEventUseCase, never()).execute(any(EventDTO.class));
+        verify(eventRepository, never()).save(any(Event.class));
     }
 
     @Test
@@ -219,7 +202,7 @@ class RN01_ProfessorConflictTest {
 
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
         assertTrue(exception.getMessage().equals("This professor is already attached to an event at the desired day and time."));
-        verify(createEventUseCase, never()).execute(any(EventDTO.class));
+        verify(eventRepository, never()).save(any(Event.class));
     }
 
     @Test
@@ -240,25 +223,14 @@ class RN01_ProfessorConflictTest {
 
         when(eventRepository.findByProfessorId("prof123")).thenReturn(Arrays.asList(existingEvent));
         
-        Event savedEvent = new Event(
-            eventDTO.description(),
-            eventDTO.weekday(),
-            LocalTime.parse(eventDTO.startTime()),
-            LocalTime.parse(eventDTO.endTime()),
-            eventDTO.classroomId(),
-            eventDTO.professorId(),
-            eventDTO.disciplineId(),
-            eventDTO.courseId()
-        );
-        
-        when(createEventUseCase.execute(any(EventDTO.class))).thenReturn(savedEvent);
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         Event result = eventService.create(eventDTO);
 
         // Assert
         assertNotNull(result);
-        verify(createEventUseCase, times(1)).execute(any(EventDTO.class));
+        verify(eventRepository, times(1)).save(any(Event.class));
     }
 
     @Test
@@ -278,26 +250,15 @@ class RN01_ProfessorConflictTest {
         );
 
         when(eventRepository.findByProfessorId("prof123")).thenReturn(Arrays.asList(existingEvent));
-        
-        Event savedEvent = new Event(
-            eventDTO.description(),
-            eventDTO.weekday(),
-            LocalTime.parse(eventDTO.startTime()),
-            LocalTime.parse(eventDTO.endTime()),
-            eventDTO.classroomId(),
-            eventDTO.professorId(),
-            eventDTO.disciplineId(),
-            eventDTO.courseId()
-        );
 
-        when(createEventUseCase.execute(any(EventDTO.class))).thenReturn(savedEvent);
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         Event result = eventService.create(eventDTO);
 
         // Assert
         assertNotNull(result);
-        verify(createEventUseCase, times(1)).execute(any(EventDTO.class));
+        verify(eventRepository, times(1)).save(any(Event.class));
     }
 
         @Test
@@ -317,25 +278,14 @@ class RN01_ProfessorConflictTest {
         );
 
         when(eventRepository.findByProfessorId("prof123")).thenReturn(Arrays.asList(existingEvent));
-        
-        Event savedEvent = new Event(
-            eventDTO.description(),
-            eventDTO.weekday(),
-            LocalTime.parse(eventDTO.startTime()),
-            LocalTime.parse(eventDTO.endTime()),
-            eventDTO.classroomId(),
-            eventDTO.professorId(),
-            eventDTO.disciplineId(),
-            eventDTO.courseId()
-        );
-
-        when(createEventUseCase.execute(any(EventDTO.class))).thenReturn(savedEvent);
+    
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         Event result = eventService.create(eventDTO);
 
         // Assert
         assertNotNull(result);
-        verify(createEventUseCase, times(1)).execute(any(EventDTO.class));
+        verify(eventRepository, times(1)).save(any(Event.class));
     }
 }

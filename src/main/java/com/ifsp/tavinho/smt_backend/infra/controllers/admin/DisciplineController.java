@@ -2,9 +2,9 @@ package com.ifsp.tavinho.smt_backend.infra.controllers.admin;
 
 import java.util.List;
 
+import com.ifsp.tavinho.smt_backend.application.dtos.input.DisciplineDTO;
 import com.ifsp.tavinho.smt_backend.application.services.admin.DisciplineService;
 import com.ifsp.tavinho.smt_backend.domain.enums.Status;
-import com.ifsp.tavinho.smt_backend.domain.dtos.input.entities.DisciplineDTO;
 import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
 import com.ifsp.tavinho.smt_backend.infra.interfaces.EntityController;
 import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
