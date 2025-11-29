@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RN02_ClassroomConflictTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.RN02</a> &gt; <span class="el_source">RN02_ClassroomConflictTest.java</span></div><h1>RN02_ClassroomConflictTest.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.RN02;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+
+import com.ifsp.tavinho.smt_backend.application.dtos.input.EventDTO;
+import com.ifsp.tavinho.smt_backend.application.services.admin.EventService;
+import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
+import com.ifsp.tavinho.smt_backend.domain.entities.Course;
+import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
+import com.ifsp.tavinho.smt_backend.domain.entities.Event;
+import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
+import com.ifsp.tavinho.smt_backend.domain.enums.Weekday;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ClassroomRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+
+/**
+ * Testes para a regra de negócio RN02:
+ * Salas só podem estar alocados a um único evento em um mesmo dia da semana/horário.
+ */
+@ExtendWith(MockitoExtension.class)
+@DisplayName(&quot;RN02 - Validação de Conflito de Horário de Salas&quot;)
+<span class="fc" id="L41">class RN02_ClassroomConflictTest {</span>
+
+    @Mock
+    private EventRepository eventRepository;
+    
+    @Mock
+    private ClassroomRepository classroomRepository;
+    
+    @Mock
+    private ProfessorRepository professorRepository;
+    
+    @Mock
+    private CourseRepository courseRepository;
+    
+    @Mock
+    private DisciplineRepository disciplineRepository;
+
+    @InjectMocks
+    private EventService eventService;
+
+    private EventDTO eventDTO;
+    private Professor professor;
+    private Classroom classroom;
+    private Course course;
+    private Discipline discipline;
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L69">        professor = new Professor(&quot;Ada Wong&quot;, &quot;ada.wong@umbrella.com&quot;);</span>
+<span class="fc" id="L70">        professor.setId(&quot;prof456&quot;);</span>
+
+<span class="fc" id="L72">        classroom = new Classroom(&quot;T402&quot;, &quot;T&quot;, &quot;4&quot;, 40, &quot;Sala teste&quot;);</span>
+<span class="fc" id="L73">        classroom.setId(&quot;class789&quot;);</span>
+
+<span class="fc" id="L75">        course = new Course(&quot;T-Virus 101&quot;, &quot;V101&quot;);</span>
+<span class="fc" id="L76">        course.setId(&quot;course456&quot;);</span>
+
+<span class="fc" id="L78">        discipline = new Discipline(&quot;Arte da Mentira&quot;, &quot;ATM&quot;, &quot;course456&quot;);</span>
+<span class="fc" id="L79">        discipline.setId(&quot;disc789&quot;);</span>
+
+<span class="fc" id="L81">        eventDTO = new EventDTO(</span>
+<span class="fc" id="L82">            &quot;Introdução a Lábia&quot;,</span>
+<span class="fc" id="L83">            Weekday.WEDNESDAY,</span>
+<span class="fc" id="L84">            &quot;14:00&quot;,</span>
+<span class="fc" id="L85">            &quot;16:00&quot;,</span>
+<span class="fc" id="L86">            &quot;class789&quot;,</span>
+<span class="fc" id="L87">            &quot;prof456&quot;,</span>
+<span class="fc" id="L88">            &quot;disc789&quot;,</span>
+<span class="fc" id="L89">            &quot;course456&quot;</span>
+        );
+
+        // Mock padrão para os repositórios
+        // Retorna um 'Optional' só para garantir a execução e evitar um lançamento de exception no EventService
+<span class="fc" id="L94">        when(classroomRepository.findById(anyString())).thenReturn(Optional.of(classroom));</span>
+<span class="fc" id="L95">        when(professorRepository.findById(anyString())).thenReturn(Optional.of(professor));</span>
+<span class="fc" id="L96">        when(courseRepository.findById(anyString())).thenReturn(Optional.of(course));</span>
+<span class="fc" id="L97">        when(disciplineRepository.findById(anyString())).thenReturn(Optional.of(discipline));</span>
+<span class="fc" id="L98">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve permitir criar evento quando sala não tem conflito de horário&quot;)
+    void shouldAllowEventCreationWhenNoClassroomConflict() {
+
+        // Arrange
+        // Simula que não há eventos existentes para essa sala retornando um array vazio
+<span class="fc" id="L106">        when(eventRepository.findByClassroomId(anyString())).thenReturn(Arrays.asList());</span>
+
+        // Simula o retorno da entidade do banco pegando o mesmo argumento enviado no método
+<span class="fc" id="L109">        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -&gt; invocation.getArgument(0));</span>
+
+        // Act
+<span class="fc" id="L112">        Event result = eventService.create(eventDTO);</span>
+
+        // Assert
+<span class="fc" id="L115">        assertNotNull(result);</span>
+<span class="fc" id="L116">        assertEquals(eventDTO.classroomId(), result.getClassroomId());</span>
+<span class="fc" id="L117">        verify(eventRepository, times(1)).save(any(Event.class)); // Verifica que o save foi chamado uma vez</span>
+<span class="fc" id="L118">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve lançar exceção quando sala tem conflito de horário no mesmo dia&quot;)
+    void shouldThrowExceptionWhenClassroomHasExactConflict() {
+
+        // Arrange
+<span class="fc" id="L125">        Event existingEvent = new Event(</span>
+<span class="fc" id="L126">            &quot;Evento Existente&quot;,</span>
+<span class="fc" id="L127">            Weekday.WEDNESDAY,</span>
+<span class="fc" id="L128">            LocalTime.parse(&quot;14:00&quot;),</span>
+<span class="fc" id="L129">            LocalTime.parse(&quot;16:00&quot;),</span>
+<span class="fc" id="L130">            &quot;class789&quot;,</span>
+<span class="fc" id="L131">            &quot;prof999&quot;,</span>
+<span class="fc" id="L132">            &quot;disc999&quot;,</span>
+<span class="fc" id="L133">            &quot;course456&quot;</span>
+        );
+
+<span class="fc" id="L136">        when(eventRepository.findByClassroomId(&quot;class789&quot;)).thenReturn(Arrays.asList(existingEvent));</span>
+
+        // Act &amp; Assert
+<span class="fc" id="L139">        AppError exception = assertThrows(AppError.class, () -&gt; {</span>
+<span class="nc" id="L140">            eventService.create(eventDTO);</span>
+<span class="nc" id="L141">        });</span>
+
+<span class="fc" id="L143">        assertEquals(HttpStatus.CONFLICT, exception.getStatus());</span>
+<span class="fc" id="L144">        assertTrue(exception.getMessage().equals(&quot;This classroom is already attached to an event at the desired day and time.&quot;));</span>
+<span class="fc" id="L145">        verify(eventRepository, never()).save(any(Event.class)); // Verifica se nunca chamou o método save do repository</span>
+<span class="fc" id="L146">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve lançar exceção quando sala tem conflito com sobreposição parcial no horário de início&quot;)
+    void shouldThrowExceptionWhenClassroomHasPartialConflictAtStart() {
+
+        // Arrange - evento existente de 13:00 às 15:00
+<span class="fc" id="L153">        Event existingEvent = new Event(</span>
+<span class="fc" id="L154">            &quot;Evento Existente&quot;,</span>
+<span class="fc" id="L155">            Weekday.WEDNESDAY,</span>
+<span class="fc" id="L156">            LocalTime.parse(&quot;13:00&quot;),</span>
+<span class="fc" id="L157">            LocalTime.parse(&quot;15:00&quot;),</span>
+<span class="fc" id="L158">            &quot;class789&quot;,</span>
+<span class="fc" id="L159">            &quot;prof999&quot;,</span>
+<span class="fc" id="L160">            &quot;disc999&quot;,</span>
+<span class="fc" id="L161">            &quot;course456&quot;</span>
+        );
+
+<span class="fc" id="L164">        when(eventRepository.findByClassroomId(&quot;class789&quot;)).thenReturn(Arrays.asList(existingEvent));</span>
+        
+        // Act &amp; Assert
+        // Tentando criar evento de 14:00 às 16:00
+<span class="fc" id="L168">        AppError exception = assertThrows(AppError.class, () -&gt; {</span>
+<span class="nc" id="L169">            eventService.create(eventDTO);</span>
+<span class="nc" id="L170">        });</span>
+
+<span class="fc" id="L172">        assertEquals(HttpStatus.CONFLICT, exception.getStatus());</span>
+<span class="fc" id="L173">        verify(eventRepository, never()).save(any(Event.class));</span>
+<span class="fc" id="L174">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve lançar exceção quando sala tem conflito com sobreposição parcial no horário de fim&quot;)
+    void shouldThrowExceptionWhenClassroomHasPartialConflictAtEnd() {
+
+        // Arrange - evento existente de 15:00 às 17:00
+<span class="fc" id="L181">        Event existingEvent = new Event(</span>
+<span class="fc" id="L182">            &quot;Evento Existente&quot;,</span>
+<span class="fc" id="L183">            Weekday.WEDNESDAY,</span>
+<span class="fc" id="L184">            LocalTime.parse(&quot;15:00&quot;),</span>
+<span class="fc" id="L185">            LocalTime.parse(&quot;17:00&quot;),</span>
+<span class="fc" id="L186">            &quot;class789&quot;,</span>
+<span class="fc" id="L187">            &quot;prof999&quot;,</span>
+<span class="fc" id="L188">            &quot;disc999&quot;,</span>
+<span class="fc" id="L189">            &quot;course456&quot;</span>
+        );
+
+<span class="fc" id="L192">        when(eventRepository.findByClassroomId(&quot;class789&quot;)).thenReturn(Arrays.asList(existingEvent));</span>
+        
+        // Act &amp; Assert
+        // Tentando criar evento de 14:00 às 16:00
+<span class="fc" id="L196">        AppError exception = assertThrows(AppError.class, () -&gt; {</span>
+<span class="nc" id="L197">            eventService.create(eventDTO);</span>
+<span class="nc" id="L198">        });</span>
+
+<span class="fc" id="L200">        assertEquals(HttpStatus.CONFLICT, exception.getStatus());</span>
+<span class="fc" id="L201">        verify(eventRepository, never()).save(any(Event.class));</span>
+<span class="fc" id="L202">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve permitir criar evento com a sala em dia diferente mesmo com horário igual&quot;)
+    void shouldAllowEventCreationOnDifferentDaySameTime() {
+
+        // Arrange - evento existente na terça-feira
+<span class="fc" id="L209">        Event existingEvent = new Event(</span>
+<span class="fc" id="L210">            &quot;Evento Existente&quot;,</span>
+<span class="fc" id="L211">            Weekday.TUESDAY, // Dia diferente</span>
+<span class="fc" id="L212">            LocalTime.parse(&quot;14:00&quot;),</span>
+<span class="fc" id="L213">            LocalTime.parse(&quot;16:00&quot;),</span>
+<span class="fc" id="L214">            &quot;class789&quot;,</span>
+<span class="fc" id="L215">            &quot;prof999&quot;,</span>
+<span class="fc" id="L216">            &quot;disc999&quot;,</span>
+<span class="fc" id="L217">            &quot;course456&quot;</span>
+        );
+
+<span class="fc" id="L220">        when(eventRepository.findByClassroomId(&quot;class789&quot;)).thenReturn(Arrays.asList(existingEvent));</span>
+
+<span class="fc" id="L222">        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -&gt; invocation.getArgument(0));</span>
+
+        // Act
+<span class="fc" id="L225">        Event result = eventService.create(eventDTO);</span>
+
+        // Assert
+<span class="fc" id="L228">        assertNotNull(result);</span>
+<span class="fc" id="L229">        verify(eventRepository, times(1)).save(any(Event.class));</span>
+<span class="fc" id="L230">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve permitir criar evento em horário imediatamente após sem sobreposição&quot;)
+    void shouldAllowEventCreationImmediatelyAfter() {
+
+        // Arrange - evento existente de 12:00 às 14:00
+<span class="fc" id="L237">        Event existingEvent = new Event(</span>
+<span class="fc" id="L238">            &quot;Evento Existente&quot;,</span>
+<span class="fc" id="L239">            Weekday.WEDNESDAY,</span>
+<span class="fc" id="L240">            LocalTime.parse(&quot;12:00&quot;),</span>
+<span class="fc" id="L241">            LocalTime.parse(&quot;14:00&quot;), // Termina quando o novo (eventDTO) começa</span>
+<span class="fc" id="L242">            &quot;class789&quot;,</span>
+<span class="fc" id="L243">            &quot;prof999&quot;,</span>
+<span class="fc" id="L244">            &quot;disc999&quot;,</span>
+<span class="fc" id="L245">            &quot;course456&quot;</span>
+        );
+
+<span class="fc" id="L248">        when(eventRepository.findByClassroomId(&quot;class789&quot;)).thenReturn(Arrays.asList(existingEvent));</span>
+
+<span class="fc" id="L250">        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -&gt; invocation.getArgument(0));</span>
+
+        // Act
+<span class="fc" id="L253">        Event result = eventService.create(eventDTO);</span>
+
+        // Assert
+<span class="fc" id="L256">        assertNotNull(result);</span>
+<span class="fc" id="L257">        verify(eventRepository, times(1)).save(any(Event.class));</span>
+<span class="fc" id="L258">    }</span>
+
+        @Test
+    @DisplayName(&quot;Deve permitir criar evento em horário imediatamente antes sem sobreposição&quot;)
+    void shouldAllowEventCreationImmediatelyBefore() {
+
+        // Arrange - evento existente de 12:00 às 14:00
+<span class="fc" id="L265">        Event existingEvent = new Event(</span>
+<span class="fc" id="L266">            &quot;Evento Existente&quot;,</span>
+<span class="fc" id="L267">            Weekday.WEDNESDAY,</span>
+<span class="fc" id="L268">            LocalTime.parse(&quot;16:00&quot;), // Inícia quando o novo (eventDTO) termina</span>
+<span class="fc" id="L269">            LocalTime.parse(&quot;18:00&quot;),</span>
+<span class="fc" id="L270">            &quot;class789&quot;,</span>
+<span class="fc" id="L271">            &quot;prof999&quot;,</span>
+<span class="fc" id="L272">            &quot;disc999&quot;,</span>
+<span class="fc" id="L273">            &quot;course456&quot;</span>
+        );
+
+<span class="fc" id="L276">        when(eventRepository.findByClassroomId(&quot;class789&quot;)).thenReturn(Arrays.asList(existingEvent));</span>
+
+<span class="fc" id="L278">        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -&gt; invocation.getArgument(0));</span>
+
+        // Act
+<span class="fc" id="L281">        Event result = eventService.create(eventDTO);</span>
+
+        // Assert
+<span class="fc" id="L284">        assertNotNull(result);</span>
+<span class="fc" id="L285">        verify(eventRepository, times(1)).save(any(Event.class));</span>
+<span class="fc" id="L286">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Routes.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.infra.routes</a> &gt; <span class="el_source">Routes.java</span></div><h1>Routes.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.infra.routes;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Routes {
+
+    public static final String API                  = &quot;/api&quot;;
+    public static final String V1                   = &quot;/v1&quot;;
+
+    public static final String BY_ID                = &quot;/{id}&quot;;
+    public static final String SEARCH               = &quot;/search&quot;;
+    
+    public static final String ADMIN                = &quot;/admin&quot;;
+    public static final String PROFILE              = &quot;/profile&quot;;
+    public static final String DASHBOARD            = &quot;/dashboard&quot;;
+
+    public static final String CLASSROOMS           = &quot;/classrooms&quot;;
+    public static final String COURSES              = &quot;/courses&quot;;
+    public static final String DISCIPLINES          = &quot;/disciplines&quot;;
+    public static final String EVENTS               = &quot;/events&quot;;
+    public static final String PROFESSORS           = &quot;/professors&quot;;
+    public static final String USERS                = &quot;/users&quot;;
+    public static final String FAVORITES            = &quot;/favorites&quot;;
+    public static final String PASSWORD             = &quot;/password&quot;;
+    public static final String PHOTO                = &quot;/photo&quot;;
+
+    public static final String LOGIN                = &quot;/login&quot;;
+    public static final String HEALTH               = &quot;/health&quot;;
+
+    public static final String BASE_API_ROUTE       = API + V1;
+
+    public static final String ADMIN_ROUTE          = BASE_API_ROUTE + ADMIN;
+    public static final String PROFILE_ROUTE        = BASE_API_ROUTE + PROFILE;
+    public static final String DASHBOARD_ROUTE      = BASE_API_ROUTE + DASHBOARD;
+
+    public static final String ADMIN_CLASSROOMS     = ADMIN_ROUTE + CLASSROOMS;
+    public static final String ADMIN_COURSES        = ADMIN_ROUTE + COURSES;
+    public static final String ADMIN_DISCIPLINES    = ADMIN_ROUTE + DISCIPLINES;
+    public static final String ADMIN_EVENTS         = ADMIN_ROUTE + EVENTS;
+    public static final String ADMIN_PROFESSORS     = ADMIN_ROUTE + PROFESSORS;
+    public static final String ADMIN_USERS          = ADMIN_ROUTE + USERS;
+
+<span class="nc" id="L45">    public static final String[] SWAGGER_ROUTES     = {&quot;/swagger-ui.html&quot;, &quot;/swagger-ui/**&quot;, &quot;/v3/api-docs/**&quot;, &quot;/swagger-resources/**&quot;, &quot;/favicon.ico&quot;};</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

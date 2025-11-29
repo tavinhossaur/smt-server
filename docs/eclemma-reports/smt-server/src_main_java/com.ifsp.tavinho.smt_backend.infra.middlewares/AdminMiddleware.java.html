@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>AdminMiddleware.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.infra.middlewares</a> &gt; <span class="el_source">AdminMiddleware.java</span></div><h1>AdminMiddleware.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.infra.middlewares;
+
+import java.io.IOException;
+
+import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.enums.Authorities;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.ADMIN_ROUTE;
+
+@Component
+<span class="nc" id="L26">public class AdminMiddleware extends OncePerRequestFilter {</span>
+
+    @Override
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        return !request.getRequestURI().startsWith(ADMIN_ROUTE);</span>
+    }
+
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+<span class="nc" id="L35">        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();</span>
+
+<span class="nc bnc" id="L37" title="All 4 branches missed.">        if (authentication == null || !authentication.isAuthenticated()) {</span>
+<span class="nc" id="L38">            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span>
+<span class="nc" id="L39">            response.setContentType(&quot;application/json&quot;);</span>
+
+<span class="nc" id="L41">            ServerApiResponse&lt;Void&gt; apiResponse = ServerApiResponse.&lt;Void&gt;builder()</span>
+<span class="nc" id="L42">                .status(Status.ERROR)</span>
+<span class="nc" id="L43">                .message(&quot;Token is missing or invalid.&quot;)</span>
+<span class="nc" id="L44">                .build();</span>
+
+<span class="nc" id="L46">            response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));</span>
+<span class="nc" id="L47">            response.getWriter().flush();</span>
+<span class="nc" id="L48">            return;</span>
+        }
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (authentication.getPrincipal() instanceof User user) {</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            if (user.getAuthorities().stream().anyMatch(auth -&gt; auth.getAuthority().equals(Authorities.ROLE_ADMIN_USER.name()))) {</span>
+<span class="nc" id="L53">                filterChain.doFilter(request, response);</span>
+<span class="nc" id="L54">                return;</span>
+            }
+        }
+
+<span class="nc" id="L58">        response.setStatus(HttpServletResponse.SC_FORBIDDEN);</span>
+<span class="nc" id="L59">        response.setContentType(&quot;application/json&quot;);</span>
+
+<span class="nc" id="L61">        ServerApiResponse&lt;Void&gt; apiResponse = ServerApiResponse.&lt;Void&gt;builder()</span>
+<span class="nc" id="L62">            .status(Status.ERROR)</span>
+<span class="nc" id="L63">            .message(&quot;Admin privileges required.&quot;)</span>
+<span class="nc" id="L64">            .build();</span>
+
+<span class="nc" id="L66">        response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));</span>
+<span class="nc" id="L67">        response.getWriter().flush();</span>
+<span class="nc" id="L68">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

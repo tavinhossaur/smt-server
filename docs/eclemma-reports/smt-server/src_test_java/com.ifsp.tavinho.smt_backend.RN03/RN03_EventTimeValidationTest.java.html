@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RN03_EventTimeValidationTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.RN03</a> &gt; <span class="el_source">RN03_EventTimeValidationTest.java</span></div><h1>RN03_EventTimeValidationTest.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.RN03;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+
+import com.ifsp.tavinho.smt_backend.application.dtos.input.EventDTO;
+import com.ifsp.tavinho.smt_backend.application.services.admin.EventService;
+import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
+import com.ifsp.tavinho.smt_backend.domain.entities.Course;
+import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
+import com.ifsp.tavinho.smt_backend.domain.entities.Event;
+import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
+import com.ifsp.tavinho.smt_backend.domain.enums.Weekday;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ClassroomRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+
+/**
+ * Testes para a regra de negócio RN03:
+ * A data de início do evento deve ser menor que a data de fim.
+ */
+@ExtendWith(MockitoExtension.class)
+@DisplayName(&quot;RN03 - Validação de Horários de Início e Fim do Evento&quot;)
+<span class="fc" id="L39">class RN03_EventTimeValidationTest {</span>
+
+    @Mock
+    private EventRepository eventRepository;
+    
+    @Mock
+    private ClassroomRepository classroomRepository;
+    
+    @Mock
+    private ProfessorRepository professorRepository;
+    
+    @Mock
+    private CourseRepository courseRepository;
+    
+    @Mock
+    private DisciplineRepository disciplineRepository;
+
+    @InjectMocks
+    private EventService eventService;
+
+    private Professor professor;
+    private Classroom classroom;
+    private Course course;
+    private Discipline discipline;
+
+    @BeforeEach
+    void setUp() {
+<span class="fc" id="L66">        professor = new Professor(&quot;Eveline Baker&quot;, &quot;eveline.baker@mold.com&quot;);</span>
+<span class="fc" id="L67">        professor.setId(&quot;prof111&quot;);</span>
+
+<span class="fc" id="L69">        classroom = new Classroom(&quot;T403&quot;, &quot;T&quot;, &quot;4&quot;, 30, &quot;Sala teste&quot;);</span>
+<span class="fc" id="L70">        classroom.setId(&quot;class111&quot;);</span>
+
+<span class="fc" id="L72">        course = new Course(&quot;Biologia&quot;, &quot;BIO&quot;);</span>
+<span class="fc" id="L73">        course.setId(&quot;course111&quot;);</span>
+
+<span class="fc" id="L75">        discipline = new Discipline(&quot;Microbiologia&quot;, &quot;MBL&quot;, &quot;course111&quot;);</span>
+<span class="fc" id="L76">        discipline.setId(&quot;disc111&quot;);</span>
+
+        // Mock padrão para os repositórios
+        // Retorna um 'Optional' só para garantir a execução e evitar um lançamento de exception no EventService
+<span class="fc" id="L80">        when(classroomRepository.findById(anyString())).thenReturn(Optional.of(classroom));</span>
+<span class="fc" id="L81">        when(professorRepository.findById(anyString())).thenReturn(Optional.of(professor));</span>
+<span class="fc" id="L82">        when(courseRepository.findById(anyString())).thenReturn(Optional.of(course));</span>
+<span class="fc" id="L83">        when(disciplineRepository.findById(anyString())).thenReturn(Optional.of(discipline));</span>
+<span class="fc" id="L84">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve permitir criar evento com horário de início menor que horário de fim&quot;)
+    void shouldAllowEventCreationWithValidTimeRange() {
+
+        // Arrange
+<span class="fc" id="L91">        EventDTO eventDTO = new EventDTO(</span>
+<span class="fc" id="L92">            &quot;Introdução ao reino fungi&quot;,</span>
+<span class="fc" id="L93">            Weekday.FRIDAY,</span>
+<span class="fc" id="L94">            &quot;10:00&quot;,</span>
+<span class="fc" id="L95">            &quot;12:00&quot;,</span>
+<span class="fc" id="L96">            &quot;class111&quot;,</span>
+<span class="fc" id="L97">            &quot;prof111&quot;,</span>
+<span class="fc" id="L98">            &quot;disc111&quot;,</span>
+<span class="fc" id="L99">            &quot;course111&quot;</span>
+        );
+
+        // Simula o retorno da entidade do banco pegando o mesmo argumento enviado no método
+<span class="fc" id="L103">        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -&gt; invocation.getArgument(0));</span>
+
+        // Act
+<span class="fc" id="L106">        Event result = eventService.create(eventDTO);</span>
+
+        // Assert
+<span class="fc" id="L109">        assertNotNull(result);</span>
+<span class="fc" id="L110">        assertTrue(result.getStartTime().isBefore(result.getEndTime()));</span>
+<span class="fc" id="L111">        verify(eventRepository, times(1)).save(any(Event.class)); // Verifica que o save foi chamado uma vez</span>
+<span class="fc" id="L112">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve lançar exceção quando horário de início é igual ao horário de fim&quot;)
+    void shouldThrowExceptionWhenStartTimeEqualsEndTime() {
+
+        // Arrange
+<span class="fc" id="L119">        EventDTO eventDTO = new EventDTO(</span>
+<span class="fc" id="L120">            &quot;Evento Inválido&quot;,</span>
+<span class="fc" id="L121">            Weekday.FRIDAY,</span>
+<span class="fc" id="L122">            &quot;10:00&quot;,</span>
+<span class="fc" id="L123">            &quot;10:00&quot;, // Mesmo horário</span>
+<span class="fc" id="L124">            &quot;class111&quot;,</span>
+<span class="fc" id="L125">            &quot;prof111&quot;,</span>
+<span class="fc" id="L126">            &quot;disc111&quot;,</span>
+<span class="fc" id="L127">            &quot;course111&quot;</span>
+        );
+
+        // Act &amp; Assert
+<span class="fc" id="L131">        AppError exception = assertThrows(AppError.class, () -&gt; {</span>
+<span class="nc" id="L132">            eventService.create(eventDTO);</span>
+<span class="nc" id="L133">        });</span>
+
+<span class="fc" id="L135">        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());</span>
+<span class="fc" id="L136">        assertTrue(exception.getMessage().equals(&quot;The start time can't be the same as the end time.&quot;));</span>
+<span class="fc" id="L137">        verify(eventRepository, never()).save(any(Event.class)); // Verifica se nunca chamou o método save do repository</span>
+<span class="fc" id="L138">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve lançar exceção quando horário de início é maior que horário de fim&quot;)
+    void shouldThrowExceptionWhenStartTimeIsAfterEndTime() {
+
+        // Arrange
+<span class="fc" id="L145">        EventDTO eventDTO = new EventDTO(</span>
+<span class="fc" id="L146">            &quot;Evento Inválido&quot;,</span>
+<span class="fc" id="L147">            Weekday.FRIDAY,</span>
+<span class="fc" id="L148">            &quot;14:00&quot;,</span>
+<span class="fc" id="L149">            &quot;12:00&quot;, // Fim antes do início</span>
+<span class="fc" id="L150">            &quot;class111&quot;,</span>
+<span class="fc" id="L151">            &quot;prof111&quot;,</span>
+<span class="fc" id="L152">            &quot;disc111&quot;,</span>
+<span class="fc" id="L153">            &quot;course111&quot;</span>
+        );
+
+        // Act &amp; Assert
+<span class="fc" id="L157">        AppError exception = assertThrows(AppError.class, () -&gt; {</span>
+<span class="nc" id="L158">            eventService.create(eventDTO);</span>
+<span class="nc" id="L159">        });</span>
+
+<span class="fc" id="L161">        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());</span>
+<span class="fc" id="L162">        assertTrue(exception.getMessage().equals(&quot;The start time and end time of the event are retroactive to each other.&quot;));</span>
+<span class="fc" id="L163">        verify(eventRepository, never()).save(any(Event.class));</span>
+<span class="fc" id="L164">    }</span>
+
+    @Test
+    @DisplayName(&quot;Deve permitir criar evento com diferença mínima de tempo (1 minuto)&quot;)
+    void shouldAllowEventCreationWithMinimalTimeDifference() {
+
+        // Arrange
+<span class="fc" id="L171">        EventDTO eventDTO = new EventDTO(</span>
+<span class="fc" id="L172">            &quot;Evento Curto&quot;,</span>
+<span class="fc" id="L173">            Weekday.FRIDAY,</span>
+<span class="fc" id="L174">            &quot;10:00&quot;,</span>
+<span class="fc" id="L175">            &quot;10:01&quot;, // Apenas 1 minuto de diferença</span>
+<span class="fc" id="L176">            &quot;class111&quot;,</span>
+<span class="fc" id="L177">            &quot;prof111&quot;,</span>
+<span class="fc" id="L178">            &quot;disc111&quot;,</span>
+<span class="fc" id="L179">            &quot;course111&quot;</span>
+        );
+
+<span class="fc" id="L182">        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -&gt; invocation.getArgument(0));</span>
+
+        // Act
+<span class="fc" id="L185">        Event result = eventService.create(eventDTO);</span>
+
+        // Assert
+<span class="fc" id="L188">        assertNotNull(result);</span>
+<span class="fc" id="L189">        assertTrue(result.getStartTime().isBefore(result.getEndTime()));</span>
+<span class="fc" id="L190">        verify(eventRepository, times(1)).save(any(Event.class));</span>
+<span class="fc" id="L191">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>
