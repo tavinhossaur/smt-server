@@ -3,6 +3,7 @@ package com.ifsp.tavinho.smt_backend.infra.database;
 import com.ifsp.tavinho.smt_backend.application.dtos.input.UserDTO;
 import com.ifsp.tavinho.smt_backend.application.services.admin.UserService;
 import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
 
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DatabaseSeeder implements CommandLineRunner {
 
+    private final UserRepository userRepository;
+
     private final UserService userService;
     private final ApplicationProperties applicationProperties;
 
@@ -25,7 +28,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     private User seedAdminUser() {
-        if (this.userService.findByEmail("admin@admin.com") != null) return null;
+        if (this.userRepository.findByEmail("admin@admin.com") != null) return null;
         return this.userService.create(new UserDTO("Admin", "admin@admin.com", null, true));
     }
 }

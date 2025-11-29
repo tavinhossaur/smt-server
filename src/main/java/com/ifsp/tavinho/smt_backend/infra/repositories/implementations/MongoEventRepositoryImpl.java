@@ -10,6 +10,7 @@ import com.ifsp.tavinho.smt_backend.domain.enums.Weekday;
 import com.ifsp.tavinho.smt_backend.domain.repositories.EventAggregationRepository;
 
 import org.bson.Document;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import lombok.RequiredArgsConstructor;
 
 @Repository
+@Primary
 @RequiredArgsConstructor
 public class MongoEventRepositoryImpl implements EventAggregationRepository {
 
