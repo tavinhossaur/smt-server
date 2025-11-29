@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.infra.exceptions</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.infra.exceptions;
+
+import org.apache.catalina.connector.ClientAbortException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.FieldError;
+
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
+
+@ControllerAdvice
+<span class="nc" id="L21">public class GlobalExceptionHandler {</span>
+
+    @ExceptionHandler(AppError.class)
+    public ResponseEntity&lt;ServerApiResponse&lt;Void&gt;&gt; handleAppError(AppError error) {
+<span class="nc" id="L25">        return ResponseEntity.status(error.getStatus())</span>
+<span class="nc" id="L26">            .body(</span>
+<span class="nc" id="L27">                ServerApiResponse.&lt;Void&gt;builder()</span>
+<span class="nc" id="L28">                    .status(Status.ERROR)</span>
+<span class="nc" id="L29">                    .error(error.getStatus().getReasonPhrase())</span>
+<span class="nc" id="L30">                    .message(error.getMessage())</span>
+<span class="nc" id="L31">                    .build()</span>
+            );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ServerApiResponse&lt;Void&gt;&gt; handleValidationExceptions(MethodArgumentNotValidException ex) {
+<span class="nc" id="L37">        StringBuilder errorMsg = new StringBuilder();</span>
+
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (FieldError error : ex.getBindingResult().getFieldErrors()) {</span>
+<span class="nc" id="L40">            errorMsg.append(error.getField())</span>
+<span class="nc" id="L41">                    .append(&quot;: &quot;)</span>
+<span class="nc" id="L42">                    .append(error.getDefaultMessage())</span>
+<span class="nc" id="L43">                    .append(&quot;; &quot;);</span>
+        }
+
+<span class="nc" id="L46">        return ResponseEntity.badRequest().body(</span>
+<span class="nc" id="L47">            ServerApiResponse.&lt;Void&gt;builder()</span>
+<span class="nc" id="L48">                .status(Status.ERROR)</span>
+<span class="nc" id="L49">                .error(&quot;Object validation error&quot;)</span>
+<span class="nc" id="L50">                .message(errorMsg.toString().strip())</span>
+<span class="nc" id="L51">                .build()</span>
+        );
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity&lt;ServerApiResponse&lt;Void&gt;&gt; handleEntityNotFoundException(Exception ex) {
+<span class="nc" id="L57">        return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L58">            .body(</span>
+<span class="nc" id="L59">                ServerApiResponse.&lt;Void&gt;builder()</span>
+<span class="nc" id="L60">                    .status(Status.ERROR)</span>
+<span class="nc" id="L61">                    .error(&quot;Entity not found&quot;)</span>
+<span class="nc" id="L62">                    .message(ex.getMessage())</span>
+<span class="nc" id="L63">                    .build()</span>
+            );
+    }
+
+    @ExceptionHandler(ClientAbortException.class)
+    public ResponseEntity&lt;ServerApiResponse&lt;Void&gt;&gt; handleClientAbortException(Exception ex) {
+<span class="nc" id="L69">        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)</span>
+<span class="nc" id="L70">            .body(</span>
+<span class="nc" id="L71">                ServerApiResponse.&lt;Void&gt;builder()</span>
+<span class="nc" id="L72">                    .status(Status.ERROR)</span>
+<span class="nc" id="L73">                    .error(&quot;Payload too large&quot;)</span>
+<span class="nc" id="L74">                    .message(ex.getMessage())</span>
+<span class="nc" id="L75">                    .build()</span>
+            );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity&lt;ServerApiResponse&lt;Void&gt;&gt; handleHttpMessageNotReadable(Exception ex) {
+<span class="nc" id="L81">        return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L82">            .body(</span>
+<span class="nc" id="L83">                ServerApiResponse.&lt;Void&gt;builder()</span>
+<span class="nc" id="L84">                    .status(Status.ERROR)</span>
+<span class="nc" id="L85">                    .error(&quot;Invalid request body&quot;)</span>
+<span class="nc" id="L86">                    .message(ex.getMessage())</span>
+<span class="nc" id="L87">                    .build()</span>
+            );
+    }
+
+    @ExceptionHandler({ AuthenticationException.class, JWTVerificationException.class })
+    public ResponseEntity&lt;ServerApiResponse&lt;String&gt;&gt; handleAuthenticationException(Exception ex) {
+<span class="nc" id="L93">        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span>
+<span class="nc" id="L94">            .body(</span>
+<span class="nc" id="L95">                ServerApiResponse.&lt;String&gt;builder()</span>
+<span class="nc" id="L96">                    .status(Status.ERROR)</span>
+<span class="nc" id="L97">                    .error(&quot;Authentication failed&quot;)</span>
+<span class="nc" id="L98">                    .message(ex.getMessage())</span>
+<span class="nc" id="L99">                    .build()</span>
+            );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ServerApiResponse&lt;Void&gt;&gt; handleGenericError(Exception ex) {
+<span class="nc" id="L105">        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L106">            .body(</span>
+<span class="nc" id="L107">                ServerApiResponse.&lt;Void&gt;builder()</span>
+<span class="nc" id="L108">                    .status(Status.ERROR)</span>
+<span class="nc" id="L109">                    .error(&quot;Internal Server Error&quot;)</span>
+<span class="nc" id="L110">                    .message(ex.getMessage())</span>
+<span class="nc" id="L111">                    .build()</span>
+            );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

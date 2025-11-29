@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ProfessorService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.application.services.admin</a> &gt; <span class="el_source">ProfessorService.java</span></div><h1>ProfessorService.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.application.services.admin;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import com.ifsp.tavinho.smt_backend.application.dtos.input.ProfessorDTO;
+import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
+import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
+import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ProfessorService {
+
+    private final ProfessorRepository professorRepository;
+    private final EventRepository eventRepository;
+
+    public Professor create(ProfessorDTO input) {
+<span class="nc" id="L25">        return this.professorRepository.save(new Professor(input.name(), input.email()));</span>
+    }
+
+    public Professor update(ProfessorDTO input, String id) {
+<span class="nc" id="L29">        Professor existing = this.find(id);</span>
+
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (input.name() != null) existing.setName(input.name());</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (input.email() != null) existing.setEmail(input.email());</span>
+
+<span class="nc" id="L34">        return this.professorRepository.save(existing);</span>
+    }
+
+    public Boolean delete(String id) {
+<span class="nc" id="L38">        Professor professor = this.find(id);</span>
+
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (this.eventRepository.existsByProfessorId(professor.getId())) {</span>
+<span class="nc" id="L41">            throw new AppError(&quot;Professor could not be deleted because it is linked to an event.&quot;, HttpStatus.CONFLICT);</span>
+        }
+
+<span class="nc" id="L44">        this.professorRepository.delete(professor);</span>
+<span class="nc" id="L45">        return true;</span>
+    }
+
+    public Professor find(String id) {
+<span class="nc" id="L49">        return this.professorRepository.findById(id).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Professor not found with id: &quot; + id));</span>
+    }
+
+    public List&lt;Professor&gt; list() {
+<span class="nc" id="L53">        return this.professorRepository.findAllByOrderByNameAsc();</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

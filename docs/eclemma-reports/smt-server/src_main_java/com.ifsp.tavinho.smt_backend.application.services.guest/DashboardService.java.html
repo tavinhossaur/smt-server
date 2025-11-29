@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DashboardService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.application.services.guest</a> &gt; <span class="el_source">DashboardService.java</span></div><h1>DashboardService.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.application.services.guest;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import com.ifsp.tavinho.smt_backend.application.dtos.output.ClassroomWithEventsDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.DisciplineDetailsResponseSimplifiedDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.EventDetailsResponseDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.EventDetailsResponseSimplifiedDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.ProfessorWithEventsDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.SearchQueryResponseDTO;
+import com.ifsp.tavinho.smt_backend.domain.entities.Classroom;
+import com.ifsp.tavinho.smt_backend.domain.entities.Course;
+import com.ifsp.tavinho.smt_backend.domain.entities.Discipline;
+import com.ifsp.tavinho.smt_backend.domain.entities.Event;
+import com.ifsp.tavinho.smt_backend.domain.entities.Professor;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ClassroomRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.CourseRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineAggregationRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.DisciplineRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.EventAggregationRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.EventRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
+import com.ifsp.tavinho.smt_backend.domain.enums.Weekday;
+import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class DashboardService {
+
+    private final EventRepository eventRepository;
+    private final ClassroomRepository classroomRepository;
+    private final ProfessorRepository professorRepository;
+    private final CourseRepository courseRepository;
+    private final DisciplineRepository disciplineRepository;
+
+    private final EventAggregationRepository eventAggregationRepository;
+    private final DisciplineAggregationRepository disciplineAggregationRepository;
+
+    public EventDetailsResponseDTO getDetailedEventInfo(String id) {
+<span class="nc" id="L50">        Event event = this.eventRepository.findById(id).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Event not found with id: &quot; + id));</span>
+<span class="nc" id="L51">        Classroom classroom = this.classroomRepository.findById(event.getClassroomId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Classroom not found with id: &quot; + event.getClassroomId()));</span>
+<span class="nc" id="L52">        Professor professor = this.professorRepository.findById(event.getProfessorId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Professor not found with id: &quot; + event.getProfessorId()));</span>
+<span class="nc" id="L53">        Course course = this.courseRepository.findById(event.getCourseId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Course not found with id: &quot; + event.getCourseId()));</span>
+<span class="nc" id="L54">        Discipline discipline = this.disciplineRepository.findById(event.getDisciplineId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Discipline not found with id: &quot; + event.getDisciplineId()));</span>
+
+<span class="nc" id="L56">        return new EventDetailsResponseDTO(</span>
+<span class="nc" id="L57">            event.getId(),</span>
+<span class="nc" id="L58">            event.getDescription(),</span>
+<span class="nc" id="L59">            event.getWeekday(),</span>
+<span class="nc" id="L60">            event.getStartTime(),</span>
+<span class="nc" id="L61">            event.getEndTime(),</span>
+<span class="nc" id="L62">            classroom,</span>
+<span class="nc" id="L63">            professor,</span>
+<span class="nc" id="L64">            course,</span>
+<span class="nc" id="L65">            discipline</span>
+        );
+    }
+    
+    public ProfessorWithEventsDTO getProfessorWithWeekEventsList(String id) {
+<span class="nc" id="L70">        Professor professor = this.professorRepository.findById(id).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Professor not found with id: &quot; + id));</span>
+        
+<span class="nc" id="L72">        List&lt;Event&gt; professorEvents = this.eventRepository.findByProfessorId(professor.getId());</span>
+
+<span class="nc" id="L74">        return new ProfessorWithEventsDTO(</span>
+<span class="nc" id="L75">            professor.getId(),</span>
+<span class="nc" id="L76">            professor.getName(),</span>
+<span class="nc" id="L77">            professor.getEmail(),</span>
+<span class="nc" id="L78">            professor.getCreatedAt(),</span>
+<span class="nc" id="L79">            professor.getUpdatedAt(),</span>
+<span class="nc" id="L80">            professorEvents</span>
+        );
+    }
+
+    public List&lt;EventDetailsResponseSimplifiedDTO&gt; listEventsWithDetailedInfo() {
+<span class="nc" id="L85">        return this.eventAggregationRepository.findAllWithMinimalDetails();</span>
+    }
+
+    public List&lt;DisciplineDetailsResponseSimplifiedDTO&gt; listDisciplinesWithCourses() {
+<span class="nc" id="L89">        return this.disciplineAggregationRepository.findAllWithCourses();</span>
+    }
+
+    public List&lt;ProfessorWithEventsDTO&gt; getProfessorsWithWeekEventsListFromDayAndCourse(String weekdayName, String courseId) {
+<span class="nc bnc" id="L93" title="All 8 branches missed.">        if (weekdayName.isBlank() || weekdayName == null || courseId.isBlank() || courseId == null) {</span>
+<span class="nc" id="L94">            throw new AppError(&quot;Weekday and course values must be provided.&quot;, HttpStatus.BAD_REQUEST);</span>
+        }
+
+<span class="nc" id="L97">        Weekday weekday = Weekday.valueOf(weekdayName.toUpperCase());</span>
+
+<span class="nc" id="L99">        this.courseRepository.findById(courseId).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Course not found with id: &quot; + courseId));</span>
+
+<span class="nc" id="L101">        List&lt;Event&gt; eventsList = this.eventRepository.findByWeekdayAndCourseId(weekday.name(), courseId);</span>
+    
+<span class="nc" id="L103">        Map&lt;String, List&lt;Event&gt;&gt; eventsByProfessor = eventsList.stream().collect(Collectors.groupingBy(Event::getProfessorId));</span>
+    
+<span class="nc" id="L105">        List&lt;ProfessorWithEventsDTO&gt; professorsWithEventsList = new ArrayList&lt;&gt;();</span>
+    
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        for (Map.Entry&lt;String, List&lt;Event&gt;&gt; entry : eventsByProfessor.entrySet()) {</span>
+<span class="nc" id="L108">            String professorId = entry.getKey();</span>
+<span class="nc" id="L109">            List&lt;Event&gt; professorEvents = entry.getValue();</span>
+    
+<span class="nc" id="L111">            Optional&lt;Professor&gt; professor = this.professorRepository.findById(professorId);</span>
+            
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (professor.isEmpty()) continue;</span>
+    
+<span class="nc" id="L115">            professorsWithEventsList.add(</span>
+<span class="nc" id="L116">                new ProfessorWithEventsDTO(</span>
+<span class="nc" id="L117">                    professor.get().getId(),</span>
+<span class="nc" id="L118">                    professor.get().getName(),</span>
+<span class="nc" id="L119">                    professor.get().getEmail(),</span>
+<span class="nc" id="L120">                    professor.get().getCreatedAt(),</span>
+<span class="nc" id="L121">                    professor.get().getUpdatedAt(),</span>
+<span class="nc" id="L122">                    professorEvents</span>
+                )
+            );
+        }
+    
+<span class="nc" id="L127">        return professorsWithEventsList;</span>
+    }
+
+    public ClassroomWithEventsDTO getClassroomWithEvents(String id) {
+<span class="nc" id="L131">        Classroom classroom = this.classroomRepository.findById(id).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Classroom not found with id: &quot; + id));</span>
+
+<span class="nc" id="L133">        List&lt;Event&gt; classroomEvents = this.eventRepository.findByClassroomId(classroom.getId());</span>
+
+<span class="nc" id="L135">        return new ClassroomWithEventsDTO(</span>
+<span class="nc" id="L136">            classroom.getId(),</span>
+<span class="nc" id="L137">            classroom.getDescription(),</span>
+<span class="nc" id="L138">            classroom.getBlock(),</span>
+<span class="nc" id="L139">            classroom.getFloor(),</span>
+<span class="nc" id="L140">            classroom.getCapacity(),</span>
+<span class="nc" id="L141">            classroom.getObservation(),</span>
+<span class="nc" id="L142">            classroom.getCreatedAt(),</span>
+<span class="nc" id="L143">            classroom.getUpdatedAt(),</span>
+<span class="nc" id="L144">            classroomEvents</span>
+        );
+    }
+
+    public List&lt;Classroom&gt; getClassroomsFromFloor(String floor) {
+<span class="nc bnc" id="L149" title="All 4 branches missed.">        if (floor.isBlank() || floor == null) throw new AppError(&quot;Floor value must be provided.&quot;, HttpStatus.BAD_REQUEST);</span>
+<span class="nc" id="L150">        return this.classroomRepository.findAllByFloor(floor);</span>
+    }
+
+    public List&lt;Course&gt; getAllCoursesList() {
+<span class="nc" id="L154">        return this.courseRepository.findAll();</span>
+    }
+
+    public SearchQueryResponseDTO searchProfessorsAndClassrooms(String query) {
+<span class="nc bnc" id="L158" title="All 4 branches missed.">        if (query == null || query.isBlank()) throw new AppError(&quot;Query term must be provided.&quot;, HttpStatus.BAD_REQUEST);</span>
+<span class="nc" id="L159">        return new SearchQueryResponseDTO(</span>
+<span class="nc" id="L160">            this.professorRepository.searchProfessors(query),</span>
+<span class="nc" id="L161">            this.classroomRepository.searchClassrooms(query)</span>
+        );
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

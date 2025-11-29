@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ProfileController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.infra.controllers.guest</a> &gt; <span class="el_source">ProfileController.java</span></div><h1>ProfileController.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.infra.controllers.guest;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ifsp.tavinho.smt_backend.shared.responses.ServerApiResponse;
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdateFavoritesDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdatePasswordDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdateProfilePhotoDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.ProfilePhotoResponseDTO;
+import com.ifsp.tavinho.smt_backend.application.services.guest.ProfileService;
+import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
+import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.enums.Status;
+
+import jakarta.validation.Valid;
+
+import lombok.RequiredArgsConstructor;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PROFILE_ROUTE;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PASSWORD;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.FAVORITES;
+import static com.ifsp.tavinho.smt_backend.infra.routes.Routes.PHOTO;
+
+@Tag(name = &quot;Profile (Guest)&quot;, description = &quot;Endpoints for managing the authenticated user's profile.&quot;)
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(PROFILE_ROUTE)
+public class ProfileController {
+    
+    private final ProfileService profileService;
+
+    @Operation(summary = &quot;Get current user&quot;, description = &quot;Retrieves the currently authenticated user's profile.&quot;)
+    @ApiResponses({
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;User profile successfully returned.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = User.class))),
+        @ApiResponse(responseCode = &quot;401&quot;, description = &quot;Unauthorized.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;404&quot;, description = &quot;User not found.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Internal server error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping
+    public ResponseEntity&lt;User&gt; findCurrentUser() {
+<span class="nc" id="L55">        return ResponseEntity.ok(this.profileService.findCurrentUser());</span>
+    }
+
+    @Operation(summary = &quot;Get current user profile photo&quot;, description = &quot;Retrieves the currently authenticated user's profile photo.&quot;)
+    @ApiResponses({
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;User profile photo successfully returned.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ProfilePhotoResponseDTO.class))),
+        @ApiResponse(responseCode = &quot;401&quot;, description = &quot;Unauthorized.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;404&quot;, description = &quot;User not found.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Internal server error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(PHOTO)
+    public ResponseEntity&lt;ProfilePhotoResponseDTO&gt; findCurrentUserProfilePhoto() {
+<span class="nc" id="L67">        return ResponseEntity.ok(this.profileService.findCurrentUserProfilePhoto());</span>
+    }
+
+    @Operation(summary = &quot;List favorites&quot;, description = &quot;Lists all favorites of the authenticated user.&quot;)
+    @ApiResponses({
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Favorites successfully returned.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(type = &quot;array&quot;, implementation = Favorite.class))),
+        @ApiResponse(responseCode = &quot;401&quot;, description = &quot;Unauthorized.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Internal server error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @GetMapping(FAVORITES)
+    public ResponseEntity&lt;List&lt;Favorite&gt;&gt; listFavorites() {
+<span class="nc" id="L78">        return ResponseEntity.ok(this.profileService.listFavorites()); </span>
+    }
+
+    @Operation(summary = &quot;Update favorites&quot;, description = &quot;Updates the list of favorites for the authenticated user.&quot;)
+    @ApiResponses({
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Favorites updated successfully.&quot;),
+        @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid data or validation error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;401&quot;, description = &quot;Unauthorized.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Internal server error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @PatchMapping(FAVORITES)
+    public ResponseEntity&lt;ServerApiResponse&lt;Boolean&gt;&gt; updateFavorites(@RequestBody @Valid UpdateFavoritesDTO input) {
+<span class="nc" id="L90">        return ResponseEntity.ok(</span>
+<span class="nc" id="L91">            ServerApiResponse.&lt;Boolean&gt;builder()</span>
+<span class="nc" id="L92">                .status(Status.SUCCESS)</span>
+<span class="nc" id="L93">                .message(&quot;Favorites updated successfully.&quot;)</span>
+<span class="nc" id="L94">                .data(this.profileService.updateFavorites(input))</span>
+<span class="nc" id="L95">            .build()</span>
+        );
+    }
+
+    @Operation(summary = &quot;Update password&quot;, description = &quot;Updates the password for the authenticated user.&quot;)
+    @ApiResponses({
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Password updated successfully.&quot;),
+        @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid data or validation error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;401&quot;, description = &quot;Unauthorized.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Internal server error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @PatchMapping(PASSWORD)
+    public ResponseEntity&lt;ServerApiResponse&lt;Boolean&gt;&gt; updatePassword(@RequestBody @Valid UpdatePasswordDTO input) { 
+<span class="nc" id="L108">        return ResponseEntity.ok(</span>
+<span class="nc" id="L109">            ServerApiResponse.&lt;Boolean&gt;builder()</span>
+<span class="nc" id="L110">                .status(Status.SUCCESS)</span>
+<span class="nc" id="L111">                .message(&quot;Password updated successfully.&quot;)</span>
+<span class="nc" id="L112">                .data(this.profileService.updatePassword(input))</span>
+<span class="nc" id="L113">            .build()</span>
+        );
+    }
+
+    @Operation(summary = &quot;Update profile photo&quot;, description = &quot;Updates the profile photo for the authenticated user.&quot;)
+    @ApiResponses({
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Profile photo updated successfully.&quot;),
+        @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid data or validation error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;401&quot;, description = &quot;Unauthorized.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class))),
+        @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Internal server error.&quot;, content = @Content(mediaType = &quot;application/json&quot;, schema = @Schema(implementation = ServerApiResponse.class)))
+    })
+    @PatchMapping(PHOTO)
+    public ResponseEntity&lt;ServerApiResponse&lt;Boolean&gt;&gt; updateProfilePhoto(@RequestBody @Valid UpdateProfilePhotoDTO input) { 
+<span class="nc" id="L126">        return ResponseEntity.ok(</span>
+<span class="nc" id="L127">            ServerApiResponse.&lt;Boolean&gt;builder()</span>
+<span class="nc" id="L128">                .status(Status.SUCCESS)</span>
+<span class="nc" id="L129">                .message(&quot;Profile photo updated successfully.&quot;)</span>
+<span class="nc" id="L130">                .data(this.profileService.updateProfilePhoto(input))</span>
+<span class="nc" id="L131">            .build()</span>
+        );
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

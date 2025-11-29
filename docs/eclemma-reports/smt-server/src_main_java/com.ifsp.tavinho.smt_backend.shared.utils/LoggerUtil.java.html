@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>LoggerUtil.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.shared.utils</a> &gt; <span class="el_source">LoggerUtil.java</span></div><h1>LoggerUtil.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.shared.utils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public final class LoggerUtil {
+    
+<span class="nc" id="L8">    private static final Logger LOGGER = LoggerFactory.getLogger(Logger.class);</span>
+
+    private LoggerUtil() {
+        super();
+    }
+
+    synchronized public static void info(final String message) {
+<span class="nc" id="L15">        LOGGER.info(message);</span>
+<span class="nc" id="L16">    }</span>
+
+    synchronized public static void error(final String message) {
+<span class="nc" id="L19">        LOGGER.error(message);</span>
+<span class="nc" id="L20">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

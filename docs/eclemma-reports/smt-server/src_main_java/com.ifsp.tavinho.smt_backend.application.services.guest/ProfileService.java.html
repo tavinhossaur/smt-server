@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ProfileService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.application.services.guest</a> &gt; <span class="el_source">ProfileService.java</span></div><h1>ProfileService.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.application.services.guest;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdateFavoritesDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdatePasswordDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UpdateProfilePhotoDTO;
+import com.ifsp.tavinho.smt_backend.application.dtos.output.ProfilePhotoResponseDTO;
+import com.ifsp.tavinho.smt_backend.domain.entities.Favorite;
+import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.repositories.FavoriteRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.ProfessorRepository;
+import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
+import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ProfileService {
+
+    private final PasswordEncoder passwordEncoder;
+    
+    private final UserRepository userRepository;
+    private final FavoriteRepository favoriteRepository;
+    private final ProfessorRepository professorRepository;
+
+    public User findCurrentUser() {
+<span class="nc" id="L36">        return this.userRepository.findById(getAuthenticatedUserId()).orElseThrow(() -&gt; new EntityNotFoundException(&quot;Current user could not be found&quot;));</span>
+    }
+
+    public ProfilePhotoResponseDTO findCurrentUserProfilePhoto() {
+<span class="nc" id="L40">        return new ProfilePhotoResponseDTO(this.findCurrentUser().getProfilePhoto());</span>
+    }
+
+    public List&lt;Favorite&gt; listFavorites() {
+<span class="nc" id="L44">        return this.favoriteRepository.findAllByUserId(getAuthenticatedUserId());</span>
+    }
+
+    public Boolean updateFavorites(UpdateFavoritesDTO input) {
+<span class="nc" id="L48">        String professorId = input.professorId();</span>
+
+<span class="nc bnc" id="L50" title="All 4 branches missed.">        if (professorId.isBlank() || professorId == null) {</span>
+<span class="nc" id="L51">            throw new AppError(&quot;Professor id must be provided.&quot;, HttpStatus.BAD_REQUEST);</span>
+        }
+
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (!this.professorRepository.existsById(professorId)) throw new EntityNotFoundException(&quot;Professor not found with id: &quot; + professorId);</span>
+
+<span class="nc" id="L56">        Optional&lt;Favorite&gt; favorite = this.favoriteRepository.findByUserIdAndProfessorId(getAuthenticatedUserId(), professorId);</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (favorite.isPresent()) this.favoriteRepository.delete(favorite.get());</span>
+<span class="nc" id="L59">        else this.favoriteRepository.save(new Favorite(getAuthenticatedUserId(), professorId));</span>
+
+<span class="nc" id="L61">        return true;</span>
+    }
+
+    public Boolean updatePassword(UpdatePasswordDTO input) {
+<span class="nc" id="L65">        User user = this.findCurrentUser();</span>
+        
+<span class="nc bnc" id="L67" title="All 8 branches missed.">        if (input.currentPassword().isBlank() || input.currentPassword() == null || input.newPassword().isBlank() || input.newPassword() == null) {</span>
+<span class="nc" id="L68">            throw new AppError(&quot;Current and new passwords must be provided.&quot;, HttpStatus.BAD_REQUEST);</span>
+        }
+
+<span class="nc" id="L71">        String currentPassword = input.currentPassword();</span>
+<span class="nc" id="L72">        String newPassword = input.newPassword();</span>
+
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (!this.passwordEncoder.matches(currentPassword, user.getPassword())) {</span>
+<span class="nc" id="L75">            throw new AppError(&quot;Current password is incorrect.&quot;, HttpStatus.BAD_REQUEST);</span>
+        }
+
+<span class="nc" id="L78">        user.setPassword(this.passwordEncoder.encode(newPassword));</span>
+
+<span class="nc" id="L80">        this.userRepository.save(user);</span>
+
+<span class="nc" id="L82">        return true;</span>
+    }
+
+    public Boolean updateProfilePhoto(UpdateProfilePhotoDTO input) {
+<span class="nc" id="L86">        User user = this.findCurrentUser();</span>
+
+<span class="nc" id="L88">        String encodedBase64Image = input.encodedBase64Image();</span>
+
+<span class="nc bnc" id="L90" title="All 4 branches missed.">        if (encodedBase64Image.isBlank() || encodedBase64Image == null) {</span>
+<span class="nc" id="L91">            throw new AppError(&quot;Photo must be provided.&quot;, HttpStatus.BAD_REQUEST);</span>
+        }
+
+<span class="nc" id="L94">        user.setProfilePhoto(encodedBase64Image);</span>
+
+<span class="nc" id="L96">        this.userRepository.save(user);</span>
+
+<span class="nc" id="L98">        return true;</span>
+    }
+
+    private String getAuthenticatedUserId() {
+<span class="nc" id="L102">        return ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>

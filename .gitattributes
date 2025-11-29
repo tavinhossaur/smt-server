@@ -1,2 +1,6 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+
+# Ignorar relatórios do EclEmma na contagem de linguagens
+docs/eclemma-reports/** linguist-vendored=true
+*.html linguist-documentation

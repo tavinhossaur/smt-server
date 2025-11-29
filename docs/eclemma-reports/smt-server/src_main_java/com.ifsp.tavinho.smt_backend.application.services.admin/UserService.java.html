@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smt-server (Nov 28, 2025 8:36:18 PM)</a> &gt; <a href="../../index.html" class="el_group">smt-server</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.ifsp.tavinho.smt_backend.application.services.admin</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.ifsp.tavinho.smt_backend.application.services.admin;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.ifsp.tavinho.smt_backend.application.dtos.input.UserDTO;
+import com.ifsp.tavinho.smt_backend.domain.entities.User;
+import com.ifsp.tavinho.smt_backend.domain.enums.Authorities;
+import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
+import com.ifsp.tavinho.smt_backend.infra.exceptions.EntityNotFoundException;
+import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
+import com.ifsp.tavinho.smt_backend.shared.errors.AppError;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final ApplicationProperties applicationProperties;
+
+    public User create(UserDTO input) {
+<span class="nc" id="L28">        String fullName = input.fullName();</span>
+<span class="nc" id="L29">        String email = input.email();</span>
+<span class="nc" id="L30">        String password = applicationProperties.getDefaultPassword();</span>
+<span class="nc" id="L31">        String enrollment = input.enrollment();</span>
+<span class="nc" id="L32">        Boolean isAdmin = input.isAdmin();</span>
+
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (this.repository.findByEmail(email).isPresent()) {</span>
+<span class="nc" id="L35">            throw new AppError(&quot;This email has already been taken.&quot;, HttpStatus.BAD_REQUEST);</span>
+        } 
+
+<span class="nc" id="L38">        User user = new User(fullName, email, enrollment, this.passwordEncoder.encode(password));</span>
+
+<span class="nc" id="L40">        user.getAuthoritiesList().add(Authorities.ROLE_DEFAULT_USER);</span>
+
+<span class="nc bnc" id="L42" title="All 4 branches missed.">        if (isAdmin != null &amp;&amp; isAdmin) user.getAuthoritiesList().add(Authorities.ROLE_ADMIN_USER);</span>
+
+<span class="nc" id="L44">        return this.repository.save(user);</span>
+    }
+
+    public User update(UserDTO input, String id) {
+<span class="nc" id="L48">        User existing = this.find(id);</span>
+        
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (input.fullName() != null) existing.setFullName(input.fullName());</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (input.email() != null) existing.setEmail(input.email());</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (input.enrollment() != null) existing.setEnrollment(input.enrollment());</span>
+        
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (input.isAdmin() != null) {</span>
+<span class="nc bnc" id="L55" title="All 4 branches missed.">            if (input.isAdmin() &amp;&amp; !existing.getAuthoritiesList().contains(Authorities.ROLE_ADMIN_USER)) {</span>
+<span class="nc" id="L56">                existing.getAuthoritiesList().add(Authorities.ROLE_ADMIN_USER);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            } else if (!input.isAdmin()) {</span>
+<span class="nc" id="L58">                existing.getAuthoritiesList().remove(Authorities.ROLE_ADMIN_USER);</span>
+            }
+        }
+
+<span class="nc" id="L62">        return this.repository.save(existing);</span>
+    }
+
+    public Boolean delete(String id) {
+<span class="nc" id="L66">        User user = this.find(id);</span>
+
+<span class="nc" id="L68">        this.repository.delete(user);</span>
+
+<span class="nc" id="L70">        return true;</span>
+    }
+
+    public User find(String id) {
+<span class="nc" id="L74">        return this.repository.findById(id).orElseThrow(() -&gt; new EntityNotFoundException(&quot;User not found with id: &quot; + id));</span>
+    }
+
+    public User findByEmail(String email) {
+<span class="nc" id="L78">        return this.repository.findByEmail(email).orElseThrow(() -&gt; new EntityNotFoundException(&quot;User not found with email: &quot; + email));</span>
+    }
+
+    public List&lt;User&gt; list() {
+<span class="nc" id="L82">        return this.repository.findAllByOrderByFullNameAsc();</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span>smt-server (Nov 28, 2025 8:36:18 PM)</div></body></html>
