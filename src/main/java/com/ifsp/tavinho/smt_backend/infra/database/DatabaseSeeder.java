@@ -2,7 +2,6 @@ package com.ifsp.tavinho.smt_backend.infra.database;
 
 import com.ifsp.tavinho.smt_backend.application.dtos.input.UserDTO;
 import com.ifsp.tavinho.smt_backend.application.services.admin.UserService;
-import com.ifsp.tavinho.smt_backend.domain.entities.User;
 import com.ifsp.tavinho.smt_backend.domain.repositories.UserRepository;
 import com.ifsp.tavinho.smt_backend.shared.ApplicationProperties;
 
@@ -27,8 +26,9 @@ public class DatabaseSeeder implements CommandLineRunner {
         if (applicationProperties.isDatabaseSeederEnabled()) this.seedAdminUser();
     }
 
-    private User seedAdminUser() {
-        if (this.userRepository.findByEmail("admin@admin.com") != null) return null;
-        return this.userService.create(new UserDTO("Admin", "admin@admin.com", null, true));
+    private void seedAdminUser() {
+        if (this.userRepository.findByEmail("admin@admin.com").isEmpty()) {
+            this.userService.create(new UserDTO("Admin", "admin@admin.com", null, true));
+        };
     }
 }

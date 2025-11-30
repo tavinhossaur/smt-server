@@ -75,24 +75,6 @@ cd smt-server</code></pre>
   </li>
 </ol>
 
-### Configuration
-
-Note that there are different application properties profiles examples in <code>src/main/resources</code>.
-
-<ol>
-  <li><b>Copy the example properties file:</b>
-    <pre><code>cp src/main/resources/application.properties.example src/main/resources/application.properties</code></pre>
-  </li>
-  <li><b>Edit <code>src/main/resources/application.properties</code> with your environment values:</b>
-    <ul>
-      <li><code>spring.data.mongodb.uri</code>: MongoDB connection string</li>
-      <li><code>security.jwt.secret-key</code>: Secure random string for JWT</li>
-      <li><code>security.jwt.expiration-time</code>: JWT expiration in ms</li>
-      <li><code>system.user.default-password</code>: Default password for new users</li>
-      <li><code>system.database.seeder.enabled</code>: Run the database seeder (this property is only on application-dev.properties)</li>
-    </ul>
-  </li>
-</ol>
 
 ## 🚀 Running the Application
 
@@ -103,7 +85,7 @@ Both use Docker and environment variables defined in the `.env` file.
 
 ## 🧑‍💻 Development Environment (Docker Swarm)
 
-The **development environment** uses Docker Swarm to enable service replication and monitoring via Visualizer.
+The **development environment** uses Docker Swarm to enable service replication.
 
 ### 1️⃣ Build the application image
 
@@ -113,20 +95,84 @@ Before deploying the stack, build the application image locally:
 docker build -t smt/server:dev . --no-cache
 ```
 
-### 2️⃣ Initialize Docker Swarm
+### 1️⃣ Initialize Docker Swarm environment
 
 If Swarm is not initialized yet:
 
 ```bash
-docker swarm init --advertise-addr eth0
+docker swarm init
+```
+
+We use three different workers, each of them will have one nginx replica and three replicas of the smt-server.
+
+to get the `MANAGER_IP` use:
+
+```bash
+docker node inspect self --format '{{.Status.Addr}}'
+```
+
+```bash
+docker run -d --privileged --name worker1 --hostname worker1 -p 80:80 --network bridge docker:dind --insecure-registry <MANAGER_IP>:5000
+
+docker run -d --privileged --name worker2 --hostname worker2 -p 81:80 --network bridge docker:dind --insecure-registry <MANAGER_IP>:5000
+
+docker run -d --privileged --name worker3 --hostname worker3 -p 82:80 --network bridge docker:dind --insecure-registry <MANAGER_IP>:5000
+```
+
+Now we link the workers to the swarm manager
+
+to get the `SWARM_TOKEN` use:
+
+```bash
+docker swarm join-token worker -q
+```
+
+```bash
+docker exec worker1 docker swarm join --token <SWARM_TOKEN> <MANAGER_IP>:2377
+
+docker exec worker2 docker swarm join --token <SWARM_TOKEN> <MANAGER_IP>:2377
+
+docker exec worker3 docker swarm join --token <SWARM_TOKEN> <MANAGER_IP>:2377
+```
+
+Now you should have 1 manager and 3 workers listed
+
+```bash
+docker node ls
+```
+
+### 2️⃣ Build the smt-server image to a local registry
+
+Create the registry:
+
+```bash
+docker service create --name registry --publish 5000:5000 registry:2
+```
+
+Build the image:
+
+```bash
+docker build -t localhost:5000/smt-server:dev . --no-cache
+```
+
+Push to the local registry
+
+```bash
+docker push localhost:5000/smt-server:dev
 ```
 
 ### 3️⃣ Deploy the stack
 
-Use the `docker-compose.dev.yml` file to deploy all services (MongoDB, API, Nginx, Mongo Express, and Visualizer):
+Use the `docker-compose.dev.yml` file to deploy the services MongoDB, API and Nginx:
 
 ```bash
-docker stack deploy -c docker-compose.dev.yml smt-stack --detach=false
+docker stack deploy -c ./docker-compose.dev.yml smt-stack --detach=false
+```
+
+Use the `docker-compose.dev.monitor.yml` file to deploy the services Mongo Express and Docker Visualizer:
+
+```bash
+docker compose -f ./docker-compose.dev.monitor.yml up -d
 ```
 
 ### 4️⃣ Check service status
@@ -142,7 +188,11 @@ docker service ls
 When finished, remove all running services:
 
 ```bash
+# Stack
 docker stack rm smt-stack
+
+# Monitoring containers
+docker compose -f docker-compose.dev.monitor.yml down -v
 ```
 
 ## 🌐 Production Environment (Docker Compose)
@@ -176,22 +226,29 @@ docker compose -f docker-compose.prod.yml down
 
 ## 🧠 Useful Tips
 
-- To check the MongoDB or container status:
+- To check status of the nodes, services and containers
 
   ```bash
+  docker node ls
+  docker service ls
+  docker stack ps smt
   docker ps
-  docker logs <container-name>
+  ```
+
+- To get logs of a service
+
+  ```bash
+  docker service logs <SERVICE-NAME>
   ```
 
 - Access **Mongo Express** at:\
   🔗 [http://localhost:8081](http://localhost:8081)
 
-- Access **Visualizer (Swarm Dashboard)** at:\
+- Access **Docker Visualizer** at:\
   🔗 [http://localhost:8082](http://localhost:8082)
 
-- Main API available at:\
-  🔗 [http://localhost:8080](http://localhost:8080)\
-  (or via Nginx proxy at [http://localhost](http://localhost))
+- Main API available via Nginx at:\
+  🔗 [http://localhost/api/v1/health](http://localhost/api/v1/health)
 
 ---
 
