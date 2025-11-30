@@ -4,114 +4,57 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - target: 80
-        published: 80
-        protocol: tcp
-        mode: ingress
-      - target: 443
-        published: 443
-        protocol: tcp
-        mode: ingress
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - "80:80"
+      - "443:443"
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/nginx.conf
     networks:
       - smt-net
     deploy:
       replicas: 3
-      update_config:
-        parallelism: 1
-        delay: 10s
-        failure_action: rollback
-        order: start-first
-      rollback_config:
-        parallelism: 1
-        delay: 5s
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
       placement:
         constraints:
           - node.role == worker
-        preferences:
-          - spread: node.id # Distribui entre diferentes nós
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 128M
-        reservations:
-          cpus: '0.25'
-          memory: 64M
-      labels:
-        - "traefik.enable=false"
-        - "service.name=nginx"
-        - "service.tier=frontend"
     healthcheck:
       test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://127.0.0.1/nginx-health']
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 10s
+    depends_on:
+      - smt-server
 
   smt-server:
-    image: smt/server:dev
-    ports:
-      - target: 8080
-        published: 8080
-        protocol: tcp
-        mode: ingress
+    image: 192.168.65.3:5000/smt-server:dev
     env_file:
       - .env
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      SYSTEM_DATABASE_SEEDER_ENABLED: true
+      SYSTEM_DATABASE_SEEDER_ENABLED: 1
+      SECURITY_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY}
+      SYSTEM_USER_DEFAULT_PASSWORD: ${SYSTEM_USER_DEFAULT_PASSWORD}
+      SPRING_DATA_MONGODB_URI: mongodb://dev:dev123@192.168.65.3:27017/dev-smt-db?authSource=admin&connectTimeoutMS=30000&serverSelectionTimeoutMS=30000
       JAVA_OPTS: -Xms256m -Xmx512m -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0
     networks:
       - smt-net
     deploy:
-      replicas: 5
-      update_config:
-        parallelism: 2
-        delay: 15s
-        failure_action: rollback
-        monitor: 30s
-        order: start-first
-      rollback_config:
-        parallelism: 2
-        delay: 10s
-      restart_policy:
-        condition: on-failure
-        delay: 10s
-        max_attempts: 3
-        window: 180s
+      replicas: 9
       placement:
+        max_replicas_per_node: 3
         constraints:
           - node.role == worker
-        preferences:
-          - spread: node.id
-      endpoint_mode: vip # VIP mode para balanceamento via DNS
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 768M
-        reservations:
-          cpus: '0.5'
-          memory: 512M
-      labels:
-        - "service.name=smt-server"
-        - "service.tier=backend"
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:8080/api/v1/health']
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 45s
     depends_on:
       - mongo
 
   mongo:
     image: mongo:8.0.15-noble
+    ports:
+      - "27017:27017"
     volumes:
       - mongodata:/data/db
       - ./mongo:/docker-entrypoint-initdb.d
@@ -121,143 +64,27 @@ services:
     networks:
       - smt-net
     deploy:
-      replicas: 1 # Uma réplica apenas, já que é possível configurar réplicas pelo próprio mongo
-      update_config:
-        parallelism: 1
-        failure_action: rollback
-      restart_policy:
-        condition: on-failure
-        delay: 10s
-        max_attempts: 3
-        window: 120s
+      replicas: 1
       placement:
         constraints:
-          - node.role == manager # Mantém no manager para persistência dos dados
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: 2G
-        reservations:
-          cpus: '1.0'
-          memory: 1G
-      labels:
-        - "service.name=mongodb"
-        - "service.tier=database"
+          - node.role == manager
     healthcheck:
       test: ["CMD-SHELL", "mongosh --username dev --password dev123 --authenticationDatabase admin --eval 'db.runCommand(\"ping\").ok' --quiet"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 40s
 
-  mongo-express:
-    image: mongo-express:latest
-    ports:
-      - target: 8081
-        published: 8081
-        protocol: tcp
-        mode: ingress
-    environment:
-      ME_CONFIG_MONGODB_SERVER: mongo
-      ME_CONFIG_MONGODB_ADMINUSERNAME: dev
-      ME_CONFIG_MONGODB_ADMINPASSWORD: dev123
-      ME_CONFIG_BASICAUTH_USERNAME: admin
-      ME_CONFIG_BASICAUTH_PASSWORD: admin
-      ME_CONFIG_SITE_BASEURL: /
-    networks:
-      - smt-net
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-      placement:
-        constraints:
-          - node.role == manager
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-        reservations:
-          cpus: '0.25'
-          memory: 128M
-      labels:
-        - "service.name=mongo-express"
-        - "service.tier=management"
-    depends_on:
-      - mongo
-
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - target: 8080
-        published: 8082
-        protocol: tcp
-        mode: ingress
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    networks:
-      - smt-net
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints:
-          - node.role == manager # Precisa acessar o Docker socket (api do Docker)
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 128M
-        reservations:
-          cpus: '0.1'
-          memory: 64M
-      labels:
-        - "service.name=visualizer"
-        - "service.tier=management"
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - target: 9090
-        published: 9090
-        protocol: tcp
-        mode: ingress
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus-data:/prometheus
-    networks:
-      - smt-net
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 1G
-        reservations:
-          cpus: '0.5'
-          memory: 512M
+configs:
+  nginx_config:
+    file: ./nginx.conf
 
 volumes:
   mongodata:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./data/mongo
 
 networks:
   smt-net:
     driver: overlay
-    attachable: true # Permite containers standalone se conectarem
-    driver_opts:
-      encrypted: "true" # Criptografa comunicação entre nós
+    attachable: true
     ipam:
       config:
         - subnet: 10.0.9.0/24
-    labels:
-      - "network.description=SMT application network"
